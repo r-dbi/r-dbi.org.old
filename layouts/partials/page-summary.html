@@ -4,7 +4,5 @@
     </h2>
 
     <hr>
-    {{ if .Description }}
-    <p itemprop="about">{{ .Description }}</p>
-    {{ end }}
+    <p itemprop="about">{{ .Description }} ({{ .ReadingTime }} minute read)</p>
 </div>
