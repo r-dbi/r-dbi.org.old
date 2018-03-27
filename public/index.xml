@@ -165,9 +165,9 @@ $(&amp;rsquo;#my-nav&amp;rsquo;).on(&amp;lsquo;fixed.sticky&amp;rsquo;, function
     </item>
     
     <item>
-      <title>Improving DBI – a retrospect</title>
+      <title>Improving DBI: A Retrospect</title>
       <link>/blog/dbi-1-final/</link>
-      <pubDate>Sat, 06 May 2017 00:00:00 +0000</pubDate>
+      <pubDate>Mon, 15 May 2017 00:00:00 +0000</pubDate>
       
       <guid>/blog/dbi-1-final/</guid>
       <description>The &amp;ldquo;Improving DBI&amp;rdquo; project, funded by the R consortium, started about a year ago. It includes

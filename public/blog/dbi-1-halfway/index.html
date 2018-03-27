@@ -1,0 +1,330 @@
+<!DOCTYPE html>
+<html lang="en-us">
+
+<head>
+  <meta name="generator" content="Hugo 0.31.1" />
+  <meta charset="utf-8">
+  <meta http-equiv="X-UA-Compatible" content="IE=edge">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <title> Halfway through “Improving DBI” </title>
+
+  
+  <meta name="description" content="Intermediate status report on the “Improving DBI” project"> 
+  
+  
+  
+  
+  
+
+  
+
+  <meta name="author" content="Kirill Müller">
+
+
+  <meta property="og:title" content="Halfway through “Improving DBI”" />
+<meta property="og:description" content="Intermediate status report on the “Improving DBI” project" />
+<meta property="og:type" content="article" />
+<meta property="og:url" content="/blog/dbi-1-halfway/" />
+
+
+
+<meta property="article:published_time" content="2016-12-06T00:00:00&#43;00:00"/>
+
+<meta property="article:modified_time" content="2016-12-06T00:00:00&#43;00:00"/>
+
+
+
+
+
+
+
+
+
+
+
+  
+
+
+
+
+  
+  
+  
+  
+  
+
+  <link rel="canonical" href="/blog/dbi-1-halfway/">  
+
+  
+<link rel="apple-touch-icon" sizes="180x180" href="/apple-touch-icon.png">
+<link rel="icon" type="image/png" sizes="32x32" href="/favicon-32x32.png">
+<link rel="icon" type="image/png" sizes="16x16" href="/favicon-16x16.png">
+<link rel="manifest" href="/site.webmanifest">
+<link rel="mask-icon" href="/safari-pinned-tab.svg" color="#5bbad5">
+<meta name="msapplication-TileColor" content="#da532c">
+<meta name="theme-color" content="#ffffff">
+
+
+  <link href="/css/font.css" rel="stylesheet" type="text/css">
+  <link href="/css/kube.min.css" rel="stylesheet" type="text/css">
+  <link href="/css/kube.legenda.css" rel="stylesheet" type="text/css">
+  <link href="/css/highlight.css" rel="stylesheet" type="text/css">
+  <link href="/css/master.css" rel="stylesheet" type="text/css">
+  <link href="/css/kube.demo.css" rel="stylesheet" type="text/css">
+
+ <link href="/css/custom.css" rel="stylesheet" type="text/css">
+
+  <script src="/js/jquery-2.1.4.min.js" type="text/javascript">
+  </script>
+
+  <script type="text/javascript" src="/js/tocbot.min.js"></script>
+</head>
+
+
+<body class="page-kube">
+  <header> <div class="show-sm">
+    <div id="nav-toggle-box">
+      <div id="nav-toggle-brand">
+        <a href="/">DBI for R</a>
+      </div><a data-component="toggleme" data-target="#top" href="#" id="nav-toggle"><i class="kube-menu"></i></a>
+    </div>
+  </div>
+  <div class="hide-sm" id="top">
+    <div id="top-brand">
+      <a href="/" title="home">DBI for R</a>
+    </div>
+    <nav id="top-nav-main">
+      <ul>
+       
+       
+    <li><a href="/blog/" >Blog</a></li>
+    
+      </ul>
+    </nav>
+    <nav id="top-nav-extra"> 
+      <ul>
+          
+      </ul>
+    </nav>
+  </div>
+ </header>
+  <main>
+<div class="push-center" itemscope itemtype="http://schema.org/BlogPosting">
+    
+<meta itemprop="name" content="Halfway through “Improving DBI”">
+<meta itemprop="description" content="Intermediate status report on the “Improving DBI” project">
+
+
+<meta itemprop="datePublished" content="2016-12-06T00:00:00&#43;00:00" />
+<meta itemprop="dateModified" content="2016-12-06T00:00:00&#43;00:00" />
+<meta itemprop="wordCount" content="750">
+
+
+
+<meta itemprop="keywords" content="" />
+
+<div id="hero">
+    <h1 itemprop="headline">  Halfway through “Improving DBI”</h1>
+    
+<blockquote itemprop="description">Intermediate status report on the “Improving DBI” project</blockquote>
+
+<time class="post-time"><span class="icon">
+  <i class="fa fa-clock-o" aria-hidden="true"></i>
+</span>
+<span>4 minute read</span>
+<span class="icon">
+ <i class="fa fa-pencil" aria-hidden="true"></i>
+</span>
+
+  Published: <time datetime="2016-12-06T00:00:00&#43;00:00">6 Dec, 2016</time>
+
+</time>
+</div>
+<div id="post-box">
+<div id="post" itemprop="articleBody">
+    
+    
+
+<p>In early 2016 the R Consortium partially accepted my “Improving DBI”
+proposal. An important part is the design and implementation of a
+testable DBI specification. Initially I also proposed to make three DBI
+backends to open-source databases engines (RSQLite, RMySQL, and
+RPostgres) compatible to the new DBI specification, but funding allows
+to work on only one DBI backend. I chose RSQLite for a number of
+reasons:</p>
+
+<ul>
+<li>It is a very important package, judging by the number of reverse
+CRAN and Bioconductor dependencies</li>
+<li>It’s easy to work with, because everything (including the database
+engine) is bundled with the package</li>
+<li>It seemed to be the most advanced package, closest to the (yet to be
+completed) DBI specification</li>
+<li>An <a href="https://twitter.com/krlmlr/status/712950420969283584">informal Twitter
+poll</a> supports
+this decision by a tiny margin</li>
+</ul>
+
+<p>The project has reached an important milestone, with the release of
+RSQLite 1.1. This post reports the progress achieved so far, and
+outlines the next steps.</p>
+
+<h2 id="rsqlite">RSQLite</h2>
+
+<p>While the RSQLite API has changed very little (hence the minor version
+update), it includes a complete rewrite of the original 1.0.0 sources in
+C++. This has considerably simplified the code, which makes future
+maintenance easier, and allows us to take advantage of the more
+sophisticated memory management tools available in Rcpp, which help
+protect against memory leaks and crashes.</p>
+
+<p>RSQLite 1.1 brings a number of improvements:</p>
+
+<ul>
+<li>New strategy for prepared queries: Create a prepared query with
+dbSendQuery() or dbSendStatement() and bind values with dbBind().
+This allows you to efficiently re-execute the same query/statement
+with different parameter values iteratively (by calling dbBind()
+several times) or in a batch (by calling dbBind() once with a
+data-frame-like object).</li>
+<li>Support for inline parametrised queries via the param argument to
+dbSendQuery(), dbGetQuery(), dbSendStatement() and dbExecute(), to
+protect from <a href="https://xkcd.com/327/">SQL injection</a>.</li>
+<li>The existing methods dbSendPreparedQuery() and dbGetPreparedQuery()
+have been soft-deprecated, because the new API is more versatile,
+more consistent and stricter about parameter validation.</li>
+<li>Using UTF8 for queries and parameters: this mean that non-English
+data should just work without any additional intervention.</li>
+<li>Improved mapping between SQLite’s cell-types and R’s column-types.</li>
+</ul>
+
+<p>See the <a href="https://github.com/rstats-db/RSQLite/releases/tag/v1.1">release
+notes</a> for
+further changes.</p>
+
+<p>The rewrite was implemented by Hadley Wickham before the “Improving DBI”
+project started, and has been available for a long time on GitHub.
+Nevertheless, the CRAN release has proven much more challenging than
+anticipated, because so many CRAN and Bioconductor packages import it.
+(Maintainers of reverse dependencies might remember multiple e-mails
+where I was threatening to release RSQLite “for real”.) My aim was to
+break as little existing code as possible. After numerous rounds of
+revdep-checking and improving RSQLite, I’m proud to report that the vast
+majority of reverse dependencies pass their checks just as well (and as
+quickly!) as they did with v1.0.0. Most tests from v1.0.0 are still
+present in the current codebase. This means that non-packaged code also
+has a good chance to work unchanged. I’m happy to work with package
+maintainers or users whose code breaks after the update.</p>
+
+<h2 id="dbi">DBI</h2>
+
+<p>I have also released several DBI updates to CRAN, mostly to introduce
+new generics such as dbBind() (for parametrized/prepared queries) or
+dbSendStatement() and dbExecute() (for statements which don’t return
+data). The definition of a formal DBI specification is part of the
+project, a <a href="http://rstats-db.github.io/DBI/DBIspec.html">formatted
+version</a> is updated
+continuously.</p>
+
+<h2 id="dbitest">DBItest</h2>
+
+<p>In addition to the textual specification in the DBI package, the DBItest
+package provides backend independent tests for DBI packages. It can be
+easily used by package authors to ensure that they follow the DBI
+specification. This is important because it allows you to take code that
+works with one DBI backend and easily switch to a different backend
+(providing that they both support the same SQL dialect). Literate
+programming techniques using advanced features of roxygen2 help keeping
+both code and textual specifications in close proximity, so that
+amendments to the text can be easily tracked back to changes of the test
+code, and vice versa.</p>
+
+<h2 id="next-steps">Next steps</h2>
+
+<p>The rest of the project will focus on finalizing the specification in
+both code and text (mostly discussed on GitHub in the issue trackers for
+the <a href="https://github.com/rstats-db/DBI/issues">DBI</a> and
+<a href="https://github.com/rstats-db/DBItest/issues">DBItest</a> projects). At
+least one new helper package (to handle 64-bit integer types) will be
+created, and DBI, DBItest, and RSQLite will see yet another release: The
+first two will finalize the DBI specification, and RSQLite will fully
+conform to it.</p>
+
+<p>The development happens entirely on GitHub in repositories of the
+<a href="https://github.com/rstats-db">rstats-db</a> organization. Feel free to try
+out development versions of the packages found there, and to report any
+problems or ideas at the issue trackers.</p>
+
+
+</div>
+
+<div class="form-subscribe">
+    <div id="form-subscribe-success" style="display: none;"></div>
+<div id="form-subscribe-box">
+        <h4>All about Redactor, Grafs and Kube.</h4>
+        <p>Monthly news &amp; updates. Just straight to the point.</p>
+
+        <form action="" name="mc-embedded-subscribe-form" method="post" class="form"><input type="hidden" name="authorize-token" value="">
+            <div id="subscribe-email-validation-error"></div>
+            <div class="form-item">
+                <div class="append">
+                    <input type="email" name="EMAIL" id="mce-EMAIL" placeholder="Email">
+                    <button class="button">Subscribe</button>
+                </div>
+            </div>
+    
+            
+            <div style="position: absolute; left: -5000px;" aria-hidden="true"><input type="text" name="" tabindex="-1" value=""></div>
+        </form>
+
+        <div class="form-subscribe-twitter"><div>or</div> <a href="https://twitter.com/jebli_7">Follow us on Twitter</a></div>
+    </div>
+</div>
+
+    <div class="">
+        <p>
+  Published
+  
+    
+      by <span itemprop="author">Kirill Müller</span>
+    
+  
+  <time datetime="2016-12-06T00:00:00&#43;00:00">
+    6 Dec, 2016
+  </time>
+  
+  
+  using <span itemprop="wordCount">750</span> words.
+</p>
+
+        
+
+
+
+    </div>
+    
+    
+    
+</div>
+</div>
+</main>
+  <footer>   <footer id="footer">
+    <nav>
+      <ul>
+        <li>Sponsored by the <a href=https://r-consortium.org>R Consortium</a></li>
+      </ul>
+    </nav>
+    <p>&copy; Licence MIT.</p>
+  </footer>
+ </footer>
+
+
+  <script src="/js/kube.js" type="text/javascript">
+  </script>
+  <script src="/js/kube.legenda.js" type="text/javascript">
+  </script>
+  <script src="/js/master.js" type="text/javascript">
+  </script>
+</body>
+
+</html>

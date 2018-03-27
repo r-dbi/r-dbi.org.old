@@ -1,9 +1,10 @@
 +++
-date = "2017-05-06"
+author = "Kirill Müller"
+date = "2017-05-15"
 draft = false
 weight = 180
-title = "Improving DBI – a retrospect"
-description = "Summary of the \"Improving DBI\" project"
+title = "Improving DBI: A Retrospect"
+description = "Summary of the “Improving DBI” project"
 +++
 
 The "Improving DBI" project, funded by the R consortium, started about a year ago.
