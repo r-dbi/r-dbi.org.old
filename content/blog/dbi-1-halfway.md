@@ -42,15 +42,15 @@ protect against memory leaks and crashes.
 RSQLite 1.1 brings a number of improvements:
 
 -   New strategy for prepared queries: Create a prepared query with
-    dbSendQuery() or dbSendStatement() and bind values with dbBind().
+    `dbSendQuery()` or `dbSendStatement()` and bind values with `dbBind()`.
     This allows you to efficiently re-execute the same query/statement
-    with different parameter values iteratively (by calling dbBind()
-    several times) or in a batch (by calling dbBind() once with a
+    with different parameter values iteratively (by calling `dbBind()`
+    several times) or in a batch (by calling `dbBind()` once with a
     data-frame-like object).
 -   Support for inline parametrised queries via the param argument to
-    dbSendQuery(), dbGetQuery(), dbSendStatement() and dbExecute(), to
+    `dbSendQuery()`, `dbGetQuery()`, `dbSendStatement()` and `dbExecute()`, to
     protect from [SQL injection](https://xkcd.com/327/).
--   The existing methods dbSendPreparedQuery() and dbGetPreparedQuery()
+-   The existing methods `dbSendPreparedQuery()` and `dbGetPreparedQuery()`
     have been soft-deprecated, because the new API is more versatile,
     more consistent and stricter about parameter validation.
 -   Using UTF8 for queries and parameters: this mean that non-English
@@ -79,8 +79,8 @@ DBI
 ---
 
 I have also released several DBI updates to CRAN, mostly to introduce
-new generics such as dbBind() (for parametrized/prepared queries) or
-dbSendStatement() and dbExecute() (for statements which don’t return
+new generics such as `dbBind()` (for parametrized/prepared queries) or
+`dbSendStatement()` and `dbExecute()` (for statements which don’t return
 data). The definition of a formal DBI specification is part of the
 project, a [formatted
 version](http://rstats-db.github.io/DBI/DBIspec.html) is updated

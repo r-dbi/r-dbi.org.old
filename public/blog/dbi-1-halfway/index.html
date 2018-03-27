@@ -182,15 +182,15 @@ protect against memory leaks and crashes.</p>
 
 <ul>
 <li>New strategy for prepared queries: Create a prepared query with
-dbSendQuery() or dbSendStatement() and bind values with dbBind().
+<code>dbSendQuery()</code> or <code>dbSendStatement()</code> and bind values with <code>dbBind()</code>.
 This allows you to efficiently re-execute the same query/statement
-with different parameter values iteratively (by calling dbBind()
-several times) or in a batch (by calling dbBind() once with a
+with different parameter values iteratively (by calling <code>dbBind()</code>
+several times) or in a batch (by calling <code>dbBind()</code> once with a
 data-frame-like object).</li>
 <li>Support for inline parametrised queries via the param argument to
-dbSendQuery(), dbGetQuery(), dbSendStatement() and dbExecute(), to
+<code>dbSendQuery()</code>, <code>dbGetQuery()</code>, <code>dbSendStatement()</code> and <code>dbExecute()</code>, to
 protect from <a href="https://xkcd.com/327/">SQL injection</a>.</li>
-<li>The existing methods dbSendPreparedQuery() and dbGetPreparedQuery()
+<li>The existing methods <code>dbSendPreparedQuery()</code> and <code>dbGetPreparedQuery()</code>
 have been soft-deprecated, because the new API is more versatile,
 more consistent and stricter about parameter validation.</li>
 <li>Using UTF8 for queries and parameters: this mean that non-English
@@ -219,8 +219,8 @@ maintainers or users whose code breaks after the update.</p>
 <h2 id="dbi">DBI</h2>
 
 <p>I have also released several DBI updates to CRAN, mostly to introduce
-new generics such as dbBind() (for parametrized/prepared queries) or
-dbSendStatement() and dbExecute() (for statements which don’t return
+new generics such as <code>dbBind()</code> (for parametrized/prepared queries) or
+<code>dbSendStatement()</code> and <code>dbExecute()</code> (for statements which don’t return
 data). The definition of a formal DBI specification is part of the
 project, a <a href="http://rstats-db.github.io/DBI/DBIspec.html">formatted
 version</a> is updated
