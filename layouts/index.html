@@ -30,7 +30,7 @@
     <h2>Blog posts</h2>
   </div>
   <ul id="posts">
-    {{ range last 3 ( where .Data.Pages.ByDate "Section" "blog" ) }} {{ partial "page-summary" . }} {{ end }}
+    {{ range first 3 ( where .Data.Pages "Section" "blog" ).ByDate.Reverse }} {{ partial "page-summary" . }} {{ end }}
     <li><h2><a href="/blog">View all blog posts</a></h2></li>
   </ul>
 </div>
