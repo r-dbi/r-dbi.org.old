@@ -1,7 +1,8 @@
 <div itemscope itemtype="http://schema.org/CreativeWork">
     <h2 class="title">
-        <a href="{{ .Permalink }}" itemprop="headline">{{ .Title }}</a>
+        <a href="{{ .Permalink }}" itemprop="headline">{{ .Title }}</a> {{ .PublishDate.Format "2006-02-01" }}
     </h2>
+
     <hr>
     {{ if .Description }}
     <p itemprop="about">{{ .Description }}</p>
