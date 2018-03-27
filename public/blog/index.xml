@@ -21,5 +21,15 @@
  the definition and implementation of a testable specification for DBI, making RSQLite fully compliant to the new specification.  Besides the established DBI and RSQLite packages, I have spent a lot of time on the new DBItest package. Final updates to these packages will be pushed to CRAN end of May this year, to give downstream maintainers some time to accommodate.</description>
     </item>
     
+    <item>
+      <title>Halfway through “Improving DBI”</title>
+      <link>/blog/dbi-1-halfway/</link>
+      <pubDate>Tue, 06 Dec 2016 00:00:00 +0000</pubDate>
+      
+      <guid>/blog/dbi-1-halfway/</guid>
+      <description>In early 2016 the R Consortium partially accepted my “Improving DBI” proposal. An important part is the design and implementation of a testable DBI specification. Initially I also proposed to make three DBI backends to open-source databases engines (RSQLite, RMySQL, and RPostgres) compatible to the new DBI specification, but funding allows to work on only one DBI backend. I chose RSQLite for a number of reasons:
+ It is a very important package, judging by the number of reverse CRAN and Bioconductor dependencies It’s easy to work with, because everything (including the database engine) is bundled with the package It seemed to be the most advanced package, closest to the (yet to be completed) DBI specification An informal Twitter poll supports this decision by a tiny margin  The project has reached an important milestone, with the release of RSQLite 1.</description>
+    </item>
+    
   </channel>
 </rss>
