@@ -166,10 +166,10 @@ $(&amp;rsquo;#my-nav&amp;rsquo;).on(&amp;lsquo;fixed.sticky&amp;rsquo;, function
     
     <item>
       <title>Improving DBI – a retrospect</title>
-      <link>/blog/dbi-2-final/</link>
+      <link>/blog/dbi-1-final/</link>
       <pubDate>Sat, 06 May 2017 00:00:00 +0000</pubDate>
       
-      <guid>/blog/dbi-2-final/</guid>
+      <guid>/blog/dbi-1-final/</guid>
       <description>The &amp;ldquo;Improving DBI&amp;rdquo; project, funded by the R consortium, started about a year ago. It includes
  the definition and implementation of a testable specification for DBI, making RSQLite fully compliant to the new specification.  Besides the established DBI and RSQLite packages, I have spent a lot of time on the new DBItest package. Final updates to these packages will be pushed to CRAN end of May this year, to give downstream maintainers some time to accommodate.</description>
     </item>
