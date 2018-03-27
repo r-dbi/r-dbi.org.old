@@ -3,7 +3,7 @@ languageCode = "en-us"
 title = "DBI for R"
 theme = "kube"
 description = "R's interface to databases, with a testable and human-readable specification, a selection of backend packages to connect with various databases, and a boilerplate for developing new backends."
-Paginate = 4
+Paginate = 10
 [Params]
   RSSLink = "/index.xml"
   author = "DBI" # add your company name
