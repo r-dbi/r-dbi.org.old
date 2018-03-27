@@ -3,9 +3,14 @@ languageCode = "en-us"
 title = "DBI for R"
 theme = "kube"
 description = "R's interface to databases, with a testable and human-readable specification, a selection of backend packages to connect with various databases, and a boilerplate for developing new backends."
-Paginate = 4
+Paginate = 10
 [Params]
   RSSLink = "/index.xml"
-  author = "newpixcom" # add your company name
+  author = "DBI" # add your company name
   github = "r-dbi" # add your github profile name
   email = "myemail@myaddress.xxx"
+
+[[menu.main]]
+    name = "Blog"
+    weight = -100
+    url = "/blog/"
