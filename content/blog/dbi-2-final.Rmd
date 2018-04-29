@@ -21,19 +21,69 @@ supported by *RMariaDB* (due to a limitation of the DBMS), all other parts of th
 Projects that use *RPostgreSQL* or *RMySQL* can continue to do so, or switch to the new backends at their own pace (which is likely to require some changes to the code). For new projects I recommend *RPostgres* or *RMariaDB* to take advantage of the thorougly tested codebases and of the consistency across backends.
 
 
-## Quoting literal values
-
-When working on the database backends, it has become apparent that quoting strings and identifiers isn't quite enough. Now there is a way to quote arbitrary values, i.e. convert them to a string that can be pasted into a SQL query:
-
-
-
-- `dbQuoteLiteral()`
-
 ## Schema support
 
-- `Id()`
-- `dbUnquoteIdentifier()`
-- `dbListObjects()`
+Consistent access of tables in database schemas was planned for the "Improving DBI" project already, but I have implemented it only recently. It felt safer to see how the interface works on three backends, as opposed to implementing it for just *RSQLite* and then perhaps having to adapt it.
+
+The new `Id()` function constructs identifiers. All arguments must be named, yet *DBI* doesn't specify the argument names, because DBMS have a different notion of namespaces. The objects returned by `Id()` are "dumb", they gain meaning only when used in methods such as `dbQuoteIdentifier()` or `dbWriteTable()`.
+
+For listing database objects in schemas, the new `dbListObjects()` generic can be used. It returns a data frame that contains identifiers (like those created by the `Id()` function) and a flag that indicates if the identifier is complete (i.e., pointing to a table or view) or a prefix. Incomplete identifiers can be passed to `dbListObjects()` again, which allows traversing the tree of database objects.
+
+```{r cleanup, include = FALSE}
+library(RPostgres)
+pg_conn <- dbConnect(Postgres())
+
+dbExecute(pg_conn, "DROP SCHEMA IF EXISTS my_schema CASCADE")
+dbExecute(pg_conn, "CREATE SCHEMA my_schema")
+
+dbDisconnect(pg_conn)
+```
+
+The following example assumes a schema `my_schema`. A table named `my_table` is created in this schema, objects are listed, and the table is read again.
+
+```{r list-schema}
+library(RPostgres)
+pg_conn <- dbConnect(Postgres())
+
+table_name <- Id(schema = "my_schema", table = "my_table")
+
+data <- data.frame(a = 1:3, b = letters[1:3])
+dbWriteTable(pg_conn, table_name, data)
+
+dbListObjects(pg_conn)
+
+dbListObjects(
+  pg_conn,
+  prefix = Id(schema = "my_schema")
+)
+
+dbReadTable(pg_conn, table_name)
+```
+
+In addition to `dbReadTable()` and `dbWriteTable()`, also `dbExistsTable()` and `dbRemoveTable()` support an `Id()` object as table name. The `dbQuoteIdentifier()` method converts these objects to SQL strings. Some operations (e.g. checking if a table exists) require the inverse, the new `dbUnquoteIdentifier()` generic takes care converting valid SQL identifiers to (a list of) `Id()` objects:
+
+```{r unquote}
+quoted <- dbQuoteIdentifier(pg_conn, table_name)
+quoted
+
+dbUnquoteIdentifier(pg_conn, quoted)
+```
+
+
+
+## Quoting literal values
+
+When working on the database backends, it has become apparent that quoting strings and identifiers isn't quite enough. Now there is a way to quote arbitrary values, i.e. convert them to a string that can be pasted into an SQL query:
+
+```{r quote-literal}
+library(RSQLite)
+sqlite_conn <- dbConnect(SQLite())
+
+dbQuoteLiteral(sqlite_conn, 1.5)
+dbQuoteLiteral(pg_conn, 1.5)
+dbQuoteLiteral(pg_conn, Sys.time())
+```
+
 
 ## More fine-grained creation of tables
 
@@ -69,7 +119,7 @@ When working on the database backends, it has become apparent that quoting strin
 
 1. The internal architecture of the DBI specification in `DBItest` requires a bit of reworking. Currently, it is difficult to understand a test failure without inspecting the source code of `DBItest`.  It is difficult to locate the source of a failure in the specification and in the code.  Ideally, each test failure would come with a precise link to the part of the specification that is violated, and with a simple sequence of DBI method calls that allow replicating the failure externally.
 
-1. The communication related to the projects has been rather terse so far.  The new website https://r-dbi.org can host blog posts highlighting different aspects of DBI, and serve as a resource for advice on connecting R with databases and computing on the database.  This includes coordination and support for developments around DBI like `r citet_pkg("sqlr")`, an interface for data definition statements on top of DBI.
+1. The communication related to the projects has been rather terse so far.  The new website https://r-dbi.org can host blog posts highlighting different aspects of DBI, and serve as a resource for advice on connecting R with databases and computing on the database.  This includes coordination and support for developments around DBI like *sqlr*, an interface for data definition statements on top of DBI.
 
 1. All operations on DBI currently block until a result is available or the DBMS has indicated completion.  Asynchronous operations allow parallel processing of multiple queries or statements, however some research is necessary to understand to what extent this can be supported realistically in DBI and for the existing backends.
 
