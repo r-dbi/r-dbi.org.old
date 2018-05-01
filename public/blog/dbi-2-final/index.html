@@ -28,9 +28,9 @@
 
 
 
-<meta property="article:published_time" content="2018-04-30T00:00:00&#43;00:00"/>
+<meta property="article:published_time" content="2018-05-01T00:00:00&#43;00:00"/>
 
-<meta property="article:modified_time" content="2018-04-30T00:00:00&#43;00:00"/>
+<meta property="article:modified_time" content="2018-05-01T00:00:00&#43;00:00"/>
 
 
 
@@ -115,9 +115,9 @@
 <meta itemprop="description" content="Summary of the “Establishing DBI” project">
 
 
-<meta itemprop="datePublished" content="2018-04-30T00:00:00&#43;00:00" />
-<meta itemprop="dateModified" content="2018-04-30T00:00:00&#43;00:00" />
-<meta itemprop="wordCount" content="2098">
+<meta itemprop="datePublished" content="2018-05-01T00:00:00&#43;00:00" />
+<meta itemprop="dateModified" content="2018-05-01T00:00:00&#43;00:00" />
+<meta itemprop="wordCount" content="2172">
 
 
 
@@ -131,12 +131,12 @@
 <time class="post-time"><span class="icon">
   <i class="fa fa-clock-o" aria-hidden="true"></i>
 </span>
-<span>10 minute read</span>
+<span>11 minute read</span>
 <span class="icon">
  <i class="fa fa-pencil" aria-hidden="true"></i>
 </span>
 
-  Published: <time datetime="2018-04-30T00:00:00&#43;00:00">30 Apr, 2018</time>
+  Published: <time datetime="2018-05-01T00:00:00&#43;00:00">1 May, 2018</time>
 
 </time>
 </div>
@@ -148,10 +148,27 @@
 <p>The &ldquo;Establishing DBI&rdquo; project, funded by the R consortium, started
 about a year ago. It includes the completion of two new backends,
 <em>RPostgres</em> and <em>RMariaDB</em>, and a quite a few interface extensions and
-specifications. This blog post showcases only the visible changes, a
-substantial amount of work went into extending the DBI specification and
-making the three open-source database backends compliant to it. Learn
-more about DBI, R&rsquo;s database interface, on <a href="https://r-dbi.org">https://r-dbi.org</a>.</p>
+specifications. Learn more about DBI, R&rsquo;s database interface, on
+<a href="https://r-dbi.org">https://r-dbi.org</a>.</p>
+
+<p>This blog post showcases only the visible changes, a substantial amount
+of work went into extending the DBI specification and making the three
+open-source database backends compliant to it. After describing the
+release of the two new backends <em>RMariaDB</em> and <em>RPostgres</em>, I&rsquo;ll be
+discussing the following improvements:</p>
+
+<ul>
+<li>Consistent support for accessing tables in schemas</li>
+<li>Quoting literal values, in addition to strings and identifiers</li>
+<li>More fine-grained creation of tables</li>
+<li>Reading and writing 64-bit integers</li>
+<li>Reading geometry columns from a PostGIS database</li>
+<li>Handling of duplicate column names</li>
+<li>New helpers in <em>DBI</em></li>
+<li>Reusing code across backends</li>
+</ul>
+
+<p>I conclude with an outlook on things left to do.</p>
 
 <h2 id="release-of-rpostgres-and-rmariadb">Release of <em>RPostgres</em> and <em>RMariaDB</em></h2>
 
@@ -297,11 +314,11 @@ dbQuoteLiteral(pg_conn, 1.5)
 
 dbQuoteLiteral(mariadb_conn, Sys.time())
 
-## &lt;SQL&gt; '20180501012806'
+## &lt;SQL&gt; '20180501204025'
 
 dbQuoteLiteral(pg_conn, Sys.time())
 
-## &lt;SQL&gt; '2018-05-01 03:28:06'::timestamp
+## &lt;SQL&gt; '2018-05-01 22:40:25'::timestamp
 </code></pre>
 
 <p>The default implementation works for ANSI SQL compliant DBMS, the method
@@ -598,12 +615,12 @@ projects a success.</p>
       by <span itemprop="author">Kirill Müller</span>
     
   
-  <time datetime="2018-04-30T00:00:00&#43;00:00">
-    30 Apr, 2018
+  <time datetime="2018-05-01T00:00:00&#43;00:00">
+    1 May, 2018
   </time>
   
   
-  using <span itemprop="wordCount">2098</span> words.
+  using <span itemprop="wordCount">2172</span> words.
 </p>
 
         

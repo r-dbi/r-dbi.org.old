@@ -6,7 +6,7 @@
     <description>Recent content in Blogs on DBI for R</description>
     <generator>Hugo -- gohugo.io</generator>
     <language>en-us</language>
-    <lastBuildDate>Mon, 30 Apr 2018 00:00:00 +0000</lastBuildDate>
+    <lastBuildDate>Tue, 01 May 2018 00:00:00 +0000</lastBuildDate>
     
 	<atom:link href="/blog/index.xml" rel="self" type="application/rss+xml" />
     
@@ -14,10 +14,11 @@
     <item>
       <title>Done “Establishing DBI”!?</title>
       <link>/blog/dbi-2-final/</link>
-      <pubDate>Mon, 30 Apr 2018 00:00:00 +0000</pubDate>
+      <pubDate>Tue, 01 May 2018 00:00:00 +0000</pubDate>
       
       <guid>/blog/dbi-2-final/</guid>
-      <description>The &amp;ldquo;Establishing DBI&amp;rdquo; project, funded by the R consortium, started about a year ago. It includes the completion of two new backends, RPostgres and RMariaDB, and a quite a few interface extensions and specifications. This blog post showcases only the visible changes, a substantial amount of work went into extending the DBI specification and making the three open-source database backends compliant to it. Learn more about DBI, R&amp;rsquo;s database interface, on https://r-dbi.</description>
+      <description>The &amp;ldquo;Establishing DBI&amp;rdquo; project, funded by the R consortium, started about a year ago. It includes the completion of two new backends, RPostgres and RMariaDB, and a quite a few interface extensions and specifications. Learn more about DBI, R&amp;rsquo;s database interface, on https://r-dbi.org.
+This blog post showcases only the visible changes, a substantial amount of work went into extending the DBI specification and making the three open-source database backends compliant to it.</description>
     </item>
     
     <item>
