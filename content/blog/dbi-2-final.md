@@ -1,6 +1,18 @@
-+++ author = "Kirill Müller" date = "2018-03-28" draft = true weight =
-180 title = "Done “Establishing DBI”!?" description = "Summary of the
-“Establishing DBI” project" +++
++++
+
+author = "Kirill Müller"
+
+date = "2018-03-28"
+
+draft = true
+
+weight = 180
+
+title = "Done “Establishing DBI”!?"
+
+description = "Summary of the “Establishing DBI” project"
+
++++
 
 The "Establishing DBI" project, funded by the R consortium, started
 about a year ago. It includes the completion of two new backends,
@@ -155,11 +167,11 @@ pasted into an SQL query:
 
     dbQuoteLiteral(mariadb_conn, Sys.time())
 
-    ## <SQL> '20180501012459'
+    ## <SQL> '20180501012806'
 
     dbQuoteLiteral(pg_conn, Sys.time())
 
-    ## <SQL> '2018-05-01 03:24:59'::timestamp
+    ## <SQL> '2018-05-01 03:28:06'::timestamp
 
 The default implementation works for ANSI SQL compliant DBMS, the method
 for *RPostgres* takes advantage of the `::` casting operator as seen in
