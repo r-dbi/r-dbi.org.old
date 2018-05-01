@@ -74,6 +74,11 @@
   </url>
   
   <url>
+    <loc>/blog/dbi-2-final/</loc>
+    <lastmod>2018-05-01T00:00:00+00:00</lastmod>
+  </url>
+  
+  <url>
     <loc>/blog/rstudio-conf/</loc>
     <lastmod>2018-02-02T00:00:00+00:00</lastmod>
   </url>
@@ -130,7 +135,7 @@
   
   <url>
     <loc>/blog/</loc>
-    <lastmod>2018-02-02T00:00:00+00:00</lastmod>
+    <lastmod>2018-05-01T00:00:00+00:00</lastmod>
     <priority>0</priority>
   </url>
   
