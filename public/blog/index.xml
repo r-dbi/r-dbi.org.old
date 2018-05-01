@@ -6,10 +6,19 @@
     <description>Recent content in Blogs on DBI for R</description>
     <generator>Hugo -- gohugo.io</generator>
     <language>en-us</language>
-    <lastBuildDate>Fri, 02 Feb 2018 00:00:00 +0000</lastBuildDate>
+    <lastBuildDate>Mon, 30 Apr 2018 00:00:00 +0000</lastBuildDate>
     
 	<atom:link href="/blog/index.xml" rel="self" type="application/rss+xml" />
     
+    
+    <item>
+      <title>Done “Establishing DBI”!?</title>
+      <link>/blog/dbi-2-final/</link>
+      <pubDate>Mon, 30 Apr 2018 00:00:00 +0000</pubDate>
+      
+      <guid>/blog/dbi-2-final/</guid>
+      <description>The &amp;ldquo;Establishing DBI&amp;rdquo; project, funded by the R consortium, started about a year ago. It includes the completion of two new backends, RPostgres and RMariaDB, and a quite a few interface extensions and specifications. This blog post showcases only the visible changes, a substantial amount of work went into extending the DBI specification and making the three open-source database backends compliant to it. Learn more about DBI, R&amp;rsquo;s database interface, on https://r-dbi.</description>
+    </item>
     
     <item>
       <title>Connecting to open source databases</title>
@@ -40,23 +49,6 @@ Slides   Full screen version</description>
       <guid>/blog/dbi-1-halfway/</guid>
       <description>In early 2016 the R Consortium partially accepted my “Improving DBI” proposal. An important part is the design and implementation of a testable DBI specification. Initially I also proposed to make three DBI backends to open-source databases engines (RSQLite, RMySQL, and RPostgres) compatible to the new DBI specification, but funding allows to work on only one DBI backend. I chose RSQLite for a number of reasons:
  It is a very important package, judging by the number of reverse CRAN and Bioconductor dependencies It’s easy to work with, because everything (including the database engine) is bundled with the package It seemed to be the most advanced package, closest to the (yet to be completed) DBI specification An informal Twitter poll supports this decision by a tiny margin  The project has reached an important milestone, with the release of RSQLite 1.</description>
-    </item>
-    
-    <item>
-      <title></title>
-      <link>/blog/dbi-2-final/</link>
-      <pubDate>Mon, 01 Jan 0001 00:00:00 +0000</pubDate>
-      
-      <guid>/blog/dbi-2-final/</guid>
-      <description>+++
-author = “Kirill Müller”
-date = “2018-03-28”
-draft = true
-weight = 180
-title = “Done “Establishing DBI”!?”
-description = “Summary of the “Establishing DBI” project”
-+++
-The “Establishing DBI” project, funded by the R consortium, started about a year ago. It includes the completion of two new backends, RPostgres and RMariaDB, and a quite a few interface extensions and specifications. This blog post showcases only the visible changes, a substantial amount of work went into extending the DBI specification and making the three open-source database backends compliant to it.</description>
     </item>
     
   </channel>

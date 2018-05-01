@@ -1,17 +1,10 @@
 +++
-
 author = "Kirill Müller"
-
-date = "2018-03-28"
-
-draft = true
-
+date = "2018-04-30"
+draft = false
 weight = 180
-
 title = "Done “Establishing DBI”!?"
-
 description = "Summary of the “Establishing DBI” project"
-
 +++
 
 The "Establishing DBI" project, funded by the R consortium, started

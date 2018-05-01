@@ -165,6 +165,15 @@ $(&amp;rsquo;#my-nav&amp;rsquo;).on(&amp;lsquo;fixed.sticky&amp;rsquo;, function
     </item>
     
     <item>
+      <title>Done “Establishing DBI”!?</title>
+      <link>/blog/dbi-2-final/</link>
+      <pubDate>Mon, 30 Apr 2018 00:00:00 +0000</pubDate>
+      
+      <guid>/blog/dbi-2-final/</guid>
+      <description>The &amp;ldquo;Establishing DBI&amp;rdquo; project, funded by the R consortium, started about a year ago. It includes the completion of two new backends, RPostgres and RMariaDB, and a quite a few interface extensions and specifications. This blog post showcases only the visible changes, a substantial amount of work went into extending the DBI specification and making the three open-source database backends compliant to it. Learn more about DBI, R&amp;rsquo;s database interface, on https://r-dbi.</description>
+    </item>
+    
+    <item>
       <title>Connecting to open source databases</title>
       <link>/blog/rstudio-conf/</link>
       <pubDate>Fri, 02 Feb 2018 00:00:00 +0000</pubDate>
@@ -281,23 +290,6 @@ For example, import kube.scss into your master.scss styles file, which you will 
       <description>Group Combines float elements to group with a clearfix.
 This text is visibly floating left  This text looks like a case of right float   &amp;lt;div class=&amp;ldquo;group&amp;rdquo;&amp;gt; &amp;lt;div class=&amp;ldquo;float-left&amp;rdquo;&amp;gt;&amp;hellip;&amp;lt;/div&amp;gt; &amp;lt;div class=&amp;ldquo;float-right&amp;rdquo;&amp;gt;&amp;hellip;&amp;lt;/div&amp;gt; &amp;lt;/div&amp;gt;   Visibility Below is an invisible div with class invisible. You can&amp;rsquo;t see it, because it is invisible. You can&amp;rsquo;t see invisible things.
 invisible  But you can see this div because it has visible class.</description>
-    </item>
-    
-    <item>
-      <title></title>
-      <link>/blog/dbi-2-final/</link>
-      <pubDate>Mon, 01 Jan 0001 00:00:00 +0000</pubDate>
-      
-      <guid>/blog/dbi-2-final/</guid>
-      <description>+++
-author = “Kirill Müller”
-date = “2018-03-28”
-draft = true
-weight = 180
-title = “Done “Establishing DBI”!?”
-description = “Summary of the “Establishing DBI” project”
-+++
-The “Establishing DBI” project, funded by the R consortium, started about a year ago. It includes the completion of two new backends, RPostgres and RMariaDB, and a quite a few interface extensions and specifications. This blog post showcases only the visible changes, a substantial amount of work went into extending the DBI specification and making the three open-source database backends compliant to it.</description>
     </item>
     
   </channel>
