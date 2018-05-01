@@ -1,6 +1,6 @@
 +++
 author = "Kirill Müller"
-date = "2018-04-30"
+date = "2018-05-01"
 draft = false
 weight = 180
 title = "Done “Establishing DBI”!?"
@@ -10,10 +10,25 @@ description = "Summary of the “Establishing DBI” project"
 The "Establishing DBI" project, funded by the R consortium, started
 about a year ago. It includes the completion of two new backends,
 *RPostgres* and *RMariaDB*, and a quite a few interface extensions and
-specifications. This blog post showcases only the visible changes, a
-substantial amount of work went into extending the DBI specification and
-making the three open-source database backends compliant to it. Learn
-more about DBI, R's database interface, on <https://r-dbi.org>.
+specifications. Learn more about DBI, R's database interface, on
+<https://r-dbi.org>.
+
+This blog post showcases only the visible changes, a substantial amount
+of work went into extending the DBI specification and making the three
+open-source database backends compliant to it. After describing the
+release of the two new backends *RMariaDB* and *RPostgres*, I'll be
+discussing the following improvements:
+
+-   Consistent support for accessing tables in schemas
+-   Quoting literal values, in addition to strings and identifiers
+-   More fine-grained creation of tables
+-   Reading and writing 64-bit integers
+-   Reading geometry columns from a PostGIS database
+-   Handling of duplicate column names
+-   New helpers in *DBI*
+-   Reusing code across backends
+
+I conclude with an outlook on things left to do.
 
 Release of *RPostgres* and *RMariaDB*
 -------------------------------------
@@ -160,11 +175,11 @@ pasted into an SQL query:
 
     dbQuoteLiteral(mariadb_conn, Sys.time())
 
-    ## <SQL> '20180501012806'
+    ## <SQL> '20180501204025'
 
     dbQuoteLiteral(pg_conn, Sys.time())
 
-    ## <SQL> '2018-05-01 03:28:06'::timestamp
+    ## <SQL> '2018-05-01 22:40:25'::timestamp
 
 The default implementation works for ANSI SQL compliant DBMS, the method
 for *RPostgres* takes advantage of the `::` casting operator as seen in
