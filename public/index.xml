@@ -283,5 +283,22 @@ This text is visibly floating left  This text looks like a case of right float  
 invisible  But you can see this div because it has visible class.</description>
     </item>
     
+    <item>
+      <title></title>
+      <link>/blog/dbi-2-final/</link>
+      <pubDate>Mon, 01 Jan 0001 00:00:00 +0000</pubDate>
+      
+      <guid>/blog/dbi-2-final/</guid>
+      <description>+++
+author = “Kirill Müller”
+date = “2018-03-28”
+draft = true
+weight = 180
+title = “Done “Establishing DBI”!?”
+description = “Summary of the “Establishing DBI” project”
++++
+The “Establishing DBI” project, funded by the R consortium, started about a year ago. It includes the completion of two new backends, RPostgres and RMariaDB, and a quite a few interface extensions and specifications. This blog post showcases only the visible changes, a substantial amount of work went into extending the DBI specification and making the three open-source database backends compliant to it.</description>
+    </item>
+    
   </channel>
 </rss>
