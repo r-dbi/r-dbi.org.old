@@ -15,8 +15,8 @@ description = "Presentation at rstudio::conf, San Diego"
 ## Slides
 
 <div style="position:relative;padding-top:56.25%;">
-  <iframe src="https://goo.gl/8sJLLp" frameborder="0" allowfullscreen
+  <iframe src="https://krlmlr.github.io/dbi-slides/2018-02-san-diego-rstudio-conf" frameborder="0" allowfullscreen
     style="position:absolute;top:0;left:0;width:100%;height:100%;"></iframe>
 </div>
 
-<a href="https://goo.gl/8sJLLp" target="_blank">Full screen version</a>
+<a href="https://krlmlr.github.io/dbi-slides/2018-02-san-diego-rstudio-conf" target="_blank">Full screen version</a>
