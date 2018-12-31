@@ -165,6 +165,15 @@ $(&amp;rsquo;#my-nav&amp;rsquo;).on(&amp;lsquo;fixed.sticky&amp;rsquo;, function
     </item>
     
     <item>
+      <title>Maintaining DBI, 1/4</title>
+      <link>/blog/dbi-3-1/</link>
+      <pubDate>Mon, 31 Dec 2018 00:00:00 +0000</pubDate>
+      
+      <guid>/blog/dbi-3-1/</guid>
+      <description>Much earlier this year my proposal for the third R Consortium project for working on DBI has been accepted. DBI is a set of virtual functions declared in the DBI package. Communication with the database is implemented by DBI backends, packages that import DBI and implement its methods. A common interface is helpful for both users and backend implementers. Users, including package developers for DBMS-agnostic packages, need to memoize only one set of functions.</description>
+    </item>
+    
+    <item>
       <title>Done “Establishing DBI”!?</title>
       <link>/blog/dbi-2-final/</link>
       <pubDate>Tue, 01 May 2018 00:00:00 +0000</pubDate>
