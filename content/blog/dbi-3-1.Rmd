@@ -101,41 +101,33 @@ There are both "hard" and "soft" issues to solve, repeated below, with comments 
 ### "Hard" issues
 
 1. The test suite for the DBI specificaton in `DBItest` is currently designed to run as part of the package checks.  The next step is to support running the test suite against a particular R + DBMS installation, to ensure that code interoperating with that DBMS in that environment runs as expected.
-
     - Shouldn't be too hard, but need to keep the second "soft" issue in mind.
 
 1. Users expect the hard disk or the DBMS to be the limiting factor for loading data, but DBI still lacks a consistent interface for fast data import.
-
     - The new [_arkdb_ package](https://cran.r-project.org/package=arkdb) offers a dedicated interface for importing data, I still think this functionality should better live there (or elsewhere).
 
 1. The syntax for query placeholders currently depends on the DBMS.  A consistent interface would be useful, in particular for implementers of packages that compute on the database.
-
     - This has already caused some confusion.
         Shouldn't be too hard either, but requires a compatibility mode so that existing code doesn't break.
 
 1. The `RPostgres` package now has special handling for geometry data.  A generic extension to arbitrary data types via hooks would allow e.g. returning JSON data directly as a `"json"` class without user-initiated manual conversion.
-
     - This seems to be a bigger problem, requiring some thought and design.
 
 ### "Soft" issues
 
 1. Some users reported installation problems on specific architectures, or connectivity problems with certain databases, or other specific issues.  Making the new backends accessible for various combinations of OS/hardware, software, and configuration, will help the adoption of the new packages.
-
     - I remember seeing many SSL and timezone issues, as well as genuine bugs like the representation of times before 1970 on Windows.
         Expect some progress for the second blog post.
 
 1. The internal architecture of the DBI specification in `DBItest` requires a bit of reworking. Currently, it is difficult to understand a test failure without inspecting the source code of `DBItest`.  It is difficult to locate the source of a failure in the specification and in the code.  Ideally, each test failure would come with a precise link to the part of the specification that is violated, and with a simple sequence of DBI method calls that allow replicating the failure externally.
-
     - That code I wrote 1-2 years ago requires some attention...
 
 1. The communication related to the projects has been rather terse so far.  The new website https://r-dbi.org can host blog posts highlighting different aspects of DBI, and serve as a resource for advice on connecting R with databases and computing on the database.  This includes coordination and support for developments around DBI like _sqlr_, an interface for data definition statements on top of DBI.
-
     - Together with the new [Databases CRAN Task View](https://github.com/terrytangyuan/ctv-databases) maintained by Yuan (Terry) Tang and https://db.rstudio.com/, the https://r-dbi.org should become a viable resource for new and experienced users alike.
         New users should be directed to tutorials and introductory material, whereas experienced users should expect to find pointers to solve the most common problems.
         The role of each of these websites remains to be shaped, some overlap may be desired.
 
 1. All operations on DBI currently block until a result is available or the DBMS has indicated completion.  Asynchronous operations allow parallel processing of multiple queries or statements, however some research is necessary to understand to what extent this can be supported realistically in DBI and for the existing backends.
-
     - Additional arguments to `dbConnect()`, like the new `check_interrupts` argument [contributed to _RPostgres_ by Mateusz Żółtak](https://github.com/r-dbi/RPostgres/pull/193), are an option to experiment with asynchronous processing without disrupting existing code.
 
 These lists are not comprehensive, new issues may surface over time, or the importance of issues mentioned above may fade.
@@ -177,4 +169,4 @@ The remaining time will be spent on resolving known problems.
 
 Thanks to all contributors to _DBI_ and the other projects in the [r-dbi organization](https://github.com/r-dbi)!
 
-![DBI contributors](https://krlmlr.github.io/dbi-slides/2018-09-zurich-meetup/img/contributors.svg)
+![](https://krlmlr.github.io/dbi-slides/2018-09-zurich-meetup/img/contributors.svg)

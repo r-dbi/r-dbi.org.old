@@ -116,7 +116,7 @@ Much earlier this year my proposal for the third R Consortium project for workin
 
 
 
-<meta itemprop="wordCount" content="1729">
+<meta itemprop="wordCount" content="1727">
 
 
 
@@ -223,20 +223,20 @@ There are both “hard” and “soft” issues to solve, repeated below, with c
 <div id="hard-issues" class="section level3">
 <h3>“Hard” issues</h3>
 <ol style="list-style-type: decimal">
-<li><p>The test suite for the DBI specificaton in <code>DBItest</code> is currently designed to run as part of the package checks. The next step is to support running the test suite against a particular R + DBMS installation, to ensure that code interoperating with that DBMS in that environment runs as expected.</p>
+<li>The test suite for the DBI specificaton in <code>DBItest</code> is currently designed to run as part of the package checks. The next step is to support running the test suite against a particular R + DBMS installation, to ensure that code interoperating with that DBMS in that environment runs as expected.
 <ul>
 <li>Shouldn’t be too hard, but need to keep the second “soft” issue in mind.</li>
 </ul></li>
-<li><p>Users expect the hard disk or the DBMS to be the limiting factor for loading data, but DBI still lacks a consistent interface for fast data import.</p>
+<li>Users expect the hard disk or the DBMS to be the limiting factor for loading data, but DBI still lacks a consistent interface for fast data import.
 <ul>
 <li>The new <a href="https://cran.r-project.org/package=arkdb"><em>arkdb</em> package</a> offers a dedicated interface for importing data, I still think this functionality should better live there (or elsewhere).</li>
 </ul></li>
-<li><p>The syntax for query placeholders currently depends on the DBMS. A consistent interface would be useful, in particular for implementers of packages that compute on the database.</p>
+<li>The syntax for query placeholders currently depends on the DBMS. A consistent interface would be useful, in particular for implementers of packages that compute on the database.
 <ul>
 <li>This has already caused some confusion.
 Shouldn’t be too hard either, but requires a compatibility mode so that existing code doesn’t break.</li>
 </ul></li>
-<li><p>The <code>RPostgres</code> package now has special handling for geometry data. A generic extension to arbitrary data types via hooks would allow e.g. returning JSON data directly as a <code>&quot;json&quot;</code> class without user-initiated manual conversion.</p>
+<li>The <code>RPostgres</code> package now has special handling for geometry data. A generic extension to arbitrary data types via hooks would allow e.g. returning JSON data directly as a <code>&quot;json&quot;</code> class without user-initiated manual conversion.
 <ul>
 <li>This seems to be a bigger problem, requiring some thought and design.</li>
 </ul></li>
@@ -245,22 +245,22 @@ Shouldn’t be too hard either, but requires a compatibility mode so that existi
 <div id="soft-issues" class="section level3">
 <h3>“Soft” issues</h3>
 <ol style="list-style-type: decimal">
-<li><p>Some users reported installation problems on specific architectures, or connectivity problems with certain databases, or other specific issues. Making the new backends accessible for various combinations of OS/hardware, software, and configuration, will help the adoption of the new packages.</p>
+<li>Some users reported installation problems on specific architectures, or connectivity problems with certain databases, or other specific issues. Making the new backends accessible for various combinations of OS/hardware, software, and configuration, will help the adoption of the new packages.
 <ul>
 <li>I remember seeing many SSL and timezone issues, as well as genuine bugs like the representation of times before 1970 on Windows.
 Expect some progress for the second blog post.</li>
 </ul></li>
-<li><p>The internal architecture of the DBI specification in <code>DBItest</code> requires a bit of reworking. Currently, it is difficult to understand a test failure without inspecting the source code of <code>DBItest</code>. It is difficult to locate the source of a failure in the specification and in the code. Ideally, each test failure would come with a precise link to the part of the specification that is violated, and with a simple sequence of DBI method calls that allow replicating the failure externally.</p>
+<li>The internal architecture of the DBI specification in <code>DBItest</code> requires a bit of reworking. Currently, it is difficult to understand a test failure without inspecting the source code of <code>DBItest</code>. It is difficult to locate the source of a failure in the specification and in the code. Ideally, each test failure would come with a precise link to the part of the specification that is violated, and with a simple sequence of DBI method calls that allow replicating the failure externally.
 <ul>
 <li>That code I wrote 1-2 years ago requires some attention…</li>
 </ul></li>
-<li><p>The communication related to the projects has been rather terse so far. The new website <a href="https://r-dbi.org" class="uri">https://r-dbi.org</a> can host blog posts highlighting different aspects of DBI, and serve as a resource for advice on connecting R with databases and computing on the database. This includes coordination and support for developments around DBI like <em>sqlr</em>, an interface for data definition statements on top of DBI.</p>
+<li>The communication related to the projects has been rather terse so far. The new website <a href="https://r-dbi.org" class="uri">https://r-dbi.org</a> can host blog posts highlighting different aspects of DBI, and serve as a resource for advice on connecting R with databases and computing on the database. This includes coordination and support for developments around DBI like <em>sqlr</em>, an interface for data definition statements on top of DBI.
 <ul>
 <li>Together with the new <a href="https://github.com/terrytangyuan/ctv-databases">Databases CRAN Task View</a> maintained by Yuan (Terry) Tang and <a href="https://db.rstudio.com/" class="uri">https://db.rstudio.com/</a>, the <a href="https://r-dbi.org" class="uri">https://r-dbi.org</a> should become a viable resource for new and experienced users alike.
 New users should be directed to tutorials and introductory material, whereas experienced users should expect to find pointers to solve the most common problems.
 The role of each of these websites remains to be shaped, some overlap may be desired.</li>
 </ul></li>
-<li><p>All operations on DBI currently block until a result is available or the DBMS has indicated completion. Asynchronous operations allow parallel processing of multiple queries or statements, however some research is necessary to understand to what extent this can be supported realistically in DBI and for the existing backends.</p>
+<li>All operations on DBI currently block until a result is available or the DBMS has indicated completion. Asynchronous operations allow parallel processing of multiple queries or statements, however some research is necessary to understand to what extent this can be supported realistically in DBI and for the existing backends.
 <ul>
 <li>Additional arguments to <code>dbConnect()</code>, like the new <code>check_interrupts</code> argument <a href="https://github.com/r-dbi/RPostgres/pull/193">contributed to <em>RPostgres</em> by Mateusz Żółtak</a>, are an option to experiment with asynchronous processing without disrupting existing code.</li>
 </ul></li>
@@ -299,10 +299,7 @@ The remaining time will be spent on resolving known problems.</p>
 <div id="acknowledgments" class="section level2">
 <h2>Acknowledgments</h2>
 <p>Thanks to all contributors to <em>DBI</em> and the other projects in the <a href="https://github.com/r-dbi">r-dbi organization</a>!</p>
-<div class="figure">
-<img src="https://krlmlr.github.io/dbi-slides/2018-09-zurich-meetup/img/contributors.svg" alt="DBI contributors" />
-<p class="caption">DBI contributors</p>
-</div>
+<p><img src="https://krlmlr.github.io/dbi-slides/2018-09-zurich-meetup/img/contributors.svg" /></p>
 </div>
 
 
@@ -321,7 +318,7 @@ The remaining time will be spent on resolving known problems.</p>
   </time>
   
   
-  using <span itemprop="wordCount">1729</span> words.
+  using <span itemprop="wordCount">1727</span> words.
 </p>
 
         
