@@ -61,32 +61,5 @@ Slides   Full screen version</description>
  It is a very important package, judging by the number of reverse CRAN and Bioconductor dependencies It’s easy to work with, because everything (including the database engine) is bundled with the package It seemed to be the most advanced package, closest to the (yet to be completed) DBI specification An informal Twitter poll supports this decision by a tiny margin  The project has reached an important milestone, with the release of RSQLite 1.</description>
     </item>
     
-    <item>
-      <title></title>
-      <link>/blog/dbi-2-final/</link>
-      <pubDate>Mon, 01 Jan 0001 00:00:00 +0000</pubDate>
-      
-      <guid>/blog/dbi-2-final/</guid>
-      <description>+++
-author = “Kirill Müller”
-date = “2018-05-01”
-draft = false
-weight = 180
-title = “Done “Establishing DBI”!?&amp;quot;
-description = “Summary of the “Establishing DBI” project&amp;quot;
-+++
-The “Establishing DBI” project, funded by the R consortium, started about a year ago. It includes the completion of two new backends, RPostgres and RMariaDB, and a quite a few interface extensions and specifications. Learn more about DBI, R’s database interface, on https://r-dbi.</description>
-    </item>
-    
-    <item>
-      <title></title>
-      <link>/blog/dbi-3-1/</link>
-      <pubDate>Mon, 01 Jan 0001 00:00:00 +0000</pubDate>
-      
-      <guid>/blog/dbi-3-1/</guid>
-      <description>+++ author = “Kirill Müller” date = “2018-12-31” draft = false weight = 180 title = “Maintaining DBI, 1/4” description = “Summarizing the progress of 2018” +++
-Much earlier this year my proposal for the third R Consortium project for working on DBI has been accepted. DBI is a set of virtual functions declared in the DBI package. Communication with the database is implemented by DBI backends, packages that import DBI and implement its methods.</description>
-    </item>
-    
   </channel>
 </rss>
