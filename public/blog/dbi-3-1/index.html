@@ -6,9 +6,10 @@
   <meta charset="utf-8">
   <meta http-equiv="X-UA-Compatible" content="IE=edge">
   <meta name="viewport" content="width=device-width, initial-scale=1">
-  <title>  </title>
+  <title> Maintaining DBI, 1/4 </title>
 
   
+  <meta name="description" content="Summarizing the progress of 2018"> 
   
   
   
@@ -17,19 +18,19 @@
 
   
 
-  <meta name="author" content="DBI">
+  <meta name="author" content="Kirill Müller">
 
 
-  <meta property="og:title" content="" />
-<meta property="og:description" content="&#43;&#43;&#43; author = “Kirill Müller” date = “2018-12-31” draft = false weight = 180 title = “Maintaining DBI, 1/4” description = “Summarizing the progress of 2018” &#43;&#43;&#43;
-Much earlier this year my proposal for the third R Consortium project for working on DBI has been accepted. DBI is a set of virtual functions declared in the DBI package. Communication with the database is implemented by DBI backends, packages that import DBI and implement its methods." />
+  <meta property="og:title" content="Maintaining DBI, 1/4" />
+<meta property="og:description" content="Summarizing the progress of 2018" />
 <meta property="og:type" content="article" />
 <meta property="og:url" content="/blog/dbi-3-1/" />
 
 
 
+<meta property="article:published_time" content="2018-12-31T00:00:00&#43;00:00"/>
 
-
+<meta property="article:modified_time" content="2018-12-31T00:00:00&#43;00:00"/>
 
 
 
@@ -110,72 +111,102 @@ Much earlier this year my proposal for the third R Consortium project for workin
   <main>
 <div class="push-center" itemscope itemtype="http://schema.org/BlogPosting">
     
-<meta itemprop="name" content="">
-<meta itemprop="description" content="&#43;&#43;&#43; author = “Kirill Müller” date = “2018-12-31” draft = false weight = 180 title = “Maintaining DBI, 1/4” description = “Summarizing the progress of 2018” &#43;&#43;&#43;
-Much earlier this year my proposal for the third R Consortium project for working on DBI has been accepted. DBI is a set of virtual functions declared in the DBI package. Communication with the database is implemented by DBI backends, packages that import DBI and implement its methods.">
+<meta itemprop="name" content="Maintaining DBI, 1/4">
+<meta itemprop="description" content="Summarizing the progress of 2018">
 
 
-
-<meta itemprop="wordCount" content="1727">
+<meta itemprop="datePublished" content="2018-12-31T00:00:00&#43;00:00" />
+<meta itemprop="dateModified" content="2018-12-31T00:00:00&#43;00:00" />
+<meta itemprop="wordCount" content="1700">
 
 
 
 <meta itemprop="keywords" content="" />
 
 <div id="hero">
-    <h1 itemprop="headline">  </h1>
+    <h1 itemprop="headline">  Maintaining DBI, 1/4</h1>
     
+<blockquote itemprop="description">Summarizing the progress of 2018</blockquote>
+
 <time class="post-time"><span class="icon">
   <i class="fa fa-clock-o" aria-hidden="true"></i>
 </span>
-<span>9 minute read</span>
+<span>8 minute read</span>
 <span class="icon">
  <i class="fa fa-pencil" aria-hidden="true"></i>
 </span>
 
-  Published: <time datetime="0001-01-01T00:00:00&#43;00:00">1 Jan, 0001</time>
+  Published: <time datetime="2018-12-31T00:00:00&#43;00:00">31 Dec, 2018</time>
 
 </time>
 </div>
 <div id="post-box">
 <div id="post" itemprop="articleBody">
 
-    <p>+++
-author = “Kirill Müller”
-date = “2018-12-31”
-draft = false
-weight = 180
-title = “Maintaining DBI, 1/4”
-description = “Summarizing the progress of 2018”
-+++</p>
-<p>Much earlier this year my proposal for the third R Consortium project for working on DBI has been accepted.
-DBI is a set of virtual functions declared in the <em>DBI</em> package.
-Communication with the database is implemented by <em>DBI backends</em>, packages that import <em>DBI</em> and implement its methods.
-A common interface is helpful for both users and backend implementers.
-Users, including package developers for DBMS-agnostic packages, need to memoize only one set of functions.
-Backend developers can focus on functionality instead of design decisions, and can benefit from a large base of potential users right from the start.</p>
-<p>I’m grateful for the trust, and will do my best to make the “Maintaining DBI” project a success.
-For this round, the main goals are: maintain, enhance, disseminate.
-The project is delayed mostly becase I grossly underestimated how much time and energy it would take to set up <a href="http://cynkra.com">cynkra</a>.
-The new joint venture with Christoph Sax consults businesses and organizations on matters related to R, statistics, data, and software.
-We are strongly committed to R and open-source software, and more priority will be given the “Maintaining DBI” project next year.</p>
-<p>This blog post, much later than planned, summarizes the efforts of the past year: presentations at meetups, the “Core Infrastructure Initiative” badge, and activity in the various repositories of the <a href="https://github.com/r-dbi">r-dbi</a> GitHub organization.
-I’ll repeat the big picture issues from the proposal and present plans for future development.</p>
-<div id="presentations-at-meetups" class="section level2">
-<h2>Presentations at meetups</h2>
-<p>I presented DBI at the <a href="https://www.meetup.com/Berlin-R-Users-Group/">Berlin R user group</a>, at the <a href="https://amsterdam2018.satrdays.org/">amstRdays</a>, and at the <a href="https://zurich-r-user-group.github.io/index.html">Zurich R meetup</a>.
-The presentation in Berlin made me realize that a progress report isn’t that helpful for a general audience.
-The Zurich version of the presentation featured a DBI intro also suitable for new users, merely highlighting recent developments.
-<a href="https://bit.ly/2wFJix3">These slides</a>, and the <a href="https://db.rstudio.com/dbi/">intro at db.rstudio.com</a> seem to be the most recent general-purpose introduction materials available.
-I think an entry-level tutorial would be a good fit for a DBI vignette.</p>
-</div>
-<div id="cii-badge" class="section level2">
-<h2>CII badge</h2>
-<p>From <a href="https://bestpractices.coreinfrastructure.org/en" class="uri">https://bestpractices.coreinfrastructure.org/en</a>:</p>
+    
+
+<p>Much earlier this year my proposal for the third R Consortium project
+for working on DBI has been accepted. DBI is a set of virtual functions
+declared in the <em>DBI</em> package. Communication with the database is
+implemented by <em>DBI backends</em>, packages that import <em>DBI</em> and implement
+its methods. A common interface is helpful for both users and backend
+implementers. Users, including package developers for DBMS-agnostic
+packages, need to memoize only one set of functions. Backend developers
+can focus on functionality instead of design decisions, and can benefit
+from a large base of potential users right from the start.</p>
+
+<p>I&rsquo;m grateful for the trust, and will do my best to make the &ldquo;Maintaining
+DBI&rdquo; project a success. For this round, the main goals are: maintain,
+enhance, disseminate. The project is delayed mostly becase I grossly
+underestimated how much time and energy it would take to set up
+<a href="http://cynkra.com">cynkra</a>. The new joint venture with Christoph Sax
+consults businesses and organizations on matters related to R,
+statistics, data, and software. We are strongly committed to R and
+open-source software, and more priority will be given the &ldquo;Maintaining
+DBI&rdquo; project next year.</p>
+
+<p>This blog post, much later than planned, summarizes the efforts of the
+past year: presentations at meetups, the &ldquo;Core Infrastructure
+Initiative&rdquo; badge, and activity in the various repositories of the
+<a href="https://github.com/r-dbi">r-dbi</a> GitHub organization. I&rsquo;ll repeat the
+big picture issues from the proposal and present plans for future
+development.</p>
+
+<h2 id="presentations-at-meetups">Presentations at meetups</h2>
+
+<p>I presented DBI at the <a href="https://www.meetup.com/Berlin-R-Users-Group/">Berlin R user
+group</a>, at the
+<a href="https://amsterdam2018.satrdays.org/">amstRdays</a>, and at the <a href="https://zurich-r-user-group.github.io/index.html">Zurich R
+meetup</a>. The
+presentation in Berlin made me realize that a progress report isn&rsquo;t that
+helpful for a general audience. The Zurich version of the presentation
+featured a DBI intro also suitable for new users, merely highlighting
+recent developments. <a href="https://bit.ly/2wFJix3">These slides</a>, and the
+<a href="https://db.rstudio.com/dbi/">intro at db.rstudio.com</a> seem to be the
+most recent general-purpose introduction materials available. I think an
+entry-level tutorial would be a good fit for a DBI vignette.</p>
+
+<h2 id="cii-badge">CII badge</h2>
+
+<p>From
+<a href="https://bestpractices.coreinfrastructure.org/en" class="uri"><a href="https://bestpractices.coreinfrastructure.org/en">https://bestpractices.coreinfrastructure.org/en</a></a>:</p>
+
 <blockquote>
-<p>The Linux Foundation (LF) Core Infrastructure Initiative (CII) Best Practices badge is a way for Free/Libre and Open Source Software (FLOSS) projects to show that they follow best practices. Projects can voluntarily self-certify, at no cost, by using this web application to explain how they follow each best practice. The CII Best Practices Badge is inspired by the many badges available to projects on GitHub. Consumers of the badge can quickly assess which FLOSS projects are following best practices and as a result are more likely to produce higher-quality secure software.</p>
+<p>The Linux Foundation (LF) Core Infrastructure Initiative (CII) Best
+Practices badge is a way for Free/Libre and Open Source Software
+(FLOSS) projects to show that they follow best practices. Projects can
+voluntarily self-certify, at no cost, by using this web application to
+explain how they follow each best practice. The CII Best Practices
+Badge is inspired by the many badges available to projects on GitHub.
+Consumers of the badge can quickly assess which FLOSS projects are
+following best practices and as a result are more likely to produce
+higher-quality secure software.</p>
 </blockquote>
-<p>The CII badge can be obtained after a self-certification process that comprises ~70 soft and hard questions about the project around the following topics:</p>
+
+<p>The CII badge can be obtained after a self-certification process that
+comprises ~70 soft and hard questions about the project around the
+following topics:</p>
+
 <ul>
 <li>Basics: Project URLs, license, documentation</li>
 <li>Change Control: Version control and version numbers</li>
@@ -184,123 +215,249 @@ I think an entry-level tutorial would be a good fit for a DBI vignette.</p>
 <li>Security (software)</li>
 <li>Analysis (static and dynamic)</li>
 </ul>
-<p>After completing the process, projects are entitled to wear a badge like the one below for the DBI project:</p>
-<p><a href="https://bestpractices.coreinfrastructure.org/projects/1882"><img src="https://bestpractices.coreinfrastructure.org/projects/1882/badge" alt="CII Best Practices" /></a></p>
-<p>A click on the badge takes you to the detailed assessment.
-In addition to the badge, completing the self-certification allows the maintainer to rethink if workflows and practices can be improved.</p>
-<p>DBI is currently has the “passing” status, the backend packages and <em>DBItest</em> will follow.
-I have compiled the changes that were necessary to obtain that status below.
-It appears to be much more difficult but not impossible to obtain the “silver” status.</p>
-<div id="necessary-changes-to-the-dbi-package" class="section level3">
-<h3>Necessary changes to the DBI package</h3>
+
+<p>After completing the process, projects are entitled to wear a badge like
+the one below for the DBI project:</p>
+
+<p><a href="https://bestpractices.coreinfrastructure.org/projects/1882"><img src="https://bestpractices.coreinfrastructure.org/projects/1882/badge" alt="CII Best
+Practices" /></a></p>
+
+<p>A click on the badge takes you to the detailed assessment. In addition
+to the badge, completing the self-certification allows the maintainer to
+rethink if workflows and practices can be improved.</p>
+
+<p>DBI is currently has the &ldquo;passing&rdquo; status, the backend packages and
+<em>DBItest</em> will follow. I have compiled the changes that were necessary
+to obtain that status below. It appears to be much more difficult but
+not impossible to obtain the &ldquo;silver&rdquo; status.</p>
+
+<h3 id="necessary-changes-to-the-dbi-package">Necessary changes to the DBI package</h3>
+
 <p>Several files had to be added or updated:</p>
-<ol style="list-style-type: decimal">
-<li><a href="https://github.com/r-dbi/DBI/blob/master/.github/CONTRIBUTING.md"><code>CONTRIBUTING.md</code></a>: This file describes how to contribute to the project.
-A link to this file is available when you open a new issue.
-The function <code>usethis::use_tidy_contributing()</code> created the files which I tweaked a bit.</li>
-<li><a href="https://github.com/r-dbi/DBI/blob/master/LICENSE.md"><code>LICENSE.md</code></a>: The full license terms need to be available as part of the project.
-To create the file, I <a href="https://github.com/r-lib/usethis/pull/472">contributed</a> <code>usethis::use_lgpl_2.1_license()</code>.
-Because CRAN discourages redistribution of copies of standard license texts in packages, the file has been added to <code>.Rbuildignore</code>.
-This makes the file available in the GitHub repository, but not package file on CRAN.</li>
-<li><a href="https://github.com/r-dbi/DBI#readme"><code>README.md</code></a>: Added missing installation instructions.</li>
+
+<ol>
+<li><a href="https://github.com/r-dbi/DBI/blob/master/.github/CONTRIBUTING.md"><code>CONTRIBUTING.md</code></a>:
+This file describes how to contribute to the project. A link to this
+file is available when you open a new issue. The function
+<code>usethis::use_tidy_contributing()</code> created the files which I tweaked
+a bit.</li>
+<li><a href="https://github.com/r-dbi/DBI/blob/master/LICENSE.md"><code>LICENSE.md</code></a>:
+The full license terms need to be available as part of the project.
+To create the file, I
+<a href="https://github.com/r-lib/usethis/pull/472">contributed</a>
+<code>usethis::use_lgpl_2.1_license()</code>. Because CRAN discourages
+redistribution of copies of standard license texts in packages, the
+file has been added to <code>.Rbuildignore</code>. This makes the file
+available in the GitHub repository, but not package file on CRAN.</li>
+<li><a href="https://github.com/r-dbi/DBI#readme"><code>README.md</code></a>: Added missing
+installation instructions.</li>
 </ol>
+
 <p>Though not on the CII badge checklist, I also added:</p>
-<ol start="4" style="list-style-type: decimal">
-<li><p><a href="https://github.com/r-dbi/DBI/blob/master/.github/ISSUE_TEMPLATE.md"><code>ISSUE_TEMPLATE.md</code></a>: pre-populates the issue description when opening a new issue.
-This is a tweaked version of the file provided by <code>usethis::use_tidy_issue_template()</code>.</p></li>
-<li><p><a href="https://github.com/r-dbi/DBI/blob/master/.github/CODE_OF_CONDUCT.md"><code>CODE_OF_CONDUCT.md</code></a>: The default file as added by <code>usethis::use_code_of_conduct()</code>.</p></li>
+
+<ol>
+<li><p><a href="https://github.com/r-dbi/DBI/blob/master/.github/ISSUE_TEMPLATE.md"><code>ISSUE_TEMPLATE.md</code></a>:
+pre-populates the issue description when opening a new issue. This
+is a tweaked version of the file provided by
+<code>usethis::use_tidy_issue_template()</code>.</p></li>
+
+<li><p><a href="https://github.com/r-dbi/DBI/blob/master/.github/CODE_OF_CONDUCT.md"><code>CODE_OF_CONDUCT.md</code></a>:
+The default file as added by <code>usethis::use_code_of_conduct()</code>.</p></li>
 </ol>
-<p>One badge still had an HTTP image source, after changing it to HTTPS the criterion that the website needs to use TLS was satisfied.</p>
-<p>Establishing a process for reporting code vulnerabilities was perhaps the most challenging part.
-It seems unclear if it applies to R packages at all, in particular to an interface-only package such as DBI.
-The solution was to add a link with text to the project page <a href="https://dbi.r-dbi.org" class="uri">https://dbi.r-dbi.org</a>, asking to send an e-mail and await further instructions.</p>
-</div>
-</div>
-<div id="future-development" class="section level2">
-<h2>Future development</h2>
-<p>The principal roadmap for future development has been outlined in the project proposal.
-There are both “hard” and “soft” issues to solve, repeated below, with comments based on experience from the past year.</p>
-<div id="hard-issues" class="section level3">
-<h3>“Hard” issues</h3>
-<ol style="list-style-type: decimal">
-<li>The test suite for the DBI specificaton in <code>DBItest</code> is currently designed to run as part of the package checks. The next step is to support running the test suite against a particular R + DBMS installation, to ensure that code interoperating with that DBMS in that environment runs as expected.
+
+<p>One badge still had an HTTP image source, after changing it to HTTPS the
+criterion that the website needs to use TLS was satisfied.</p>
+
+<p>Establishing a process for reporting code vulnerabilities was perhaps
+the most challenging part. It seems unclear if it applies to R packages
+at all, in particular to an interface-only package such as DBI. The
+solution was to add a link with text to the project page
+<a href="https://dbi.r-dbi.org" class="uri"><a href="https://dbi.r-dbi.org">https://dbi.r-dbi.org</a></a>,
+asking to send an e-mail and await further instructions.</p>
+
+<h2 id="future-development">Future development</h2>
+
+<p>The principal roadmap for future development has been outlined in the
+project proposal. There are both &ldquo;hard&rdquo; and &ldquo;soft&rdquo; issues to solve,
+repeated below, with comments based on experience from the past year.</p>
+
+<h3 id="hard-issues">&ldquo;Hard&rdquo; issues</h3>
+
+<ol>
+<li><p>The test suite for the DBI specificaton in <code>DBItest</code> is currently
+designed to run as part of the package checks. The next step is to
+support running the test suite against a particular R + DBMS
+installation, to ensure that code interoperating with that DBMS in
+that environment runs as expected.</p>
+
 <ul>
-<li>Shouldn’t be too hard, but need to keep the second “soft” issue in mind.</li>
+<li>Shouldn&rsquo;t be too hard, but need to keep the second &ldquo;soft&rdquo; issue
+in mind.</li>
 </ul></li>
-<li>Users expect the hard disk or the DBMS to be the limiting factor for loading data, but DBI still lacks a consistent interface for fast data import.
+
+<li><p>Users expect the hard disk or the DBMS to be the limiting factor for
+loading data, but DBI still lacks a consistent interface for fast
+data import.</p>
+
 <ul>
-<li>The new <a href="https://cran.r-project.org/package=arkdb"><em>arkdb</em> package</a> offers a dedicated interface for importing data, I still think this functionality should better live there (or elsewhere).</li>
+<li>The new <a href="https://cran.r-project.org/package=arkdb"><em>arkdb</em>
+package</a> offers a
+dedicated interface for importing data, I still think this
+functionality should better live there (or elsewhere).</li>
 </ul></li>
-<li>The syntax for query placeholders currently depends on the DBMS. A consistent interface would be useful, in particular for implementers of packages that compute on the database.
+
+<li><p>The syntax for query placeholders currently depends on the DBMS. A
+consistent interface would be useful, in particular for implementers
+of packages that compute on the database.</p>
+
 <ul>
-<li>This has already caused some confusion.
-Shouldn’t be too hard either, but requires a compatibility mode so that existing code doesn’t break.</li>
+<li>This has already caused some confusion. Shouldn&rsquo;t be too hard
+either, but requires a compatibility mode so that existing code
+doesn&rsquo;t break.</li>
 </ul></li>
-<li>The <code>RPostgres</code> package now has special handling for geometry data. A generic extension to arbitrary data types via hooks would allow e.g. returning JSON data directly as a <code>&quot;json&quot;</code> class without user-initiated manual conversion.
+
+<li><p>The <code>RPostgres</code> package now has special handling for geometry data.
+A generic extension to arbitrary data types via hooks would allow
+e.g. returning JSON data directly as a <code>&quot;json&quot;</code> class without
+user-initiated manual conversion.</p>
+
 <ul>
-<li>This seems to be a bigger problem, requiring some thought and design.</li>
+<li>This seems to be a bigger problem, requiring some thought and
+design.</li>
 </ul></li>
 </ol>
-</div>
-<div id="soft-issues" class="section level3">
-<h3>“Soft” issues</h3>
-<ol style="list-style-type: decimal">
-<li>Some users reported installation problems on specific architectures, or connectivity problems with certain databases, or other specific issues. Making the new backends accessible for various combinations of OS/hardware, software, and configuration, will help the adoption of the new packages.
+
+<h3 id="soft-issues">&ldquo;Soft&rdquo; issues</h3>
+
+<ol>
+<li><p>Some users reported installation problems on specific architectures,
+or connectivity problems with certain databases, or other specific
+issues. Making the new backends accessible for various combinations
+of OS/hardware, software, and configuration, will help the adoption
+of the new packages.</p>
+
 <ul>
-<li>I remember seeing many SSL and timezone issues, as well as genuine bugs like the representation of times before 1970 on Windows.
-Expect some progress for the second blog post.</li>
+<li>I remember seeing many SSL and timezone issues, as well as
+genuine bugs like the representation of times before 1970 on
+Windows. Expect some progress for the second blog post.</li>
 </ul></li>
-<li>The internal architecture of the DBI specification in <code>DBItest</code> requires a bit of reworking. Currently, it is difficult to understand a test failure without inspecting the source code of <code>DBItest</code>. It is difficult to locate the source of a failure in the specification and in the code. Ideally, each test failure would come with a precise link to the part of the specification that is violated, and with a simple sequence of DBI method calls that allow replicating the failure externally.
+
+<li><p>The internal architecture of the DBI specification in <code>DBItest</code>
+requires a bit of reworking. Currently, it is difficult to
+understand a test failure without inspecting the source code of
+<code>DBItest</code>. It is difficult to locate the source of a failure in the
+specification and in the code. Ideally, each test failure would come
+with a precise link to the part of the specification that is
+violated, and with a simple sequence of DBI method calls that allow
+replicating the failure externally.</p>
+
 <ul>
-<li>That code I wrote 1-2 years ago requires some attention…</li>
+<li>That code I wrote 1-2 years ago requires some attention&hellip;</li>
 </ul></li>
-<li>The communication related to the projects has been rather terse so far. The new website <a href="https://r-dbi.org" class="uri">https://r-dbi.org</a> can host blog posts highlighting different aspects of DBI, and serve as a resource for advice on connecting R with databases and computing on the database. This includes coordination and support for developments around DBI like <em>sqlr</em>, an interface for data definition statements on top of DBI.
+
+<li><p>The communication related to the projects has been rather terse so
+far. The new website
+<a href="https://r-dbi.org" class="uri"><a href="https://r-dbi.org">https://r-dbi.org</a></a> can
+host blog posts highlighting different aspects of DBI, and serve as
+a resource for advice on connecting R with databases and computing
+on the database. This includes coordination and support for
+developments around DBI like <em>sqlr</em>, an interface for data
+definition statements on top of DBI.</p>
+
 <ul>
-<li>Together with the new <a href="https://github.com/terrytangyuan/ctv-databases">Databases CRAN Task View</a> maintained by Yuan (Terry) Tang and <a href="https://db.rstudio.com/" class="uri">https://db.rstudio.com/</a>, the <a href="https://r-dbi.org" class="uri">https://r-dbi.org</a> should become a viable resource for new and experienced users alike.
-New users should be directed to tutorials and introductory material, whereas experienced users should expect to find pointers to solve the most common problems.
-The role of each of these websites remains to be shaped, some overlap may be desired.</li>
+<li>Together with the new <a href="https://github.com/terrytangyuan/ctv-databases">Databases CRAN Task
+View</a> maintained
+by Yuan (Terry) Tang and
+<a href="https://db.rstudio.com/" class="uri"><a href="https://db.rstudio.com/">https://db.rstudio.com/</a></a>,
+the
+<a href="https://r-dbi.org" class="uri"><a href="https://r-dbi.org">https://r-dbi.org</a></a>
+should become a viable resource for new and experienced users
+alike. New users should be directed to tutorials and
+introductory material, whereas experienced users should expect
+to find pointers to solve the most common problems. The role of
+each of these websites remains to be shaped, some overlap may be
+desired.</li>
 </ul></li>
-<li>All operations on DBI currently block until a result is available or the DBMS has indicated completion. Asynchronous operations allow parallel processing of multiple queries or statements, however some research is necessary to understand to what extent this can be supported realistically in DBI and for the existing backends.
+
+<li><p>All operations on DBI currently block until a result is available or
+the DBMS has indicated completion. Asynchronous operations allow
+parallel processing of multiple queries or statements, however some
+research is necessary to understand to what extent this can be
+supported realistically in DBI and for the existing backends.</p>
+
 <ul>
-<li>Additional arguments to <code>dbConnect()</code>, like the new <code>check_interrupts</code> argument <a href="https://github.com/r-dbi/RPostgres/pull/193">contributed to <em>RPostgres</em> by Mateusz Żółtak</a>, are an option to experiment with asynchronous processing without disrupting existing code.</li>
+<li>Additional arguments to <code>dbConnect()</code>, like the new
+<code>check_interrupts</code> argument <a href="https://github.com/r-dbi/RPostgres/pull/193">contributed to <em>RPostgres</em> by
+Mateusz Żółtak</a>,
+are an option to experiment with asynchronous processing without
+disrupting existing code.</li>
 </ul></li>
 </ol>
-<p>These lists are not comprehensive, new issues may surface over time, or the importance of issues mentioned above may fade.</p>
-</div>
-</div>
-<div id="outlook-next-blog-post" class="section level2">
-<h2>Outlook: next blog post</h2>
-<p>The “Maintaining DBI” project is driven by blog posts.
-I promised four blog posts, describing the ongoing maintenance and development.
-Each blog post will get a corresponding GitHub project, like the project for <a href="https://github.com/orgs/r-dbi/projects/2">this</a> and for the <a href="https://github.com/orgs/r-dbi/projects/3">next</a> blog post.</p>
-<p>For the next iteration, I plan to improve documentation, do a release round for all packages, furnish more packages with a CII badge, review several new packages that build on top of <em>DBI</em>, and improve my responsiveness.</p>
-<p>A Walkthrough for first-time DBI users seems to be the highest priority, perhaps accompanied by an online course.
-Other documentation improvements mostly will address <a href="https://r-dbi.org" class="uri">https://r-dbi.org</a>.</p>
-<p>The following is an excerpt of changes in the forthcoming CRAN releases of the DBI packages:</p>
+
+<p>These lists are not comprehensive, new issues may surface over time, or
+the importance of issues mentioned above may fade.</p>
+
+<h2 id="outlook-next-blog-post">Outlook: next blog post</h2>
+
+<p>The &ldquo;Maintaining DBI&rdquo; project is driven by blog posts. I promised four
+blog posts, describing the ongoing maintenance and development. Each
+blog post will get a corresponding GitHub project, like the project for
+<a href="https://github.com/orgs/r-dbi/projects/2">this</a> and for the
+<a href="https://github.com/orgs/r-dbi/projects/3">next</a> blog post.</p>
+
+<p>For the next iteration, I plan to improve documentation, do a release
+round for all packages, furnish more packages with a CII badge, review
+several new packages that build on top of <em>DBI</em>, and improve my
+responsiveness.</p>
+
+<p>A Walkthrough for first-time DBI users seems to be the highest priority,
+perhaps accompanied by an online course. Other documentation
+improvements mostly will address
+<a href="https://r-dbi.org" class="uri"><a href="https://r-dbi.org">https://r-dbi.org</a></a>.</p>
+
+<p>The following is an excerpt of changes in the forthcoming CRAN releases
+of the DBI packages:</p>
+
 <ul>
 <li><em>RSQLite</em>: window functions!</li>
 <li><em>RMariaDB</em>: better handling for time zones</li>
 <li><em>DBItest</em>: minor improvements</li>
 </ul>
+
 <p>New packages worth reviewing include:</p>
+
 <ul>
-<li><a href="https://cran.r-project.org/package=arkdb"><em>arkdb</em></a>: Consistent (and fast?) import and export</li>
-<li><a href="https://cran.r-project.org/package=flobr"><em>flobr</em></a>: Converting files to blobs and back</li>
-<li><a href="https://github.com/nbenn/sqlr"><em>sqlr</em></a>: SQLAlchemy-like DSL for data definition, work in progress</li>
-<li><a href="https://cran.r-project.org/package=dbplot"><em>dbplot</em></a>: Plotting from the database</li>
+<li><a href="https://cran.r-project.org/package=arkdb"><em>arkdb</em></a>: Consistent (and
+fast?) import and export</li>
+<li><a href="https://cran.r-project.org/package=flobr"><em>flobr</em></a>: Converting
+files to blobs and back</li>
+<li><a href="https://github.com/nbenn/sqlr"><em>sqlr</em></a>: SQLAlchemy-like DSL for
+data definition, work in progress</li>
+<li><a href="https://cran.r-project.org/package=dbplot"><em>dbplot</em></a>: Plotting from
+the database</li>
 <li>and many others.</li>
 </ul>
-<p>Adding CII badges for the backend packages and <em>DBItest</em> will give a more consistent appearance of the entire project.</p>
-<p>As a New Year’s resolution, I pledge to do a better job as package maintainer for <em>DBI</em> and related packages.
-I reserved a few hours each Monday to respond to issues raised on GitHub and other channels (<a href="https://stackoverflow.com/">SO</a>, <a href="https://community.rstudio.com/">RStudio Community</a>, Twitter, and the somewhat underappreciated <a href="https://stat.ethz.ch/mailman/listinfo/r-sig-db">R-SIG-DB mailing list</a>).
-CI builds on Travis and AppVeyor also require occasional intervention.
-The remaining time will be spent on resolving known problems.</p>
-</div>
-<div id="acknowledgments" class="section level2">
-<h2>Acknowledgments</h2>
-<p>Thanks to all contributors to <em>DBI</em> and the other projects in the <a href="https://github.com/r-dbi">r-dbi organization</a>!</p>
-<p><img src="https://krlmlr.github.io/dbi-slides/2018-09-zurich-meetup/img/contributors.svg" /></p>
-</div>
+
+<p>Adding CII badges for the backend packages and <em>DBItest</em> will give a
+more consistent appearance of the entire project.</p>
+
+<p>As a New Year&rsquo;s resolution, I pledge to do a better job as package
+maintainer for <em>DBI</em> and related packages. I reserved a few hours each
+Monday to respond to issues raised on GitHub and other channels
+(<a href="https://stackoverflow.com/">SO</a>, <a href="https://community.rstudio.com/">RStudio
+Community</a>, Twitter, and the somewhat
+underappreciated <a href="https://stat.ethz.ch/mailman/listinfo/r-sig-db">R-SIG-DB mailing
+list</a>). CI builds on
+Travis and AppVeyor also require occasional intervention. The remaining
+time will be spent on resolving known problems.</p>
+
+<h2 id="acknowledgments">Acknowledgments</h2>
+
+<p>Thanks to all contributors to <em>DBI</em> and the other projects in the <a href="https://github.com/r-dbi">r-dbi
+organization</a>!</p>
+
+<p><img src="https://krlmlr.github.io/dbi-slides/2018-09-zurich-meetup/img/contributors.svg" alt="DBI
+contributors" /></p>
 
 
 </div>
@@ -310,15 +467,15 @@ The remaining time will be spent on resolving known problems.</p>
   Published
   
     
-      by <span itemprop="author">DBI</span>
+      by <span itemprop="author">Kirill Müller</span>
     
   
-  <time datetime="0001-01-01T00:00:00&#43;00:00">
-    1 Jan, 0001
+  <time datetime="2018-12-31T00:00:00&#43;00:00">
+    31 Dec, 2018
   </time>
   
   
-  using <span itemprop="wordCount">1727</span> words.
+  using <span itemprop="wordCount">1700</span> words.
 </p>
 
         
