@@ -1,0 +1,165 @@
+---
+output: 
+  md_document:
+    md_extensions: "-smart"
+---
+
++++
+author = "Kirill Müller"
+date = "2019-10-16"
+draft = true
+weight = 180
+title = "Maintaining DBI, 2/4"
+description = "Summarizing the progress of 2019"
++++
+
+
+# What is DBI?
+
+DBI is a package for connecting to database management systems (DBMS).
+The goal is a common interface no matter the specific underlying DBMS.
+Hence the name: DBI stands for **d**ata**b**ase **i**nterface.
+
+DBI works with a variety of DBMS, like Postgres, MariaDB, Sqlite... .
+Therefore, users can focus on the specifics of their project instead of setting up the infrastructure for data import and export.
+
+# DBI 1.1.0
+
+- To be released end 2019 or early 2020
+
+## Specification of `"immediate"` argument to `dbSendQuery()` and friends
+
+- Some queries can't be sent with a "prepared" statement, need a "direct query"
+    - internal workaround in {RMariaDB}
+    - phenomenon seen with SQL Server and {odbc} package
+
+- Not standardized, but similar behavior across different DBMS
+
+- Extending the DBI spec
+    - Add support for `immediate` argument
+    - Backward compatible default values
+    - Only rarely needed by the user
+
+- Already implemented in the {odbc} package
+
+### Examples
+
+```r
+library(DBI)
+con <- dbConnect(odbc::odbc(), dsn = "SQLServerConnection")
+
+# Isolate database updates:
+# Did not work before, the transaction was terminated immediately.
+dbExecute(con, "BEGIN TRANSACTION", immediate = TRUE)
+dbExecute(con, "COMMIT TRANSACTION", immediate = TRUE)
+
+# Create local temporary tables:
+# Did not work before, temporary table was removed immediately:
+dbExecute(con, "CREATE TABLE #temp (a integer)", immediate = TRUE)
+dbExecute(con, "INSERT INTO #temp VALUES (1)", immediate = TRUE)
+```
+
+## Driver can contain connection objects
+
+- Existing logic: create "driver object", call `dbConnect()` with connection arguments
+- New alternative: create "connector object" that is driver + connection arguments, call `dbConnect()` without additional arguments
+- Use cases
+    - Separate connection arguments from establishing connection
+    - Serialize connector to file to establish same connection later
+    - Maintain multiple connectors in a list for testing different DBMS
+- Arguments can be functions, useful for e.g. passwords
+- Implemented in {DBI}, works out of the box for all DBI backends
+
+```{r}
+library(DBI)
+
+# Old way:
+drv <- RSQLite::SQLite()
+con <- dbConnect(drv, dbname = ":memory:")
+dbDisconnect(con)
+
+# New connector object:
+cnr <- new("DBIConnector",
+  .drv = RSQLite::SQLite(),
+  .conn_args = list(dbname = ":memory:")
+)
+cnr
+con <- dbConnect(cnr)
+dbDisconnect(con)
+
+# Functions protect sensitive data:
+my_path <- function() ":memory:"
+cnr <- new("DBIConnector",
+  .drv = RSQLite::SQLite(),
+  .conn_args = list(dbname = my_path)
+)
+cnr
+con <- dbConnect(cnr)
+dbDisconnect(con)
+```
+
+
+# Implement Logging
+
+In spring, I implemented logging for DBI and published it as a package called [{DBIlog}](https://github.com/krlmlr/DBIlog).
+
+Especially when using applications in production, keeping logs is an invaluable part of a sound infrastructure.
+DBIlog helps with troubeshooting and auditing queries that access a database.
+The goal of DBIlog is to implement logging for arbitrary DBI backends, similarly to Perl’s DBI::Log.
+
+Also, DBIlog can be used with packages like {dplyr} and {dbplyr}.
+
+Oftentimes, DBI is used under the hood by other packages like [dplyr](), [dbplyr]() or [dm](). For example, functions like `dplyr::src_dbi()` or `dbplyr::src_dbi()` are working with underlying DBI operations. DBIlog works in these scenarios, too. 
+
+DBIlog is designed to be as simple as possible.
+All that needs to be done is initializing a logging driver with `LoggingDBI()` before connecting to a database management system.
+After that, all calls to DBI methods are logged and by default printed to the console, of course it can be redirected to an file as well.
+
+Keep in mind that the logging output is runnable R code.
+So you can just copy, paste and execute it, when debugging.
+
+# What else happend last year
+
+## Better handling of time zones in RMariaDB
+
+- striving for consistent handling across all backends
+- {odbc} has set an example
+
+## Efforts to standardize arguments
+
+- `con` vs. `conn` didn't work out
+- `param` vs. `params` in documentation
+
+## Maintenance work
+
+- RSQLite update with sqlite 3.29.0, introducing window functions
+
+```{r}
+library(tidyverse)
+library(dbplyr)
+
+tbl <- memdb_frame(a = rep(1:2, 5), b = 1:10)
+
+tbl %>% 
+  group_by(a) %>%
+  window_order(b) %>% 
+  mutate(c = cumsum(b)) %>% 
+  ungroup()
+```
+
+- Minor DBItest improvements
+
+## CII "best practices" badges for all repos
+
+- Impemented, FIXME: need to add to README
+
+## Update of all packages
+
+- Minor updates were necessary due to toolchain updates (compiler warnings)
+- DBI 1.1.0
+- {RSQLite}, {RMariaDB} and {RPostgres} follow suit, focusing on time zone handling
+
+# Links to existing DBI tutorials, outlook for our own?
+
+- https://master.bioconductor.org/help/course-materials/2006/rforbioinformatics/labs/thurs/DBI-howto.pdf
+- https://db.rstudio.com/dbi/
