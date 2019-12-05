@@ -157,7 +157,8 @@ tbl %>%
 
 - Minor updates were necessary due to toolchain updates (compiler warnings)
 - DBI 1.1.0
-- {RSQLite}, {RMariaDB} and {RPostgres} follow suit, focusing on time zone handling
+- {RSQLite}, {RMariaDB}, {RPostgres} and {DBItest} follow suit, focusing on time zone handling
+- {DBIlogging} (or other name) most likely in 2020 (new package)
 
 # Links to existing DBI tutorials, outlook for our own?
 
