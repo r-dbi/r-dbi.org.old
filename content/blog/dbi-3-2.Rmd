@@ -29,6 +29,8 @@ The DBI package is perfect for anyone looking to connect to a database, read/wri
 
 The current version of DBI is 1.0.0, with DBI 1.1.0 slated to be released in late 2019 or early 2020.
 
+- DBI 1.1.0 will be released just before this blog post.
+
 ## What's new with DBI?
 
 ### Specification of `immediate` argument to `dbSendQuery()` and friends
@@ -36,6 +38,8 @@ The current version of DBI is 1.0.0, with DBI 1.1.0 slated to be released in lat
 It's been noted that in MariaDB and SQL Server (when accessed through {odbc}), some statements cannot be executed as prepared statements. Because DBI has historically used a prepared statement or query for everything, the `immediate` argument has been introduced, creating a direct query and thereby giving the user more control.  
 
 While the user may not need this feature often, it is important to note that it is backward compatible with default values and has already been implemented in the {odbc} package.
+
+- Implementation in RMariaDB and RPostgres follows.
 
 **Examples using `immediate`**
 
@@ -49,7 +53,7 @@ dbExecute(con, "BEGIN TRANSACTION", immediate = TRUE)
 dbExecute(con, "COMMIT TRANSACTION", immediate = TRUE)
 
 # Create local temporary tables:
-# Did not work before, temporary table was removed immediately:
+# Did not work before, temporary table was removed immediately.
 dbExecute(con, "CREATE TABLE #temp (a integer)", immediate = TRUE)
 dbExecute(con, "INSERT INTO #temp VALUES (1)", immediate = TRUE)
 ```
@@ -58,17 +62,21 @@ dbExecute(con, "INSERT INTO #temp VALUES (1)", immediate = TRUE)
 
 The existing method in DBI has been to create the driver object and then call `dbConnect()` with the connection arguments. However there are times when a user may need to do the following:  
 
-- Separate connection arguments from establishing a connection
-- Serialize the connector to file in order to establish the same connection later
-- Maintain multiple connectors in a list for testing different DBMS
+* Separate connection arguments from establishing a connection
+* Serialize the connector to file in order to establish the same connection later
+* Maintain multiple connectors in a list for testing different DBMS
 
 In order to address these use cases, users now have the ability to create a "connector object" that combines the driver and connection arguments, allowing the user to call `dbConnect()` without additional arguments. This feature is both implemented in {DBI} and works out of the box for all DBI backends.  
 
-In addition, arguments can be functions, a useful feature for passwords.  
+In addition, arguments can be functions, a useful feature for passwords.
+
+- ... and other sensitive connection data
 
 **Examples of the driver containing connection objects**
 
-```{r eval = FALSE}
+- split this code chunk and insert clarifying text inbetween?
+
+```{r}
 library(DBI)
 
 # Old way:
@@ -89,7 +97,7 @@ dbDisconnect(con)
 my_path <- function() ":memory:"
 cnr <- new("DBIConnector",
   .drv = RSQLite::SQLite(),
-  .conn_args = list(dbname = my_path)
+  .conn_args = list(dbname = function() my_path())
 )
 cnr
 con <- dbConnect(cnr)
@@ -105,7 +113,14 @@ When using applications in production, keeping logs is an invaluable part of a s
 
 {DBIlog} is straightforward in its use, and starts by initializing a logging driver using `LoggingDBI()` prior to connecting to a database management system. Following the initiation of a logging driver, all calls to DBI methods are logged and by default printed to the console (or redirected to a file). The entirety of the logging output is runnable R code, so users can copy, paste, and execute the logging code as part of the debugging process.
 
-Oftentimes DBI is used under the hood by other packages like [dplyr](https://dplyr.tidyverse.org/), [dbplyr](https://dbplyr.tidyverse.org/) or [dm](). For example, because functions like `dplyr::src_dbi()` or `dbplyr::src_dbi()` work with underlying DBI operations, {DBIlog} will also work in these scenarios. 
+Oftentimes DBI is used under the hood by other packages like [dbplyr](https://dbplyr.tidyverse.org/) or [tidypredict](https://tidymodels.github.io/tidypredict/).
+For example, because functions like `dplyr::src_dbi()` work with underlying DBI operations, {DBIlog} will also work in these scenarios. 
+
+- Can we do one line per sentence, please?
+
+- I'll rename the package to {dblog}.
+
+- Can you use/adapt a few examples from the dblog README?
 
 
 ## Other notable additions from 2019
@@ -114,21 +129,24 @@ Oftentimes DBI is used under the hood by other packages like [dplyr](https://dpl
 
 {odbc} has set an example for how to handle time zones in RMariaDB, and DBI is also striving for consistent time zone handling across all backends.
 
-### Efforts to standardize arguments
+- Why is this a problem? How does {odbc} solve it?
 
-Unfortunately `con` vs. `conn` didn't work out, however `param` vs. `params` has been added to the documentation.
+### Maintenance updates
 
-### Maintenance uppdates
+- Can you please expand on the bullet points below?
 
-- Minor DBItest improvements
+- Minor DBItest improvements (see NEWS.md)
+
 - RSQLite update with sqlite 3.29.0, introducing window functions
 
 **Example using window functions**
 
-```{r eval = FALSE}
+```{r message = FALSE, results = "hide"}
 library(tidyverse)
 library(dbplyr)
+```
 
+```{r}
 tbl <- memdb_frame(a = rep(1:2, 5), b = 1:10)
 
 tbl %>% 
@@ -146,7 +164,7 @@ tbl %>%
 ### Update of all packages
 
 - Minor updates were necessary due to toolchain updates (compiler warnings)
-- DBI 1.1.0
+- DBI 1.1.0 along with this blog post
 - {RSQLite}, {RMariaDB}, {RPostgres} and {DBItest} follow suit, with a focus on standardizing time zone handling
 - A new package, likely named {DBIlogging}, will be released in 2020 
 
