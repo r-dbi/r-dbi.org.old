@@ -21,21 +21,26 @@ output: html_document
 
 ## What is DBI?
 
-DBI stands for **d**ata**b**ase **i**nterface, and DBI is a package for connecting to database management systems (DBMS). The goal of DBI is to provide a common interface for accessing a database, regardless of the specific underlying DBMS.
+DBI stands for **d**ata**b**ase **i**nterface, and DBI is a package for connecting to database management systems (DBMS).
+The goal of DBI is to provide a common interface for accessing a database, regardless of the specific underlying DBMS.
 
 DBI works with a variety of DBMS, such as Postgres, MariaDB, and SQLite, allowing users to focus on the specifics of their project instead of setting up the infrastructure for data import and export.
 
-The DBI package is perfect for anyone looking to connect to a database, read/write entire tables, and/or execute SQL queries. DBI offers more control to the user than packages such as [{dbplyr}](https://dbplyr.tidyverse.org/).
+The DBI package is perfect for anyone looking to connect to a database, read/write entire tables, and/or execute SQL queries.
+DBI offers more control to the user than packages such as [{dbplyr}](https://dbplyr.tidyverse.org/).
 
-The current version of DBI is 1.1.0, which was released in December of 2019.  
+The current version of DBI is 1.1.0, which was released in December of 2019.
 
 ## What's new with DBI?
 
 ### Specification of `immediate` argument to `dbSendQuery()` and friends
 
-It's been noted that in MariaDB and SQL Server (when accessed through {odbc}), some statements cannot be executed as prepared statements. Because DBI has historically used a prepared statement or query for everything, the `immediate` argument has been introduced, creating a direct query and thereby giving the user more control.  
+It's been noted that in MariaDB and SQL Server (when accessed through {odbc}), some statements cannot be executed as prepared statements.
+Because DBI has historically used a prepared statement or query for everything, the `immediate` argument has been introduced, creating a direct query and thereby giving the user more control.
 
-While the user may not need this feature often, it is important to note that it is backward compatible with default values and has already been implemented in the {odbc} package. Plans to implement this feature in both RMariaDB and RPostgres are underway.
+
+While the user may not need this feature often, it is important to note that it is backward compatible with default values and has already been implemented in the {odbc} package.
+Plans to implement this feature in both RMariaDB and RPostgres are underway.
 
 **Examples using `immediate`**
 ```{r}
@@ -55,13 +60,15 @@ dbExecute(con, "INSERT INTO #temp VALUES (1)", immediate = TRUE)
 
 ### Driver can contain connection objects
 
-The existing method in DBI has been to create the driver object and then call `dbConnect()` with the connection arguments. However there are times when a user may need to do the following:  
+The existing method in DBI has been to create the driver object and then call `dbConnect()` with the connection arguments.
+However there are times when a user may need to do the following:  
 
 * Separate connection arguments from establishing a connection
 * Serialize the connector to file in order to establish the same connection later
 * Maintain multiple connectors in a list for testing different DBMS
 
-In order to address these use cases, users now have the ability to create a "connector object" that combines the driver and connection arguments, allowing the user to call `dbConnect()` without additional arguments. This feature is both implemented in {DBI} and works out of the box for all DBI backends. 
+In order to address these use cases, users now have the ability to create a "connector object" that combines the driver and connection arguments, allowing the user to call `dbConnect()` without additional arguments.
+This feature is both implemented in {DBI} and works out of the box for all DBI backends.
 
 **Example of the new connector object**
 
@@ -84,7 +91,7 @@ dbDisconnect(con)
 ```
 
 
-In addition, arguments can be functions, a useful feature for passwords and other sensitive connection data.  
+In addition, arguments can be functions, a useful feature for passwords and other sensitive connection data.
 
 **Example of using a function as an argument**
 
@@ -105,11 +112,19 @@ dbDisconnect(con)
 
 ### Implementation of logging via the `dblog` package
 
-When using applications in production, keeping logs is an invaluable part of a sound infrastructure. As such, in spring 2019 I implemented logging for DBI and published it as a package called [{dblog}](https://github.com/krlmlr/DBIlog). {dblog} is designed to be as simple as possible, and can be used as a standalone package or in conjunction with packages like {dplyr} and {dbplyr}.  
+When using applications in production, keeping logs is an invaluable part of a sound infrastructure.
+As such, in spring 2019 I implemented logging for DBI and published it as a package called [{dblog}](https://github.com/krlmlr/DBIlog).
+{dblog} is designed to be as simple as possible, and can be used as a standalone package or in conjunction with packages like {dplyr} and {dbplyr}.
 
-{dblog} helps both with troubleshooting as well as auditing the queries that that are used to access a database. Similar to Perl's DBI::log, the goal of {dblog} is to implement logging for arbitrary DBI backends.  
 
-{dblog} is straightforward in its use, and starts by initializing a logging driver using `LoggingDBI()` prior to connecting to a database management system. Following the initiation of a logging driver, all calls to DBI methods are logged and by default printed to the console (or redirected to a file). The entirety of the logging output is runnable R code, so users can copy, paste, and execute the logging code as part of the debugging process.  
+{dblog} helps both with troubleshooting as well as auditing the queries that that are used to access a database.
+Similar to Perl's DBI::log, the goal of {dblog} is to implement logging for arbitrary DBI backends.
+
+
+{dblog} is straightforward in its use, and starts by initializing a logging driver using `LoggingDBI()` prior to connecting to a database management system.
+Following the initiation of a logging driver, all calls to DBI methods are logged and by default printed to the console (or redirected to a file).
+The entirety of the logging output is runnable R code, so users can copy, paste, and execute the logging code as part of the debugging process.
+
 
 **Using `LoggingDBI()` to connect to an RSQLite DBMS**  
 ```{r}
@@ -149,28 +164,32 @@ data
 #> 3          4.7         3.2          1.3         0.2  setosa
 ```
 
-Oftentimes DBI is used under the hood by other packages like [dbplyr](https://dbplyr.tidyverse.org/) or [tidypredict](https://tidymodels.github.io/tidypredict/).  
+Oftentimes DBI is used under the hood by other packages like [dbplyr](https://dbplyr.tidyverse.org/) or [tidypredict](https://tidymodels.github.io/tidypredict/).
 
-For example, because functions like `dplyr::src_dbi()` work with underlying DBI operations, {dblog} will also work in these scenarios.  
+For example, because functions like `dplyr::src_dbi()` work with underlying DBI operations, {dblog} will also work in these scenarios.
 
 ## Other notable additions from 2019
 
 ### Better handling of time zones in RMariaDB
 
-Time zones are used to convert between _absolute_ time and _civil_ time, where _absolute_ time exists independent of human-created measures such as calendars, days, and dates, whereas _civil_ time is comprised of years, months, days, hours, minutes, and seconds (for a more in-depth reading on absolute time, civil time, and time zones, please read this excerpt from the [ODBC README](https://github.com/r-dbi/odbc/blob/7b35549f9df935e1d132f6221860f87a6eb64ef6/src/cctz/README.md)).    
+Time zones are used to convert between _absolute_ time and _civil_ time, where _absolute_ time exists independent of human-created measures such as calendars, days, and dates, whereas _civil_ time is comprised of years, months, days, hours, minutes, and seconds (for a more in-depth reading on absolute time, civil time, and time zones, please read this excerpt from the [ODBC README](https://github.com/r-dbi/odbc/blob/7b35549f9df935e1d132f6221860f87a6eb64ef6/src/cctz/README.md)).
 
-In programming languages, it it important to create libraries that can accurately handle time zones. {odbc} has set an example for how to handle time zones through the inclusion of `timezone` and `timezone_out` arguments to `dbConnect()`, which solves time zone calculation errors in RMariaDB. DBI will be moving towards a similar, more consistent handling of time zones across all backends.  
+
+In programming languages, it it important to create libraries that can accurately handle time zones.
+{odbc} has set an example for how to handle time zones through the inclusion of `timezone` and `timezone_out` arguments to `dbConnect()`, which solves time zone calculation errors in RMariaDB.
+DBI will be moving towards a similar, more consistent handling of time zones across all backends.
+
 
 - Why is this a problem? How does {odbc} solve it?
 - JMM: I pulled the above text from the linked README, [this GH issue](https://github.com/r-dbi/RMariaDB/issues/93), and `odbc` docs - let me know where to correct.
 
 ### Maintenance updates
 
-Two maintenance updates, one involving DBItest and the other RSQLite, have been implemented.  
+Two maintenance updates, one involving DBItest and the other RSQLite, have been implemented.
 
-To improve DBItest, `dbQuoteString()` and `dbQuoteIdentifier()` have been fixed so that they now ignore invalid UTF-8 strings.   
+To improve DBItest, `dbQuoteString()` and `dbQuoteIdentifier()` have been fixed so that they now ignore invalid UTF-8 strings.
 
-RSQLite has been updated to comply with sqlite 3.29.0, which has introduced the ability to use window functions.  
+RSQLite has been updated to comply with sqlite 3.29.0, which has introduced the ability to use window functions.
 
 **Example using window functions**
 
@@ -192,16 +211,18 @@ tbl %>%
 
 ### CII "best practices" badges for all repos
 
-CII "best practices" badges have been implemented for all repos, however FIXME still needs to be added to the README.  
+CII "best practices" badges have been implemented for all repos, however FIXME still needs to be added to the README.
 
 ### Update of all packages
 
-An updated version of DBI, DBI 1.1.0, has been released in conjunction with this blog post. {RSQLite}, {RMariaDB}, {RPostgres} and {DBItest} will follow suit, with a focus on standardizing time zone handling.  
+An updated version of DBI, DBI 1.1.0, has been released in conjunction with this blog post.
+{RSQLite}, {RMariaDB}, {RPostgres} and {DBItest} will follow suit, with a focus on standardizing time zone handling.
 
-Due to compiler warnings releated to toolchain updates, minor updates were necessary.    
+Due to compiler warnings releated to toolchain updates, minor updates were necessary.
 
-A new package, tentatively named {DBIlogging}, will be released in 2020.  
+A new package, tentatively named {dblog}, will be released in 2020.
 
 ## DBI tutorials
 
-There are currently two recommended DBI tutorials available, one offered from [Bioconductor](https://master.bioconductor.org/help/course-materials/2006/rforbioinformatics/labs/thurs/DBI-howto.pdf) and another from [RStudio](https://db.rstudio.com/dbi/). In addition to these tutorials, I anticipate releasing a DBI tutorial in 2020.  
+There are currently two recommended DBI tutorials available, one offered from [Bioconductor](https://master.bioconductor.org/help/course-materials/2006/rforbioinformatics/labs/thurs/DBI-howto.pdf) and another from [RStudio](https://db.rstudio.com/dbi/).
+In addition to these tutorials, I anticipate releasing a DBI tutorial in 2020.
