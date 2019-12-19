@@ -6,7 +6,7 @@
     <description>Recent content in Blogs on DBI for R</description>
     <generator>Hugo -- gohugo.io</generator>
     <language>en-us</language>
-    <lastBuildDate>Sat, 19 Oct 2019 00:00:00 +0000</lastBuildDate>
+    <lastBuildDate>Thu, 19 Dec 2019 00:00:00 +0000</lastBuildDate>
     
 	<atom:link href="/blog/index.xml" rel="self" type="application/rss+xml" />
     
@@ -14,7 +14,7 @@
     <item>
       <title>Maintaining DBI, 2/4</title>
       <link>/blog/dbi-3-2/</link>
-      <pubDate>Sat, 19 Oct 2019 00:00:00 +0000</pubDate>
+      <pubDate>Thu, 19 Dec 2019 00:00:00 +0000</pubDate>
       
       <guid>/blog/dbi-3-2/</guid>
       <description>What is DBI? DBI stands for database interface, and DBI is a package for connecting to database management systems (DBMS). The goal of DBI is to provide a common interface for accessing a database, regardless of the specific underlying DBMS.
