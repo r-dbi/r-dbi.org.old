@@ -8,16 +8,10 @@ description: "Summarizing the progress of 2019"
 output:
   md_document:
     md_extensions: "-smart"
+    includes:
+      before_body:
+        dbi-3-2.toml
 ---
-
-+++
-author = "Kirill Müller"
-date = "2019-10-16"
-draft = true
-weight = 180
-title = "Maintaining DBI, 2/4"
-description = "Summarizing the progress of 2019"
-+++
 
 
 ## What is DBI?
