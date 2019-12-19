@@ -126,6 +126,7 @@ The entirety of the logging output is runnable R code, so users can copy, paste,
 library(dblog)
 
 drv <- dblog(RSQLite::SQLite())
+#> drv1 <- RSQLite::SQLite()
 ```
 
 ### All calls to DBI methods are logged, by default to the console
@@ -166,7 +167,7 @@ The log will represent the DBI operations issued, which allows for a better unde
 DBItest (on CRAN in version 1.7.0) is currently geared towards usage as part of a package's test suite.
 With some effort it is possible to test a database backend against a custom database.
 This can help verify that your database installation gives expected results when accessed with DBI with specific connection arguments.
-The [DBItest article](https://dbitest.r-dbi.org/articles/dbitest#external-testing) contains a section that describes how to achieve this, including a primer on using {dblog} to understand the cause of test failures.
+The [DBItest article](https://dbitest.r-dbi.org/articles/dbitest#external-testing) contains a new section that describes how to achieve this, including a primer on using {dblog} to understand the cause of test failures.
 
 
 ## A list of DBI backends
@@ -180,7 +181,7 @@ The list is available in the README, and as a static web API for programmatic pr
 Time zones are used to convert between _absolute_ time and _civil_ time, where absolute time exists independent of human-created measures such as calendars, days, and dates, whereas civil time is comprised of years, months, days, hours, minutes, and seconds.
 For a more in-depth reading on absolute time, civil time, and time zones, please read this excerpt from the [ODBC README](https://github.com/r-dbi/odbc/blob/7b35549f9df935e1d132f6221860f87a6eb64ef6/src/cctz/README.md).
 
-In programming languages, it it important to create libraries that can accurately handle time zones.
+For programming and data analysis, accurate handling time zones is crucial.
 {odbc} has set an example for how to handle time zones through the inclusion of `timezone` and `timezone_out` arguments to `dbConnect()`.
 The `timezone` argument controls the server time zone, which may be different from UTC.
 The `timezone_out` argument specifies the time zone to use for displaying times.
@@ -214,8 +215,8 @@ tbl %>%
 
 ## CII "best practices" badges for all repos
 
-CII "best practices" badges have been implemented for {DBItest}, {RMariaDB}, {RPostgres} and {RSQLite}.
-The {DBItest} repository has a brand-new badge, for the other repositories the badges will be added when they are released to CRAN.
+CII "best practices" have been implemented for {DBItest}, {RMariaDB}, {RPostgres} and {RSQLite}.
+The {DBItest} repository has a brand-new badge, the badges for the other repositories will follow suit.
 
 
 ## Package updates
@@ -251,12 +252,6 @@ The desired state of computing infrastructure is specified in a declarative way.
 This allows testing a much broader variety of databases and configurations, without maintaining expensive infrastructure: databases can be spun up when needed and torn down when done.
 
 It would be helpful to have a selection of open-source and commercial databases in different configuration settings ready for testing.
-
-
-### Package updates
-
-{RSQLite}, {RMariaDB}, {RPostgres} will follow suit.
-{dblog} will be released in 2020.
 
 
 ### Query cancellation
