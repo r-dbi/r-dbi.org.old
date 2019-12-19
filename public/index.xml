@@ -165,6 +165,16 @@ $(&amp;rsquo;#my-nav&amp;rsquo;).on(&amp;lsquo;fixed.sticky&amp;rsquo;, function
     </item>
     
     <item>
+      <title>Maintaining DBI, 2/4</title>
+      <link>/blog/dbi-3-2/</link>
+      <pubDate>Sat, 19 Oct 2019 00:00:00 +0000</pubDate>
+      
+      <guid>/blog/dbi-3-2/</guid>
+      <description>What is DBI? DBI stands for database interface, and DBI is a package for connecting to database management systems (DBMS). The goal of DBI is to provide a common interface for accessing a database, regardless of the specific underlying DBMS.
+DBI works with a variety of DBMS, such as Postgres, MariaDB, and SQLite, allowing users to focus on the specifics of their project instead of setting up the infrastructure for data import and export.</description>
+    </item>
+    
+    <item>
       <title>Maintaining DBI, 1/4</title>
       <link>/blog/dbi-3-1/</link>
       <pubDate>Mon, 31 Dec 2018 00:00:00 +0000</pubDate>

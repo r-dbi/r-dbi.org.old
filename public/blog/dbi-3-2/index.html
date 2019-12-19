@@ -1,0 +1,521 @@
+<!DOCTYPE html>
+<html lang="en-us">
+
+<head>
+  <meta name="generator" content="Hugo 0.39" />
+  <meta charset="utf-8">
+  <meta http-equiv="X-UA-Compatible" content="IE=edge">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <title> Maintaining DBI, 2/4 </title>
+
+  
+  <meta name="description" content="Summarizing the progress of 2019"> 
+  
+  
+  
+  
+  
+
+  
+
+  <meta name="author" content="Kirill Müller">
+
+
+  <meta property="og:title" content="Maintaining DBI, 2/4" />
+<meta property="og:description" content="Summarizing the progress of 2019" />
+<meta property="og:type" content="article" />
+<meta property="og:url" content="/blog/dbi-3-2/" />
+
+
+
+<meta property="article:published_time" content="2019-10-19T00:00:00&#43;00:00"/>
+
+<meta property="article:modified_time" content="2019-10-19T00:00:00&#43;00:00"/>
+
+
+
+
+
+
+
+
+
+
+
+  
+
+
+
+
+  
+  
+  
+  
+  
+
+  <link rel="canonical" href="/blog/dbi-3-2/">  
+
+  
+<link rel="apple-touch-icon" sizes="180x180" href="/apple-touch-icon.png">
+<link rel="icon" type="image/png" sizes="32x32" href="/favicon-32x32.png">
+<link rel="icon" type="image/png" sizes="16x16" href="/favicon-16x16.png">
+<link rel="manifest" href="/site.webmanifest">
+<link rel="mask-icon" href="/safari-pinned-tab.svg" color="#5bbad5">
+<meta name="msapplication-TileColor" content="#da532c">
+<meta name="theme-color" content="#ffffff">
+
+
+  <link href="/css/font.css" rel="stylesheet" type="text/css">
+  <link href="/css/kube.min.css" rel="stylesheet" type="text/css">
+  <link href="/css/kube.legenda.css" rel="stylesheet" type="text/css">
+  <link href="/css/highlight.css" rel="stylesheet" type="text/css">
+  <link href="/css/master.css" rel="stylesheet" type="text/css">
+  <link href="/css/kube.demo.css" rel="stylesheet" type="text/css">
+
+ <link href="/css/custom.css" rel="stylesheet" type="text/css">
+
+  <script src="/js/jquery-2.1.4.min.js" type="text/javascript">
+  </script>
+
+  <script type="text/javascript" src="/js/tocbot.min.js"></script>
+</head>
+
+
+<body class="page-kube">
+  <header> <div class="show-sm">
+    <div id="nav-toggle-box">
+      <div id="nav-toggle-brand">
+        <a href="/">DBI for R</a>
+      </div><a data-component="toggleme" data-target="#top" href="#" id="nav-toggle"><i class="kube-menu"></i></a>
+    </div>
+  </div>
+  <div class="hide-sm" id="top">
+    <div id="top-brand">
+      <a href="/" title="home">DBI for R</a>
+    </div>
+    <nav id="top-nav-main">
+      <ul>
+       
+       
+    <li><a href="/blog/" >Blog</a></li>
+    
+      </ul>
+    </nav>
+    <nav id="top-nav-extra"> 
+      <ul>
+          
+      </ul>
+    </nav>
+  </div>
+ </header>
+  <main>
+<div class="push-center" itemscope itemtype="http://schema.org/BlogPosting">
+    
+<meta itemprop="name" content="Maintaining DBI, 2/4">
+<meta itemprop="description" content="Summarizing the progress of 2019">
+
+
+<meta itemprop="datePublished" content="2019-10-19T00:00:00&#43;00:00" />
+<meta itemprop="dateModified" content="2019-10-19T00:00:00&#43;00:00" />
+<meta itemprop="wordCount" content="1767">
+
+
+
+<meta itemprop="keywords" content="" />
+
+<div id="hero">
+    <h1 itemprop="headline">  Maintaining DBI, 2/4</h1>
+    
+<blockquote itemprop="description">Summarizing the progress of 2019</blockquote>
+
+<time class="post-time"><span class="icon">
+  <i class="fa fa-clock-o" aria-hidden="true"></i>
+</span>
+<span>9 minute read</span>
+<span class="icon">
+ <i class="fa fa-pencil" aria-hidden="true"></i>
+</span>
+
+  Published: <time datetime="2019-10-19T00:00:00&#43;00:00">19 Oct, 2019</time>
+
+</time>
+</div>
+<div id="post-box">
+<div id="post" itemprop="articleBody">
+
+    
+
+<h2 id="what-is-dbi">What is DBI?</h2>
+
+<p>DBI stands for <strong>d</strong>ata<strong>b</strong>ase <strong>i</strong>nterface, and DBI is a package for
+connecting to database management systems (DBMS). The goal of DBI is to
+provide a common interface for accessing a database, regardless of the
+specific underlying DBMS.</p>
+
+<p>DBI works with a variety of DBMS, such as Postgres, MariaDB, and SQLite,
+allowing users to focus on the specifics of their project instead of
+setting up the infrastructure for data import and export.</p>
+
+<p>The DBI package is perfect for anyone looking to connect to a database,
+read/write entire tables, and/or execute SQL queries. DBI offers more
+control to the user than packages such as
+<a href="https://dbplyr.tidyverse.org/">{dbplyr}</a>.</p>
+
+<p>The current version of DBI is 1.1.0. This blog post summarizes recent
+developments in DBI and related packages.</p>
+
+<h2 id="specification-of-immediate-argument-to-dbsendquery-and-friends">Specification of <code>immediate</code> argument to <code>dbSendQuery()</code> and friends</h2>
+
+<p>Tom Nolan raised an <a href="https://github.com/r-dbi/DBI/issues/268">issue on
+GitHub</a>, requesting to specify
+details of the behavior of query execution. It became apparent that the
+DBI specification did not account for database drivers where the
+execution path is substantially different for queries with or without
+parameters. Recent version of DBI mandated the use of a prepared
+statement or query for everything.</p>
+
+<p>Similar problems have been noted in MariaDB, Postgres and SQL Server
+(when accessed through {odbc}): some statements cannot be executed as
+prepared statements, or <a href="https://github.com/r-dbi/RPostgres/issues/185">prepared statements are
+disabled</a>. Over the
+course of several months, the details of the required extension of this
+API were fleshed out.</p>
+
+<p>The <code>dbSendQuery()</code>, <code>dbGetQuery()</code>, <code>dbSendStatement()</code> and
+<code>dbExecute()</code> methods gain a new <code>immediate</code> argument. By setting this
+argument to <code>TRUE</code>, a direct query is created, allowing to execute
+queries that could not be run previously. Arguably, this is one of those
+obscure features that are not noted until they are missed.</p>
+
+<p>It is up to the individual backends to add support for this argument.
+The default value should be made backward-compatible with the previous
+version of DBI 1.0.0. It has already been implemented in the {odbc}
+package. Plans to implement this feature in both {RMariaDB} and
+{RPostgres} are underway.</p>
+
+<h3 id="examples-using-immediate">Examples using <code>immediate</code></h3>
+
+<pre><code>library(DBI)
+con &lt;- dbConnect(odbc::odbc(), dsn = &quot;SQLServerConnection&quot;)
+
+# Create local temporary tables:
+# Did not work before, temporary table was removed immediately.
+dbExecute(con, &quot;CREATE TABLE #temp (a integer)&quot;, immediate = TRUE)
+dbExecute(con, &quot;INSERT INTO #temp VALUES (1)&quot;, immediate = TRUE)
+
+# Show execution plan:
+# Did not work before, execution plan was never shown
+dbExecute(con, &quot;SET SHOWPLAN_TEXT ON&quot;, immediate = TRUE)
+dbGetQuery(con, &quot;SELECT * FROM #temp WHERE a &gt; 0&quot;)
+dbExecute(con, &quot;SET SHOWPLAN_TEXT OFF&quot;, immediate = TRUE)
+</code></pre>
+
+<h2 id="connector-objects">Connector objects</h2>
+
+<p>The existing method in DBI has been to create the driver object and then
+call <code>dbConnect()</code> with the connection arguments. However there are
+times when a user may need to do the following:</p>
+
+<ul>
+<li>Separate connection arguments from establishing a connection</li>
+<li>Serialize the connector to file in order to establish the same
+connection later</li>
+<li>Maintain multiple connectors in a list for testing different DBMS</li>
+</ul>
+
+<p>In order to address these use cases, users now have the ability to
+create a &ldquo;connector object&rdquo; that combines the driver and connection
+arguments, allowing the user to call <code>dbConnect()</code> without additional
+arguments. This feature is implemented in {DBI}, and works out of the
+box for all DBI backends.</p>
+
+<h3 id="example">Example</h3>
+
+<pre><code>library(DBI)
+
+# Old way:
+drv &lt;- RSQLite::SQLite()
+con &lt;- dbConnect(drv, dbname = &quot;:memory:&quot;)
+dbDisconnect(con)
+
+# New connector object:
+cnr &lt;- new(&quot;DBIConnector&quot;,
+  .drv = RSQLite::SQLite(),
+  .conn_args = list(dbname = &quot;:memory:&quot;)
+)
+cnr
+
+## &lt;DBIConnector&gt;&lt;SQLiteDriver&gt;
+## Arguments:
+## $dbname
+## [1] &quot;:memory:&quot;
+
+con &lt;- dbConnect(cnr)
+dbDisconnect(con)
+</code></pre>
+
+<p>In addition, arguments can be functions, a useful feature for passwords
+and other sensitive connection data.</p>
+
+<h2 id="logging-with-the-dblog-package">Logging with the {dblog} package</h2>
+
+<p>When using applications in production, keeping logs is an invaluable
+part of a sound infrastructure. The new
+<a href="https://github.com/r-dbi/dblog">{dblog}</a> package is designed to be as
+simple as possible. It can be used as a standalone package or in
+conjunction with packages like {dbplyr}.</p>
+
+<p>{dblog} helps both with troubleshooting as well as auditing the queries
+that that are used to access a database. Similar to Perl&rsquo;s DBI::log, the
+goal of {dblog} is to implement logging for arbitrary DBI backends.</p>
+
+<p>{dblog} is straightforward in its use. Start by initializing a logging
+driver using <code>dblog()</code> prior to connecting to a database management
+system. All calls to DBI methods are logged and by default printed to
+the console (or redirected to a file). The entirety of the logging
+output is runnable R code, so users can copy, paste, and execute the
+logging code for debugging.</p>
+
+<h3 id="using-dblog-to-connect-to-sqlite">Using <code>dblog()</code> to connect to SQLite</h3>
+
+<pre><code>library(dblog)
+
+drv &lt;- dblog(RSQLite::SQLite())
+#&gt; drv1 &lt;- RSQLite::SQLite()
+</code></pre>
+
+<h3 id="all-calls-to-dbi-methods-are-logged-by-default-to-the-console">All calls to DBI methods are logged, by default to the console</h3>
+
+<pre><code>conn &lt;- dbConnect(drv, file = &quot;:memory:&quot;)
+#&gt; conn1 &lt;- dbConnect(drv1, file = &quot;:memory:&quot;)
+
+dbWriteTable(conn, &quot;iris&quot;, iris[1:3, ])
+#&gt; dbWriteTable(conn1, name = &quot;iris&quot;, value = structure(list(Sepal.Length = c(5.1, 4.9, 
+#&gt; 4.7), Sepal.Width = c(3.5, 3, 3.2), Petal.Length = c(1.4, 1.4, 1.3), Petal.Width = c(0.2, 
+#&gt; 0.2, 0.2), Species = structure(c(1L, 1L, 1L), .Label = c(&quot;setosa&quot;, &quot;versicolor&quot;, 
+#&gt; &quot;virginica&quot;), class = &quot;factor&quot;)), row.names = c(NA, 3L), class = &quot;data.frame&quot;), overwrite = FALSE, 
+#&gt;     append = FALSE)
+
+data &lt;- dbGetQuery(conn, &quot;SELECT * FROM iris&quot;)
+#&gt; dbGetQuery(conn1, &quot;SELECT * FROM iris&quot;)
+#&gt; ##   Sepal.Length Sepal.Width Petal.Length Petal.Width Species
+#&gt; ## 1          5.1         3.5          1.4         0.2  setosa
+#&gt; ## 2          4.9         3.0          1.4         0.2  setosa
+#&gt; ## 3          4.7         3.2          1.3         0.2  setosa
+
+dbDisconnect(conn)
+#&gt; dbDisconnect(conn1)
+
+data
+#&gt;   Sepal.Length Sepal.Width Petal.Length Petal.Width Species
+#&gt; 1          5.1         3.5          1.4         0.2  setosa
+#&gt; 2          4.9         3.0          1.4         0.2  setosa
+#&gt; 3          4.7         3.2          1.3         0.2  setosa
+</code></pre>
+
+<p>This also works in scenarios where DBI is used under the hood by other
+packages like <a href="https://dbplyr.tidyverse.org/">dbplyr</a> or
+<a href="https://tidymodels.github.io/tidypredict/">tidypredict</a>. The log will
+represent the DBI operations issued, which allows for a better
+understanding of the internals.</p>
+
+<h2 id="testing-your-infrastructure-for-dbi-compatibility">Testing your infrastructure for DBI compatibility</h2>
+
+<p>DBItest (on CRAN in version 1.7.0) is currently geared towards usage as
+part of a package&rsquo;s test suite. With some effort it is possible to test
+a database backend against a custom database. This can help verify that
+your database installation gives expected results when accessed with DBI
+with specific connection arguments. The <a href="https://dbitest.r-dbi.org/articles/dbitest#external-testing">DBItest
+article</a>
+contains a new section that describes how to achieve this, including a
+primer on using {dblog} to understand the cause of test failures.</p>
+
+<h2 id="a-list-of-dbi-backends">A list of DBI backends</h2>
+
+<p>The new <a href="https://github.com/r-dbi/backends">backends</a> repository lists
+all known DBI backends, as retrieved via a code search on GitHub. The
+list is available in the README, and as a static web API for
+programmatic processing.</p>
+
+<h2 id="better-handling-of-time-zones">Better handling of time zones</h2>
+
+<p>Time zones are used to convert between <em>absolute</em> time and <em>civil</em> time,
+where absolute time exists independent of human-created measures such as
+calendars, days, and dates, whereas civil time is comprised of years,
+months, days, hours, minutes, and seconds. For a more in-depth reading
+on absolute time, civil time, and time zones, please read this excerpt
+from the <a href="https://github.com/r-dbi/odbc/blob/7b35549f9df935e1d132f6221860f87a6eb64ef6/src/cctz/README.md">ODBC
+README</a>.</p>
+
+<p>For programming and data analysis, accurate handling time zones is
+crucial. {odbc} has set an example for how to handle time zones through
+the inclusion of <code>timezone</code> and <code>timezone_out</code> arguments to
+<code>dbConnect()</code>. The <code>timezone</code> argument controls the server time zone,
+which may be different from UTC. The <code>timezone_out</code> argument specifies
+the time zone to use for displaying times.</p>
+
+<p>This strategy gives the user control over datetime information passed on
+to and retrieved from the database. Both arguments in combination should
+be able to support a broad variety of use cases and server setups.
+{RMariaDB} and {RPostgres} will incorporate this strategy with their
+next CRAN release. {RPostgres} already has gained a <code>timezone</code> argument
+in its <code>dbConnect()</code> method.</p>
+
+<h2 id="window-function-support-in-rsqlite">Window function support in {RSQLite}</h2>
+
+<p>RSQLite 2.1.4 and later includes sqlite &gt;= 3.29.0, which introduces
+support for window functions.</p>
+
+<pre><code>library(tidyverse)
+library(dbplyr)
+
+tbl &lt;- memdb_frame(a = rep(1:2, 5), b = 1:10)
+
+tbl %&gt;% 
+  group_by(a) %&gt;%
+  window_order(b) %&gt;% 
+  mutate(c = cumsum(b)) %&gt;% 
+  ungroup()
+
+## # Source:     lazy query [?? x 3]
+## # Database:   sqlite 3.30.1 [:memory:]
+## # Ordered by: b
+##        a     b     c
+##    &lt;int&gt; &lt;int&gt; &lt;int&gt;
+##  1     1     1     1
+##  2     1     3     4
+##  3     1     5     9
+##  4     1     7    16
+##  5     1     9    25
+##  6     2     2     2
+##  7     2     4     6
+##  8     2     6    12
+##  9     2     8    20
+## 10     2    10    30
+</code></pre>
+
+<h2 id="cii-best-practices-badges-for-all-repos">CII &ldquo;best practices&rdquo; badges for all repos</h2>
+
+<p>CII &ldquo;best practices&rdquo; have been implemented for {DBItest}, {RMariaDB},
+{RPostgres} and {RSQLite}. The {DBItest} repository has a brand-new
+badge, the badges for the other repositories will follow suit.</p>
+
+<h2 id="package-updates">Package updates</h2>
+
+<p>The following package versions were sent to CRAN in conjunction with
+this blog post:</p>
+
+<ul>
+<li>DBI 1.1.0 (<a href="https://dbi.r-dbi.org/news/">NEWS</a>)</li>
+<li>DBItest 1.7.0 (<a href="https://dbitest.r-dbi.org/news/">NEWS</a>)</li>
+<li>RMariaDB 1.0.8 (<a href="https://rmariadb.r-dbi.org/news/">NEWS</a>)</li>
+<li>RPostgres 1.2.0 (<a href="https://rpostgres.r-dbi.org/news/">NEWS</a>)</li>
+<li>RSQLite 2.1.5 (<a href="https://rsqlite.r-dbi.org/news/">NEWS</a>)</li>
+</ul>
+
+<p>Before that, minor updates of the database backend packages were
+necessary to comply with stricter CRAN checks and toolchain updates.</p>
+
+<h2 id="future-work">Future work</h2>
+
+<p>The remainder of the blog post discusses future directions for DBI and
+the backend packages.</p>
+
+<h3 id="dbi-tutorials">DBI tutorials</h3>
+
+<p>Improving documentation is a priority. DBI is still lacking an
+up-to-date tutorial with a low entry bar that helps users connect to
+their database and execute queries. The updated
+<a href="https://dbi.r-dbi.org/">README</a> is a little step forward, but a
+slightly more comprehensive versions with link to more detailed
+information would be helpful.</p>
+
+<h3 id="terraforming-databases">Terraforming databases</h3>
+
+<p>Now that using DBItest to test backends against custom infrastructure is
+understood, it becomes easier to enhance tests so that not only pristine
+setups are tested, but also databases with nonstandard settings for time
+zone, character encoding or collation.
+<a href="https://www.terraform.io/">Terraform</a> helps automating the setup of
+databases of different flavors on cloud providers such as Azure or
+Google Cloud. The desired state of computing infrastructure is specified
+in a declarative way. This allows testing a much broader variety of
+databases and configurations, without maintaining expensive
+infrastructure: databases can be spun up when needed and torn down when
+done.</p>
+
+<p>It would be helpful to have a selection of open-source and commercial
+databases in different configuration settings ready for testing.</p>
+
+<h3 id="query-cancellation">Query cancellation</h3>
+
+<p>Currently, {odbc} and many other backends freeze while a query is
+executed. It is easy to underestimate the runtime of a query, or to
+accidentally execute a query that is running too long. This severely
+hampers interactive workflows: a frozen R session means forcibly
+restarting R, or worse, the development environment.</p>
+
+<p>Mateusz Żółtak has contributed a <a href="https://github.com/r-dbi/RPostgres/pull/193">pull
+request</a> that implements
+support for graceful query cancellation in {RPostgres}. <a href="https://github.com/r-dbi/odbc/issues/312">Initial
+research</a> suggests that for
+{odbc} it may be possible to implement this in a similar fashion. It
+remains to be seen if an implementation is viable, and if the database
+libraries used by {RMariaDB} and {RSQLite} support this mode of
+operation.</p>
+
+<h2 id="acknowledgments">Acknowledgments</h2>
+
+<p>I&rsquo;d like to thank Katharina Brunner and Jesse Mostipak for help with
+composing this blog post.</p>
+
+
+</div>
+
+    <div class="">
+        <p>
+  Published
+  
+    
+      by <span itemprop="author">Kirill Müller</span>
+    
+  
+  <time datetime="2019-10-19T00:00:00&#43;00:00">
+    19 Oct, 2019
+  </time>
+  
+  
+  using <span itemprop="wordCount">1767</span> words.
+</p>
+
+        
+
+
+
+    </div>
+
+    
+
+</div>
+</div>
+</main>
+  <footer>   <footer id="footer">
+    <nav>
+      <ul>
+        <li>Sponsored by the <a href=https://r-consortium.org>R Consortium</a></li>
+      </ul>
+    </nav>
+    <p>&copy; Licence MIT.</p>
+  </footer>
+ </footer>
+
+
+  <script src="/js/kube.js" type="text/javascript">
+  </script>
+  <script src="/js/kube.legenda.js" type="text/javascript">
+  </script>
+  <script src="/js/master.js" type="text/javascript">
+  </script>
+</body>
+
+</html>
