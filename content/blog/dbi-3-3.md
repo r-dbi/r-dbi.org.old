@@ -1,7 +1,7 @@
 +++
 author = "Kirill Müller"
 date = "2020-12-31"
-draft = false
+draft = true
 weight = 180
 title = "Maintaining DBI, 3/4"
 description = "Summarizing the progress of 2020"
@@ -26,6 +26,70 @@ control to the user than packages such as
 
 The current version of DBI is 1.1.0. This blog post summarizes recent
 developments in DBI and related packages.
+
+
+- Focus: DBI tutorial. Original "Introduction to DBI" substantially expanded, including a walkthrough against a real database, by James Wondrasek.
+
+- Focus: testing and continuous integration
+
+- Focus: several RMariaDB releases
+
+- Bindings for database libraries: thanks Jeroen Ooms
+
+
+# Scope of DBI:
+
+- Database interface for R
+
+- Reading/writing tables
+
+- Executing query, fetching data (with parameters)
+
+- Transactions
+
+
+
+# Problems identified: see e-mail
+
+- query termination
+
+- table import: performance
+
+- immediate for RMariaDB and RPostgres
+
+- time zones
+
+- reconnect
+
+
+? data types: arrays, JSON, ...
+
+
+- SSL
+
+- auth plugins
+
+
+# Notable changes
+
+- Move to GitHub Actions, thanks Andrew Kane for providing actions to install database engines on all platforms. Using GitHub Actions to automate search for DBI backend packages on GitHub
+
+- DBI: Minor improvements to `dbQuoteLiteral()`, relevant for backends that don't provide their own implementation
+
+- DBItest: Simplify understanding which tests went wrong, simpler backtraces. `test_some()` integrates with {dblog} and shows DBI methods called; needs more work for duckdb. Compatibility with testthat 3.0.0. Better and more robust tests.
+
+- RKazam: Is now a template repository
+
+- RMariaDB: Better handling of data types and character encoding, @ycphs contributed `timezone` argument to `dbConnect()`, minor tweaks with `dbBind()` and `dbQuoteLiteral()`
+
+- RPostgres: new `Redshift()` driver that allows downstream packages to distinguish between Postgres and Amazon RedShift (thanks Hadley Wickham), minor improvements for date and time types, `postgresWaitForNotify()` contributed by `@lentinj`
+
+- RSQLite: faster `dbAppendTable()`, strings and blobs virtually unlimited size (limit 2 GB)
+
+
+
+
+
 
 Specification of `immediate` argument to `dbSendQuery()` and friends
 --------------------------------------------------------------------
