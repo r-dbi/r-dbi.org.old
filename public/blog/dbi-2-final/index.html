@@ -2,7 +2,7 @@
 <html lang="en-us">
 
 <head>
-  <meta name="generator" content="Hugo 0.39" />
+  <meta name="generator" content="Hugo 0.68.3" />
   <meta charset="utf-8">
   <meta http-equiv="X-UA-Compatible" content="IE=edge">
   <meta name="viewport" content="width=device-width, initial-scale=1">
@@ -25,22 +25,8 @@
 <meta property="og:description" content="Summary of the “Establishing DBI” project" />
 <meta property="og:type" content="article" />
 <meta property="og:url" content="/blog/dbi-2-final/" />
-
-
-
-<meta property="article:published_time" content="2018-05-01T00:00:00&#43;00:00"/>
-
-<meta property="article:modified_time" content="2018-05-01T00:00:00&#43;00:00"/>
-
-
-
-
-
-
-
-
-
-
+<meta property="article:published_time" content="2018-05-01T00:00:00+00:00" />
+<meta property="article:modified_time" content="2018-05-01T00:00:00+00:00" />
 
   
 
@@ -110,11 +96,8 @@
  </header>
   <main>
 <div class="push-center" itemscope itemtype="http://schema.org/BlogPosting">
-    
-<meta itemprop="name" content="Done “Establishing DBI”!?">
+    <meta itemprop="name" content="Done “Establishing DBI”!?">
 <meta itemprop="description" content="Summary of the “Establishing DBI” project">
-
-
 <meta itemprop="datePublished" content="2018-05-01T00:00:00&#43;00:00" />
 <meta itemprop="dateModified" content="2018-05-01T00:00:00&#43;00:00" />
 <meta itemprop="wordCount" content="2172">
@@ -122,7 +105,6 @@
 
 
 <meta itemprop="keywords" content="" />
-
 <div id="hero">
     <h1 itemprop="headline">  Done “Establishing DBI”!?</h1>
     
@@ -143,20 +125,16 @@
 <div id="post-box">
 <div id="post" itemprop="articleBody">
 
-    
-
-<p>The &ldquo;Establishing DBI&rdquo; project, funded by the R consortium, started
+    <p>The &ldquo;Establishing DBI&rdquo; project, funded by the R consortium, started
 about a year ago. It includes the completion of two new backends,
 <em>RPostgres</em> and <em>RMariaDB</em>, and a quite a few interface extensions and
 specifications. Learn more about DBI, R&rsquo;s database interface, on
 <a href="https://r-dbi.org">https://r-dbi.org</a>.</p>
-
 <p>This blog post showcases only the visible changes, a substantial amount
 of work went into extending the DBI specification and making the three
 open-source database backends compliant to it. After describing the
 release of the two new backends <em>RMariaDB</em> and <em>RPostgres</em>, I&rsquo;ll be
 discussing the following improvements:</p>
-
 <ul>
 <li>Consistent support for accessing tables in schemas</li>
 <li>Quoting literal values, in addition to strings and identifiers</li>
@@ -167,18 +145,14 @@ discussing the following improvements:</p>
 <li>New helpers in <em>DBI</em></li>
 <li>Reusing code across backends</li>
 </ul>
-
 <p>I conclude with an outlook on things left to do.</p>
-
 <h2 id="release-of-rpostgres-and-rmariadb">Release of <em>RPostgres</em> and <em>RMariaDB</em></h2>
-
 <p>The DBI specification has been formulated in the preceding R consortium
 project, &ldquo;Improving DBI&rdquo;. It is both an automated test suite and a
 human-readable description of behavior, implemented in the <em>DBItest</em>
 package. For this project, I extended this specification and could also
 use it to implement <em>RPostgres</em> and <em>RMariaDB</em>: for once, test-driven
 development was pure pleasure, because the tests were already there!</p>
-
 <p>I took over maintenance of the <em>RPostgres</em> and <em>RMariaDB</em> packages,
 which are complete rewrites of the <em>RPostgreSQL</em> and <em>RMySQL</em> packages,
 respectively. These packages use C++ (with <em>Rcpp</em>) as glue between R and
@@ -187,38 +161,31 @@ different name has made it much easier to fully conform to the DBI
 specification: only listing temporary tables and casting to blob or
 character is not supported by <em>RMariaDB</em> (due to a limitation of the
 DBMS), all other parts of the specification are fully covered.</p>
-
 <p>Projects that use <em>RPostgreSQL</em> or <em>RMySQL</em> can continue to do so, or
 switch to the new backends at their own pace (which likely requires some
 changes to the code). For new projects I recommend <em>RPostgres</em> or
 <em>RMariaDB</em> to take advantage of the thorougly tested codebases and of
 the consistency across backends.</p>
-
 <h2 id="schema-support">Schema support</h2>
-
 <p>Consistent access of tables in database schemas was planned for the
 &ldquo;Improving DBI&rdquo; project already, but I have implemented it only
 recently. It felt safer to see how the interface works on three
 backends, as opposed to implementing it for just <em>RSQLite</em> and then
 perhaps having to adapt it.</p>
-
 <p>The new <code>Id()</code> function constructs identifiers. All arguments must be
 named, yet <em>DBI</em> doesn&rsquo;t specify the argument names, because DBMS have
 an inconsistent notion of namespaces. The objects returned by <code>Id()</code> are
 &ldquo;dumb&rdquo;, they gain meaning only when used in methods such as
 <code>dbQuoteIdentifier()</code> or <code>dbWriteTable()</code>.</p>
-
 <p>For listing database objects in schemas, the new <code>dbListObjects()</code>
 generic can be used. It returns a data frame that contains identifiers
 (like those created by the <code>Id()</code> function) and a flag that indicates if
 the identifier is complete (i.e., pointing to a table or view) or a
 prefix. Incomplete identifiers can be passed to <code>dbListObjects()</code> again,
 which allows traversing the tree of database objects.</p>
-
 <p>The following example assumes a schema <code>my_schema</code>. A table named
 <code>my_table</code> is created in this schema, objects are listed, and the table
 is read again.</p>
-
 <pre><code>library(RPostgres)
 pg_conn &lt;- dbConnect(Postgres())
 
@@ -262,7 +229,6 @@ dbReadTable(pg_conn, table_name)
 ## 2 2 b
 ## 3 3 c
 </code></pre>
-
 <p>In addition to <code>dbReadTable()</code> and <code>dbWriteTable()</code>, also
 <code>dbExistsTable()</code> and <code>dbRemoveTable()</code> and the new <code>dbCreateTable()</code>
 and <code>dbAppendTable()</code> (see below) support an <code>Id()</code> object as table
@@ -270,7 +236,6 @@ name. The <code>dbQuoteIdentifier()</code> method converts these objects to SQL
 strings. Some operations (e.g. checking if a table exists) require the
 inverse, the new <code>dbUnquoteIdentifier()</code> generic takes care of
 converting valid SQL identifiers to (a list of) <code>Id()</code> objects:</p>
-
 <pre><code>quoted &lt;- dbQuoteIdentifier(pg_conn, table_name)
 quoted
 
@@ -281,19 +246,15 @@ dbUnquoteIdentifier(pg_conn, quoted)
 ## [[1]]
 ## &lt;Id&gt; schema = my_schema, table = my_table
 </code></pre>
-
 <p>The new methods work consistently across backends, only <em>RSQLite</em> is
 currently restricted to the default schema. (Schemas in <em>RSQLite</em> are
 created by attaching another database, this use case seemed rather
 exotic but can be supported with the new infrastructure.)</p>
-
 <h2 id="quoting-literal-values">Quoting literal values</h2>
-
 <p>When working on the database backends, it has become apparent that
 quoting strings and identifiers isn&rsquo;t quite enough. Now there is a way
 to quote arbitrary values, i.e. convert them to a string that can be
 pasted into an SQL query:</p>
-
 <pre><code>library(RSQLite)
 sqlite_conn &lt;- dbConnect(SQLite())
 
@@ -320,54 +281,50 @@ dbQuoteLiteral(pg_conn, Sys.time())
 
 ## &lt;SQL&gt; '2018-05-01 22:40:25'::timestamp
 </code></pre>
-
 <p>The default implementation works for ANSI SQL compliant DBMS, the method
 for <em>RPostgres</em> takes advantage of the <code>::</code> casting operator as seen in
 the examples.</p>
-
 <h2 id="more-fine-grained-creation-of-tables">More fine-grained creation of tables</h2>
-
 <p><em>DBI</em> supports storing data frames as tables in the database via
 <code>dbWriteTable()</code>. This operation consists of multiple steps:</p>
-
 <ul>
 <li>Checking if a table of this name exists, if yes:
-
 <ul>
 <li>If <code>overwrite = TRUE</code>, removing the table</li>
 <li>If not, throwing an error</li>
-</ul></li>
+</ul>
+</li>
 <li>Creating the table with the correct field structure</li>
 <li>Preparing the data for writing</li>
 <li>Writing the data</li>
 </ul>
-
 <p>To reduce complexity and allow for more options without cluttering the
 argument list of <code>dbWriteTable()</code>, <em>DBI</em> now provides generics for the
 individual steps:</p>
-
 <ul>
-<li><p>The existing <code>dbRemoveTable()</code> generic has been extended with
+<li>
+<p>The existing <code>dbRemoveTable()</code> generic has been extended with
 <code>temporary</code> and <code>fail_if_missing</code> arguments. Setting
 <code>temporary = TRUE</code> makes sure that only temporaries are removed. By
 default, trying to remove a table that doesn&rsquo;t exist fails, setting
-<code>fail_if_missing = FALSE</code> changes this behavior to a silent success.</p></li>
-
-<li><p>The new <code>dbCreateTable()</code> generic accepts a data frame or a
+<code>fail_if_missing = FALSE</code> changes this behavior to a silent success.</p>
+</li>
+<li>
+<p>The new <code>dbCreateTable()</code> generic accepts a data frame or a
 character vector of DBMS data types and creates a table in the
 database. It builds upon the existing <code>sqlCreateTable()</code> generic and
 also supports the <code>temporary</code> argument. If a table by that name
-already exists, an error is raised.</p></li>
-
-<li><p>The new <code>dbAppendTable()</code> generic uses a prepared statement (created
+already exists, an error is raised.</p>
+</li>
+<li>
+<p>The new <code>dbAppendTable()</code> generic uses a prepared statement (created
 via <code>sqlAppendTableTemplate()</code>) to efficiently insert rows into the
 database. This avoids the internal overhead of converting values to
-SQL literals.</p></li>
+SQL literals.</p>
+</li>
 </ul>
-
 <p>The following example shows the creation and population of a table with
 the new methods.</p>
-
 <pre><code>table_name
 
 ## &lt;Id&gt; schema = my_schema, table = my_table
@@ -386,16 +343,12 @@ str(dbReadTable(pg_conn, table_name))
 ##  $ a:integer64 1 2 3 
 ##  $ b: num  1 2 3
 </code></pre>
-
 <p>The <code>dbWriteTable()</code> methods in the three backends have been adapted to
 use the new methods.</p>
-
 <h2 id="support-for-64-bit-integers">Support for 64-bit integers</h2>
-
 <p>As seen in the previous example, 64-bit integers can be read from the
 database. The three backends <em>RSQLite</em>, <em>RPostgres</em> and <em>RMariaDB</em> now
 also support writing 64-bit integers via the <em>bit64</em> package:</p>
-
 <pre><code>data &lt;- data.frame(a = bit64::as.integer64(4:6), b = 4:6)
 dbAppendTable(pg_conn, table_name, data)
 
@@ -407,13 +360,11 @@ str(dbReadTable(pg_conn, table_name))
 ##  $ a:integer64 1 2 3 4 5 6 
 ##  $ b: num  1 2 3 4 5 6
 </code></pre>
-
 <p>Because R still lacks support for native 64-bit integers, the <em>bit64</em>
 package feels like the best compromise: the returned values can be
 computed on, or coerced to <code>integer</code>, <code>numeric</code> or even <code>character</code>
 depending on the application. In some cases, it may be useful to always
 coerce. This is where the new <code>bigint</code> argument to <code>dbConnect()</code> helps:</p>
-
 <pre><code>pg_conn_int &lt;- dbConnect(Postgres(), bigint = &quot;integer&quot;)
 str(dbReadTable(pg_conn_int, table_name))
 
@@ -435,18 +386,14 @@ str(dbReadTable(pg_conn_chr, table_name))
 ##  $ a: chr  &quot;1&quot; &quot;2&quot; &quot;3&quot; &quot;4&quot; ...
 ##  $ b: num  1 2 3 4 5 6
 </code></pre>
-
 <p>The <code>bigint</code> argument works consistently across the three backends
 <em>RSQLite</em>, <em>RPostgres</em> and <em>RMariaDB</em>, the DBI specification contains a
 test for and a description of the requirements.</p>
-
 <h2 id="geometry-columns">Geometry columns</h2>
-
 <p>PostgreSQL has support for user-defined data types, this is used e.g. by
 PostGIS to store spatial data. Before, user-defined data types were
 returned as character values, with a warning. Thanks to a contribution
 by Etienne B. Racine:</p>
-
 <ul>
 <li>the warnings are gone,</li>
 <li>the user-defined data type is now stored in an attribute of the
@@ -454,9 +401,7 @@ column in the data frame,</li>
 <li>details on columns with user-defined data types are available in
 <code>dbColumnInfo()</code>.</li>
 </ul>
-
-<!-- -->
-
+<!-- raw HTML omitted -->
 <pre><code>dbCreateTable(
   pg_conn,
   &quot;geom_test&quot;,
@@ -487,18 +432,14 @@ dbColumnInfo(res)
 
 dbClearResult(res)
 </code></pre>
-
 <p>Special support for geometry columns is currently available only in
 <em>RPostgres</em>.</p>
-
 <h2 id="duplicate-column-names">Duplicate column names</h2>
-
 <p>The specification has been extended to disallow duplicate, empty or <code>NA</code>
 column names. The deduplication used by our three backends is similar to
 that used by <code>tibble::set_tidy_names()</code>, but the DBI specification does
 not require any particular deduplication mechanism. Syntactic names
 aren&rsquo;t required either:</p>
-
 <pre><code>dbGetQuery(sqlite_conn, &quot;SELECT 1, 2, 3&quot;)
 
 ##   1 2 3
@@ -529,77 +470,71 @@ dbGetQuery(pg_conn, 'SELECT 1 AS a, 2 AS a, 3 AS &quot;a..2&quot;')
 ##   a a..2 a..3
 ## 1 1    2    3
 </code></pre>
-
 <h2 id="helpers">Helpers</h2>
-
 <p>Two little helper generics have been added.</p>
-
 <p>The new <code>dbIsReadOnly()</code> generic (contributed by Anh Le) should return
 <code>TRUE</code> for a read-only connection. This is not part of the specification
 yet.</p>
-
 <p>The <code>dbCanConnect()</code> tests a set of connection parameters. The default
 implementation simply connects and then disconnects upon success. For
 DBMS that can provide more efficient methods of checking connectivity, a
 lighter-weight implementation of this method may give a better
 experience.</p>
-
 <p>None of the three backends currently provide specialized implementations
 for these generics.</p>
-
 <h2 id="code-reuse">Code reuse</h2>
-
 <p>I have made some efforts to extract common C++ classes for assembling
 data frames and prepare them for reuse. The C++ source code for the
 three backends contains files prefixed with <code>Db</code>, these are almost
 identical across the backends. The planned packaging into the <em>RKazam</em>
 package had to yield to higher-priority features described above.</p>
-
 <p>The situation in the R code is similar: I have found myself copy-pasting
 code from one backend into another because I didn&rsquo;t feel it&rsquo;s ready (or
 standardized enough) to be included in the <em>DBI</em> package.</p>
-
 <p>For both use cases, a code reuse strategy based on copying/updating
 template files or reconciling files may be more robust than the
 traditional importing mechanisms offered by R.</p>
-
 <h2 id="outlook">Outlook</h2>
-
 <p>The upcoming CRAN release of <em>DBI</em>, <em>DBItest</em> and the three backends
 <em>RSQLite</em>, <em>RMariaDB</em> and <em>RPostgres</em> are an important milestone.
 Stability is important when more and more users and projects use the new
 backends. Nevertheless, I see quite a few potential improvements that so
 far were out of scope of the &ldquo;Improving DBI&rdquo; and &ldquo;Establishing DBI&rdquo;
 projects:</p>
-
 <ol>
-<li><p>Support running the test suite locally, to validate adherence to DBI
-for a particular installation.</p></li>
-
-<li><p>Consistent fast data import.</p></li>
-
-<li><p>Consistent query placeholders (currently <code>$1</code> for <em>RPostgres</em> and
-<code>?</code> for many other backends).</p></li>
-
-<li><p>Support for arbitrary data types via hooks.</p></li>
-
-<li><p>Assistance with installation problems on specific architectures, or
+<li>
+<p>Support running the test suite locally, to validate adherence to DBI
+for a particular installation.</p>
+</li>
+<li>
+<p>Consistent fast data import.</p>
+</li>
+<li>
+<p>Consistent query placeholders (currently <code>$1</code> for <em>RPostgres</em> and
+<code>?</code> for many other backends).</p>
+</li>
+<li>
+<p>Support for arbitrary data types via hooks.</p>
+</li>
+<li>
+<p>Assistance with installation problems on specific architectures, or
 connectivity problems with certain databases, or other specific
-issues.</p></li>
-
-<li><p>Rework the internal architecture of <em>DBItest</em> to simplify locating
-test failures.</p></li>
-
-<li><p>Improve the <a href="https://r-dbi.org">https://r-dbi.org</a> website.</p></li>
-
-<li><p>Non-blocking queries.</p></li>
+issues.</p>
+</li>
+<li>
+<p>Rework the internal architecture of <em>DBItest</em> to simplify locating
+test failures.</p>
+</li>
+<li>
+<p>Improve the <a href="https://r-dbi.org">https://r-dbi.org</a> website.</p>
+</li>
+<li>
+<p>Non-blocking queries.</p>
+</li>
 </ol>
-
 <p>I have submitted another proposal to the R Consortium, hoping to receive
 support with these and other issues.</p>
-
 <h2 id="acknowledgments">Acknowledgments</h2>
-
 <p>I&rsquo;d like to thank the R Consortium for their generous financial support.
 Many thanks to the numerous contributors who helped make the past two
 projects a success.</p>
