@@ -1,7 +1,7 @@
 +++
 author = "Kirill Müller"
 date = "2021-01-04"
-draft = true
+draft = false
 weight = 180
 title = "Maintaining DBI, 3/4"
 description = "Summarizing the progress of 2020"
