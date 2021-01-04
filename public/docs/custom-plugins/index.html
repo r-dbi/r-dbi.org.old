@@ -2,7 +2,7 @@
 <html lang="en-us">
 
 <head>
-  <meta name="generator" content="Hugo 0.39" />
+  <meta name="generator" content="Hugo 0.68.3" />
   <meta charset="utf-8">
   <meta http-equiv="X-UA-Compatible" content="IE=edge">
   <meta name="viewport" content="width=device-width, initial-scale=1">
@@ -25,20 +25,6 @@
 <meta property="og:description" content="Flexible and extensible way to add custom features" />
 <meta property="og:type" content="article" />
 <meta property="og:url" content="/docs/custom-plugins/" />
-
-
-
-
-
-
-
-
-
-
-
-
-
-
 
 
   
@@ -139,14 +125,7 @@ headingSelector: 'h3'
 
 
 
-    <p><h3 class="section-head" id="h-plugin"><a href="#h-plugin">Plugin Template</a></h3>
-<p>Here&rsquo;s what a generic plugin looks like. This template gives an overall idea of what you can do with plugins in Kube. Feel free to use this one as a boilerplate for your custom plugins.</p>
-<pre class="code skip">(<span class="hljs-function"><span class="hljs-keyword">function</span>(<span class="hljs-params">Kube</span>)
-</span>{
-    Kube.Myplugin = <span class="hljs-function"><span class="hljs-keyword">function</span>(<span class="hljs-params">element, options</span>)
-    </span>{
-        <span class="hljs-keyword">this</span>.namespace = <span class="hljs-string">&lsquo;myplugin&rsquo;</span>;</p>
-
+    <!-- raw HTML omitted -->
 <pre><code>    &lt;span class=&quot;hljs-comment&quot;&gt;// default settings&lt;/span&gt;
     &lt;span class=&quot;hljs-keyword&quot;&gt;this&lt;/span&gt;.defaults = {
         mysetting: &lt;span class=&quot;hljs-literal&quot;&gt;true&lt;/span&gt;
@@ -191,44 +170,28 @@ Kube.Myplugin.inherits(Kube);
 Kube.Plugin.create(&lt;span class=&quot;hljs-string&quot;&gt;'Myplugin'&lt;/span&gt;);
 Kube.Plugin.autoload(&lt;span class=&quot;hljs-string&quot;&gt;'Myplugin'&lt;/span&gt;);
 </code></pre>
-
 <p>}(Kube));
-</pre>
-<h3 class="section-head" id="h-call"><a href="#h-call">Call</a></h3>
-<p>Calling a plugin is very easy, just add the <code>data-component</code> with the name of your plugin and it will start automatic.</p>
-<pre class="code">&lt;<span class="hljs-keyword">div</span> data-component=<span class="hljs-string">&ldquo;myplugin&rdquo;</span>&gt;&lt;/<span class="hljs-keyword">div</span>&gt;</pre>
-<p>Or call manually</p>
-<pre class="code skip"><span class="hljs-tag">&lt;<span class="hljs-name">div</span> <span class="hljs-attr">id</span>=<span class="hljs-string">&ldquo;my-element&rdquo;</span>&gt;</span><span class="hljs-tag">&lt;/<span class="hljs-name">div</span>&gt;</span></p>
-
-<p><span class="hljs-tag">&lt;<span class="hljs-name">script</span>&gt;</span><span class="javascript">
-    $(<span class="hljs-string">&rsquo;#my-element&rsquo;</span>).myplugin();
-</span><span class="hljs-tag">&lt;/<span class="hljs-name">script</span>&gt;</span>
-</pre>
-<h3 class="section-head" id="h-callbacks"><a href="#h-callbacks">Callbacks</a></h3>
-<p>Kube plugins can react on events with callbacks. Whenever you need your plugin to do something in response to an action or an event, just use a callback.</p>
-<pre class="code skip"><span class="hljs-tag">&lt;<span class="hljs-name">div</span> <span class="hljs-attr">id</span>=<span class="hljs-string">&ldquo;myplugin&rdquo;</span> <span class="hljs-attr">data-component</span>=<span class="hljs-string">&ldquo;myplugin&rdquo;</span>&gt;</span><span class="hljs-tag">&lt;/<span class="hljs-name">div</span>&gt;</span></p>
-
-<p><span class="hljs-tag">&lt;<span class="hljs-name">script</span>&gt;</span><span class="javascript">
-$(<span class="hljs-string">&rsquo;#myplugin&rsquo;</span>).on(<span class="hljs-string">&lsquo;show.myplugin&rsquo;</span>, <span class="hljs-function"><span class="hljs-keyword">function</span>(<span class="hljs-params"></span>)
-</span>{
-    <span class="hljs-comment">// do something&hellip;</span>
+<!-- raw HTML omitted --></p>
+<!-- raw HTML omitted -->
+<p><!-- raw HTML omitted -->&lt;<!-- raw HTML omitted -->script<!-- raw HTML omitted -->&gt;<!-- raw HTML omitted --><!-- raw HTML omitted -->
+$(<!-- raw HTML omitted -->&rsquo;#my-element'<!-- raw HTML omitted -->).myplugin();
+<!-- raw HTML omitted --><!-- raw HTML omitted -->&lt;/<!-- raw HTML omitted -->script<!-- raw HTML omitted -->&gt;<!-- raw HTML omitted -->
+<!-- raw HTML omitted --></p>
+<!-- raw HTML omitted -->
+<p><!-- raw HTML omitted -->&lt;<!-- raw HTML omitted -->script<!-- raw HTML omitted -->&gt;<!-- raw HTML omitted --><!-- raw HTML omitted -->
+$(<!-- raw HTML omitted -->&rsquo;#myplugin'<!-- raw HTML omitted -->).on(<!-- raw HTML omitted -->'show.myplugin'<!-- raw HTML omitted -->, <!-- raw HTML omitted --><!-- raw HTML omitted -->function<!-- raw HTML omitted -->(<!-- raw HTML omitted --><!-- raw HTML omitted -->)
+<!-- raw HTML omitted -->{
+<!-- raw HTML omitted -->// do something&hellip;<!-- raw HTML omitted -->
 });
-</span><span class="hljs-tag">&lt;/<span class="hljs-name">script</span>&gt;</span>
-</pre>
-<p>All plugin methods and variables are available within the plugin via <var>this</var>:</p>
-<pre class="code skip"><span class="hljs-tag">&lt;<span class="hljs-name">script</span>&gt;</span><span class="javascript">
-$(<span class="hljs-string">&rsquo;#myplugin&rsquo;</span>).on(<span class="hljs-string">&lsquo;show.myplugin&rsquo;</span>, <span class="hljs-function"><span class="hljs-keyword">function</span>(<span class="hljs-params"></span>)
-</span>{
-    <span class="hljs-comment">// plugin element</span>
-    <span class="hljs-built_in">console</span>.log(<span class="hljs-keyword">this</span>.$element);</p>
-
+<!-- raw HTML omitted --><!-- raw HTML omitted -->&lt;/<!-- raw HTML omitted -->script<!-- raw HTML omitted -->&gt;<!-- raw HTML omitted -->
+<!-- raw HTML omitted --></p>
+<!-- raw HTML omitted -->
 <pre><code>&lt;span class=&quot;hljs-comment&quot;&gt;// call plugin method&lt;/span&gt;
 &lt;span class=&quot;hljs-keyword&quot;&gt;this&lt;/span&gt;.method();
 </code></pre>
-
 <p>});
-</span><span class="hljs-tag">&lt;/<span class="hljs-name">script</span>&gt;</span>
-</pre></p>
+<!-- raw HTML omitted --><!-- raw HTML omitted -->&lt;/<!-- raw HTML omitted -->script<!-- raw HTML omitted -->&gt;<!-- raw HTML omitted -->
+<!-- raw HTML omitted --></p>
 
 
     

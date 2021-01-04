@@ -1,4 +1,4 @@
-<?xml version="1.0" encoding="utf-8" standalone="yes" ?>
+<?xml version="1.0" encoding="utf-8" standalone="yes"?>
 <rss version="2.0" xmlns:atom="http://www.w3.org/2005/Atom">
   <channel>
     <title>DBI for R</title>
@@ -6,7 +6,7 @@
     <description>Recent content on DBI for R</description>
     <generator>Hugo -- gohugo.io</generator>
     <language>en-us</language>
-    <lastBuildDate>Mon, 10 Apr 2017 16:40:43 +0100</lastBuildDate>
+    <lastBuildDate>Thu, 19 Dec 2019 00:00:00 +0000</lastBuildDate>
     
 	<atom:link href="/index.xml" rel="self" type="application/rss+xml" />
     
@@ -17,8 +17,7 @@
       <pubDate>Mon, 01 Jan 0001 00:00:00 +0000</pubDate>
       
       <guid>/docs/quick-start/</guid>
-      <description>Basic Template With Kube, you can set up your web framework and be on your way in under a minute. Just add this code to your web page for the basic template to take effect immediately.
-&amp;lt;!DOCTYPE html&amp;gt; &amp;lt;html&amp;gt; &amp;lt;head&amp;gt; &amp;lt;title&amp;gt;Basic Template&amp;lt;/title&amp;gt; &amp;lt;meta charset=&#34;utf-8&#34;&amp;gt; &amp;lt;meta name=&#34;viewport&#34; content=&#34;width=device-width, initial-scale=1&#34;&amp;gt; &amp;lt;!-- Kube CSS --&amp;gt; &amp;lt;link rel=&#34;stylesheet&#34; href=&#34;assets/css/kube.css&#34;&amp;gt; &amp;lt;/head&amp;gt; &amp;lt;body&amp;gt; &amp;lt;h1&amp;gt;Hello, world!&amp;lt;/h1&amp;gt; &amp;lt;!-- Kube JS + jQuery are used for some functionality, but are not required for the basic setup --&amp;gt; &amp;lt;script src=&#34;</description>
+      <description></description>
     </item>
     
     <item>
@@ -27,9 +26,7 @@
       <pubDate>Mon, 01 Jan 0001 00:00:00 +0000</pubDate>
       
       <guid>/docs/custom-plugins/</guid>
-      <description>Plugin Template Here&amp;rsquo;s what a generic plugin looks like. This template gives an overall idea of what you can do with plugins in Kube. Feel free to use this one as a boilerplate for your custom plugins.
-(function(Kube) { Kube.Myplugin = function(element, options) { this.namespace = &amp;lsquo;myplugin&amp;rsquo;;
- &amp;lt;span class=&amp;quot;hljs-comment&amp;quot;&amp;gt;// default settings&amp;lt;/span&amp;gt; &amp;lt;span class=&amp;quot;hljs-keyword&amp;quot;&amp;gt;this&amp;lt;/span&amp;gt;.defaults = { mysetting: &amp;lt;span class=&amp;quot;hljs-literal&amp;quot;&amp;gt;true&amp;lt;/span&amp;gt; }; &amp;lt;span class=&amp;quot;hljs-comment&amp;quot;&amp;gt;// Parent Constructor&amp;lt;/span&amp;gt; Kube.apply(&amp;lt;span class=&amp;quot;hljs-keyword&amp;quot;&amp;gt;this&amp;lt;/span&amp;gt;, &amp;lt;span class=&amp;quot;hljs-built_in&amp;quot;&amp;gt;arguments&amp;lt;/span&amp;gt;); &amp;lt;span class=&amp;quot;hljs-comment&amp;quot;&amp;gt;// Initialization&amp;lt;/span&amp;gt; &amp;lt;span class=&amp;quot;hljs-keyword&amp;quot;&amp;gt;this&amp;lt;/span&amp;gt;.</description>
+      <description>&amp;lt;span class=&amp;quot;hljs-comment&amp;quot;&amp;gt;// default settings&amp;lt;/span&amp;gt;&amp;lt;span class=&amp;quot;hljs-keyword&amp;quot;&amp;gt;this&amp;lt;/span&amp;gt;.defaults = {mysetting: &amp;lt;span class=&amp;quot;hljs-literal&amp;quot;&amp;gt;true&amp;lt;/span&amp;gt;};&amp;lt;span class=&amp;quot;hljs-comment&amp;quot;&amp;gt;// Parent Constructor&amp;lt;/span&amp;gt;Kube.apply(&amp;lt;span class=&amp;quot;hljs-keyword&amp;quot;&amp;gt;this&amp;lt;/span&amp;gt;, &amp;lt;span class=&amp;quot;hljs-built_in&amp;quot;&amp;gt;arguments&amp;lt;/span&amp;gt;);&amp;lt;span class=&amp;quot;hljs-comment&amp;quot;&amp;gt;// Initialization&amp;lt;/span&amp;gt;&amp;lt;span class=&amp;quot;hljs-keyword&amp;quot;&amp;gt;this&amp;lt;/span&amp;gt;.start();};&amp;lt;span class=&amp;quot;hljs-comment&amp;quot;&amp;gt;// Functionality&amp;lt;/span&amp;gt;Kube.Myplugin.prototype = {start: &amp;lt;span class=&amp;quot;hljs-function&amp;quot;&amp;gt;&amp;lt;span class=&amp;quot;hljs-keyword&amp;quot;&amp;gt;function&amp;lt;/span&amp;gt;(&amp;lt;span class=&amp;quot;hljs-params&amp;quot;&amp;gt;&amp;lt;/span&amp;gt;)&amp;lt;/span&amp;gt;{&amp;lt;span class=&amp;quot;hljs-comment&amp;quot;&amp;gt;// plugin element&amp;lt;/span&amp;gt;&amp;lt;span class=&amp;quot;hljs-built_in&amp;quot;&amp;gt;console&amp;lt;/span&amp;gt;.log(&amp;lt;span class=&amp;quot;hljs-keyword&amp;quot;&amp;gt;this&amp;lt;/span&amp;gt;.$element);&amp;lt;span class=&amp;quot;hljs-comment&amp;quot;&amp;gt;// call options&amp;lt;/span&amp;gt;&amp;lt;span class=&amp;quot;hljs-built_in&amp;quot;&amp;gt;console&amp;lt;/span&amp;gt;.log(&amp;lt;span class=&amp;quot;hljs-keyword&amp;quot;&amp;gt;this&amp;lt;/span&amp;gt;.opts.mysetting);&amp;lt;span class=&amp;quot;hljs-comment&amp;quot;&amp;gt;// call methods&amp;lt;/span&amp;gt;&amp;lt;span class=&amp;quot;hljs-keyword&amp;quot;&amp;gt;this&amp;lt;/span&amp;gt;.method();},method: &amp;lt;span class=&amp;quot;hljs-function&amp;quot;&amp;gt;&amp;lt;span class=&amp;quot;hljs-keyword&amp;quot;&amp;gt;function&amp;lt;/span&amp;gt;(&amp;lt;span class=&amp;quot;hljs-params&amp;quot;&amp;gt;&amp;lt;/span&amp;gt;)&amp;lt;/span&amp;gt;{&amp;lt;span class=&amp;quot;hljs-comment&amp;quot;&amp;gt;// do something...&amp;lt;/span&amp;gt;&amp;lt;span class=&amp;quot;hljs-comment&amp;quot;&amp;gt;// callback&amp;lt;/span&amp;gt;&amp;lt;span class=&amp;quot;hljs-keyword&amp;quot;&amp;gt;this&amp;lt;/span&amp;gt;.</description>
     </item>
     
     <item>
@@ -38,8 +35,7 @@
       <pubDate>Mon, 01 Jan 0001 00:00:00 +0000</pubDate>
       
       <guid>/docs/typography/</guid>
-      <description>Get Started Typography of Kube based on the 4px horizontal grid, it means that for the headers, paragraphs, quotes and any other texts chosen are a combination of line-height, that fit into the 4px grid and help set the horizontal rhythm of design by default.
-  4px grid for typography - the magic of the horizontal rhythm   With this feature, you can quickly and easily make a solid and harmonious-looking website and UI design.</description>
+      <description></description>
     </item>
     
     <item>
@@ -48,8 +44,8 @@
       <pubDate>Mon, 01 Jan 0001 00:00:00 +0000</pubDate>
       
       <guid>/docs/grid/</guid>
-      <description>Columns Columns are building blocks for many websites. Here&#39;s how columns are formed in Kube, and here&#39;s how you can use them right away.
-1  11   2  10   3  9   4  8   5  7   6  6   7  5   8  4   9  3   10  2   11  1   12   &amp;lt;div class=&#34;</description>
+      <description>&amp;lt;!&amp;ndash; html &amp;ndash;&amp;gt;&amp;lt;divid=&amp;quot;container&amp;quot;&amp;gt;&amp;lt;divid=&amp;quot;sidebar&amp;quot;&amp;gt;Sidebar&amp;lt;/div&amp;gt;&amp;lt;divid=&amp;quot;content&amp;quot;&amp;gt;Content&amp;lt;/div&amp;gt;&amp;lt;/div&amp;gt;@include grid-media-columns(2); &amp;amp;amp; &amp;amp;gt; div { margin-bottom: 20px; height: 80px; } &amp;amp;amp; &amp;amp;gt; div:nth-child(2n) { height: 200px; } &amp;amp;amp; &amp;amp;gt; div:nth-child(5n) { height: 120px; }  }
+&amp;lt;!&amp;ndash; html &amp;ndash;&amp;gt;&amp;lt;divid=&amp;quot;media-grid&amp;quot;&amp;gt;&amp;lt;div&amp;gt;1&amp;lt;/div&amp;gt;&amp;lt;div&amp;gt;2&amp;lt;/div&amp;gt;&amp;lt;div&amp;gt;3&amp;lt;/div&amp;gt;&amp;lt;div&amp;gt;4&amp;lt;/div&amp;gt;&amp;lt;div&amp;gt;5&amp;lt;/div&amp;gt;&amp;lt;div&amp;gt;6&amp;lt;/div&amp;gt;&amp;lt;div&amp;gt;7&amp;lt;/div&amp;gt;&amp;lt;div&amp;gt;8&amp;lt;/div&amp;gt;&amp;lt;div&amp;gt;9&amp;lt;/div&amp;gt;&amp;lt;div&amp;gt;10&amp;lt;/div&amp;gt;&amp;lt;/div&amp;gt;</description>
     </item>
     
     <item>
@@ -58,7 +54,7 @@
       <pubDate>Mon, 10 Apr 2017 16:40:43 +0100</pubDate>
       
       <guid>/docs/tables/</guid>
-      <description>Base    First Name Last Name Points     Jill Smith 50   Eve Jackson 94     Total points 223    &amp;lt;table&amp;gt;&amp;hellip;&amp;lt;/table&amp;gt;  Bordered   First Name Last Name Points     Jill Smith 50   Eve Jackson 94     Total points 223    &amp;lt;table class=&amp;ldquo;bordered&amp;rdquo;&amp;gt;&amp;hellip;&amp;lt;/table&amp;gt;  Striped   First Name Last Name Points     Jill Smith 50   Eve Jackson 94     Total points 223    &amp;lt;table class=&amp;ldquo;striped&amp;rdquo;&amp;gt;&amp;hellip;&amp;lt;/table&amp;gt;  Unstyled   First Name Last Name Points     Jill Smith 50   Eve Jackson 94     Total points 223    &amp;lt;table class=&amp;ldquo;unstyled&amp;rdquo;&amp;gt;&amp;hellip;&amp;lt;/table&amp;gt;  Mixed   First Name Last Name Points     Jill Smith 50   Eve Jackson 94     Total points 223    &amp;lt;table class=&amp;ldquo;bordered striped&amp;rdquo;&amp;gt;&amp;hellip;&amp;lt;/table&amp;gt;  Width   First Name Last Name Points     Jill Smith 50   Eve Jackson 94    &amp;lt;table&amp;gt; &amp;lt;tr&amp;gt; &amp;lt;td class=&amp;ldquo;w40&amp;rdquo;&amp;gt;&amp;hellip;&amp;lt;/td&amp;gt; &amp;lt;td class=&amp;ldquo;w40&amp;rdquo;&amp;gt;&amp;hellip;&amp;lt;/td&amp;gt; &amp;lt;td class=&amp;ldquo;w20&amp;rdquo;&amp;gt;&amp;hellip;&amp;lt;/td&amp;gt; &amp;lt;/tr&amp;gt; &amp;lt;/table&amp;gt;</description>
+      <description></description>
     </item>
     
     <item>
@@ -67,9 +63,7 @@
       <pubDate>Mon, 10 Apr 2017 16:40:50 +0100</pubDate>
       
       <guid>/docs/forms/</guid>
-      <description>Base This is the most basic form with all the basic inputs.
-Email  Country  &amp;mdash;    Check me Radio me    Log in Cancel  
-&amp;lt;form method=&#34;post&#34; action=&#34;&#34; class=&#34;form&#34;&amp;gt; &amp;lt;div class=&#34;form-item&#34;&amp;gt; &amp;lt;label&amp;gt;Email&amp;lt;/label&amp;gt; &amp;lt;input type=&#34;email&#34; name=&#34;email&#34; class=&#34;w50&#34;&amp;gt; &amp;lt;/div&amp;gt; &amp;lt;div class=&#34;form-item&#34;&amp;gt; &amp;lt;label&amp;gt;Country&amp;lt;/label&amp;gt; &amp;lt;select&amp;gt; &amp;lt;option value=&#34;&#34;&amp;gt;---&amp;lt;/option&amp;gt; &amp;lt;/select&amp;gt; &amp;lt;/div&amp;gt; &amp;lt;div class=&#34;form-item&#34;&amp;gt; &amp;lt;label class=&#34;checkbox&#34;&amp;gt;&amp;lt;input type=&#34;checkbox&#34;&amp;gt; Check me&amp;lt;/label&amp;gt; &amp;lt;label class=&#34;checkbox&#34;&amp;gt;&amp;lt;input type=&#34;radio&#34;&amp;gt; Radio me&amp;lt;/label&amp;gt; &amp;lt;/div&amp;gt; &amp;lt;div class=&#34;form-item&#34;&amp;gt; &amp;lt;textarea rows=&#34;6&#34;&amp;gt;&amp;lt;/textarea&amp;gt; &amp;lt;/div&amp;gt; &amp;lt;div class=&#34;</description>
+      <description></description>
     </item>
     
     <item>
@@ -78,8 +72,7 @@ Email  Country  &amp;mdash;    Check me Radio me    Log in Cancel
       <pubDate>Mon, 10 Apr 2017 16:41:16 +0100</pubDate>
       
       <guid>/docs/buttons/</guid>
-      <description>Primary Button Button &amp;lt;button class=&amp;ldquo;button&amp;rdquo;&amp;gt;Button&amp;lt;/button&amp;gt; &amp;lt;a href=&amp;rdquo;#&amp;rdquo; class=&amp;ldquo;button&amp;rdquo;&amp;gt;Button&amp;lt;/a&amp;gt;  Secondary Button Button &amp;lt;button class=&amp;ldquo;button secondary&amp;rdquo;&amp;gt;Button&amp;lt;/button&amp;gt; &amp;lt;a href=&amp;rdquo;#&amp;rdquo; class=&amp;ldquo;button secondary&amp;rdquo;&amp;gt;Button&amp;lt;/a&amp;gt;  Outline Outline class does exactly what it is supposed to do: styles a button with an outline with no fill color.
-Button Button &amp;lt;button class=&amp;ldquo;button outline&amp;rdquo;&amp;gt;Button&amp;lt;/button&amp;gt; &amp;lt;button class=&amp;ldquo;button secondary outline&amp;rdquo;&amp;gt;Button&amp;lt;/button&amp;gt;  Disabled Disabled buttons are automatically styles with muted colors, inactive and not clickable. As you can see, there&amp;rsquo;s no need to set disabled class for the button element, and disabled argument is enough.</description>
+      <description>&amp;lt;buttonclass=&amp;quot;button outline&amp;quot;&amp;gt;&amp;lt;iclass=&amp;quot;kube-search&amp;quot;&amp;gt;&amp;lt;/i&amp;gt;&amp;lt;/button&amp;gt;&amp;lt;buttonclass=&amp;quot;button secondary outline&amp;quot;&amp;gt;&amp;lt;iclass=&amp;quot;kube-search&amp;quot;&amp;gt;&amp;lt;/i&amp;gt;Search&amp;lt;/button&amp;gt;// html&amp;lt;buttonclass=&amp;quot;button red&amp;quot;&amp;gt;Button&amp;lt;/button&amp;gt; &amp;lt;buttonclass=&amp;quot;button red outline&amp;quot;&amp;gt;Button&amp;lt;/button&amp;gt;</description>
     </item>
     
     <item>
@@ -88,7 +81,7 @@ Button Button &amp;lt;button class=&amp;ldquo;button outline&amp;rdquo;&amp;gt;B
       <pubDate>Mon, 10 Apr 2017 16:40:43 +0100</pubDate>
       
       <guid>/docs/labels/</guid>
-      <description>Base Default &amp;nbsp; Success &amp;nbsp; Error &amp;nbsp; Warning &amp;nbsp; Focus &amp;nbsp; Black &amp;nbsp; Inverted  Outline Default &amp;nbsp; Success &amp;nbsp; Error &amp;nbsp; Warning &amp;nbsp; Focus &amp;nbsp; Black &amp;nbsp; Inverted  Upper Default &amp;nbsp; Success &amp;nbsp; Error &amp;nbsp; Warning &amp;nbsp; Focus &amp;nbsp; Black &amp;nbsp; Inverted  Tag Default &amp;nbsp; Success &amp;nbsp; Error &amp;nbsp; Warning &amp;nbsp; Focus &amp;nbsp; Black &amp;nbsp; Inverted  Badges Labels are ideal for use as badges with badge class.</description>
+      <description>&amp;lt;!&amp;ndash; html &amp;ndash;&amp;gt;&amp;lt;spanclass=&amp;quot;label custom&amp;quot;&amp;gt;Label&amp;lt;/span&amp;gt;&amp;lt;spanclass=&amp;quot;label badge custom&amp;quot;&amp;gt;1&amp;lt;/span&amp;gt;&amp;lt;spanclass=&amp;quot;label tag custom&amp;quot;&amp;gt;Tag&amp;lt;/span&amp;gt;</description>
     </item>
     
     <item>
@@ -97,7 +90,7 @@ Button Button &amp;lt;button class=&amp;ldquo;button outline&amp;rdquo;&amp;gt;B
       <pubDate>Mon, 10 Apr 2017 16:41:34 +0100</pubDate>
       
       <guid>/docs/messages/</guid>
-      <description>Usage You have 2 modules waiting to installation. Install   &amp;lt;div class=&amp;ldquo;message&amp;rdquo; data-component=&amp;ldquo;message&amp;rdquo;&amp;gt; &amp;hellip; &amp;lt;span class=&amp;ldquo;close small&amp;rdquo;&amp;gt;&amp;lt;/span&amp;gt;&amp;lt;/div&amp;gt;  You have 2 modules waiting to installation. Install   &amp;lt;div class=&amp;ldquo;message error&amp;rdquo; data-component=&amp;ldquo;message&amp;rdquo;&amp;gt; &amp;hellip; &amp;lt;span class=&amp;ldquo;close small&amp;rdquo;&amp;gt;&amp;lt;/span&amp;gt;&amp;lt;/div&amp;gt;  You have 2 modules waiting to installation. Install   &amp;lt;div class=&amp;ldquo;message success&amp;rdquo; data-component=&amp;ldquo;message&amp;rdquo;&amp;gt; &amp;hellip; &amp;lt;span class=&amp;ldquo;close small&amp;rdquo;&amp;gt;&amp;lt;/span&amp;gt;&amp;lt;/div&amp;gt;  Warning!You have 2 modules waiting to installation. Install   &amp;lt;div class=&amp;ldquo;message warning&amp;rdquo; data-component=&amp;ldquo;message&amp;rdquo;&amp;gt; &amp;lt;h5&amp;gt;&amp;hellip;&amp;lt;/h5&amp;gt; &amp;hellip; &amp;lt;span class=&amp;ldquo;close small&amp;rdquo;&amp;gt;&amp;lt;/span&amp;gt; &amp;lt;/div&amp;gt;   You have 2 modules waiting to installation.</description>
+      <description></description>
     </item>
     
     <item>
@@ -106,8 +99,7 @@ Button Button &amp;lt;button class=&amp;ldquo;button outline&amp;rdquo;&amp;gt;B
       <pubDate>Mon, 10 Apr 2017 16:41:40 +0100</pubDate>
       
       <guid>/docs/tabs/</guid>
-      <description>Base Here&amp;rsquo;s an example of basic tabs setup. Tabs bar is an unordered list, and each tab in tabs bar is a list item. For each tab there&amp;rsquo;s a corresponding div, which contains the body of the tab (it can be any kind of HTML).
- Home   Shop   Catalog   T-Shirts   Brand    Home Lorem ipsum dolor sit amet, consectetur adipisicing elit, sed do eiusmod tempor incididunt ut labore et dolore magna aliqua.</description>
+      <description>&amp;lt;divid=&amp;quot;tab1&amp;quot;&amp;gt;&amp;hellip;&amp;lt;/div&amp;gt;&amp;lt;divid=&amp;quot;tab2&amp;quot;&amp;gt;&amp;hellip;&amp;lt;/div&amp;gt;&amp;lt;navid=&amp;quot;tabs&amp;quot;class=&amp;quot;tabs&amp;quot;data-component=&amp;quot;tabs&amp;quot;&amp;gt;&amp;lt;ul&amp;gt;&amp;lt;li&amp;gt;&amp;lt;ahref=&amp;rdquo;#tab1&amp;quot;&amp;gt;Home&amp;lt;/a&amp;gt;&amp;lt;/li&amp;gt;&amp;lt;liclass=&amp;quot;active&amp;quot;&amp;gt;&amp;lt;ahref=&amp;rdquo;#tab2&amp;quot;&amp;gt;Shop&amp;lt;/a&amp;gt;&amp;lt;/li&amp;gt;&amp;lt;li&amp;gt;&amp;lt;ahref=&amp;rdquo;#tab3&amp;quot;&amp;gt;Catalog&amp;lt;/a&amp;gt;&amp;lt;/li&amp;gt;&amp;lt;li&amp;gt;&amp;lt;ahref=&amp;rdquo;#tab4&amp;quot;&amp;gt;T-Shirts&amp;lt;/a&amp;gt;&amp;lt;/li&amp;gt;&amp;lt;li&amp;gt;&amp;lt;ahref=&amp;rdquo;#tab5&amp;quot;&amp;gt;Brand&amp;lt;/a&amp;gt;&amp;lt;/li&amp;gt;&amp;lt;/ul&amp;gt;&amp;lt;/nav&amp;gt;&amp;lt;divid=&amp;quot;tab1&amp;quot;&amp;gt;&amp;hellip;&amp;lt;/div&amp;gt;&amp;lt;divid=&amp;quot;tab2&amp;quot;&amp;gt;&amp;hellip;&amp;lt;/div&amp;gt;&amp;lt;divid=&amp;quot;tab3&amp;quot;&amp;gt;&amp;hellip;&amp;lt;/div&amp;gt;&amp;lt;divid=&amp;quot;tab4&amp;quot;&amp;gt;&amp;hellip;&amp;lt;/div&amp;gt;&amp;lt;divid=&amp;quot;tab4&amp;quot;&amp;gt;&amp;hellip;&amp;lt;/div&amp;gt;&amp;lt;divid=&amp;quot;tab1&amp;quot;&amp;gt;&amp;hellip;&amp;lt;/div&amp;gt;&amp;lt;divid=&amp;quot;tab2&amp;quot;&amp;gt;&amp;hellip;&amp;lt;/div&amp;gt;&amp;lt;divid=&amp;quot;tab-general&amp;quot;data-title=&amp;quot;General&amp;quot;class=&amp;quot;tab-live&amp;quot;&amp;gt;&amp;hellip;&amp;lt;/div&amp;gt; &amp;lt;divid=&amp;quot;tab-additional&amp;quot;data-title=&amp;quot;Additional&amp;quot;class=&amp;quot;tab-live&amp;quot;&amp;gt;&amp;hellip;&amp;lt;/div&amp;gt; //or$(&amp;rsquo;#tabs&#39;).tabs(&#39;open&#39;, &amp;rsquo;#tab1&#39;); //or$(&amp;rsquo;#tabs&#39;).tabs(&#39;close&#39;, &amp;rsquo;#tab1&#39;); </description>
     </item>
     
     <item>
@@ -116,7 +108,7 @@ Button Button &amp;lt;button class=&amp;ldquo;button outline&amp;rdquo;&amp;gt;B
       <pubDate>Mon, 10 Apr 2017 16:41:54 +0100</pubDate>
       
       <guid>/docs/breadcrumbs/</guid>
-      <description>Base   Home   Shop   Catalog   T-Shirts  Brand   &amp;lt;nav class=&amp;ldquo;breadcrumbs&amp;rdquo;&amp;gt; &amp;lt;ul&amp;gt; &amp;lt;li&amp;gt;&amp;lt;a href=&amp;rdquo;&amp;rdquo;&amp;gt;&amp;hellip;&amp;lt;/a&amp;gt;&amp;lt;/li&amp;gt; &amp;lt;li&amp;gt;&amp;lt;span&amp;gt;&amp;hellip;&amp;lt;/span&amp;gt;&amp;lt;/li&amp;gt; &amp;lt;/ul&amp;gt; &amp;lt;/nav&amp;gt;   Centered   Home   Shop   Catalog   T-Shirts  Brand    &amp;lt;nav class=&amp;ldquo;breadcrumbs push-center&amp;rdquo;&amp;gt; &amp;lt;ul&amp;gt; &amp;lt;li&amp;gt;&amp;lt;a href=&amp;rdquo;&amp;rdquo;&amp;gt;&amp;hellip;&amp;lt;/a&amp;gt;&amp;lt;/li&amp;gt; &amp;lt;li class=&amp;ldquo;active&amp;rdquo;&amp;gt;&amp;lt;a href=&amp;rdquo;&amp;rdquo;&amp;gt;&amp;hellip;&amp;lt;/a&amp;gt;&amp;lt;/li&amp;gt; &amp;lt;/ul&amp;gt; &amp;lt;/nav&amp;gt;   Custom Separator   Home   Shop   Catalog   T-Shirts  Brand   // css #breadcrumbs-custom-separator li:after { content: &amp;lsquo;&amp;gt;&amp;lsquo;; }</description>
+      <description>// html&amp;lt;nav id=&amp;quot;breadcrumbs-custom-separator&amp;rdquo; class=&amp;quot;breadcrumbs&amp;rdquo;&amp;gt;&amp;lt;ul&amp;gt;&amp;lt;li&amp;gt;&amp;lt;a href=&amp;rdquo;&amp;quot;&amp;gt;&amp;hellip;&amp;lt;/a&amp;gt;&amp;lt;/li&amp;gt;&amp;lt;li&amp;gt;&amp;lt;span&amp;gt;&amp;hellip;&amp;lt;/span&amp;gt;&amp;lt;/li&amp;gt;&amp;lt;/ul&amp;gt;&amp;lt;/nav&amp;gt;</description>
     </item>
     
     <item>
@@ -125,7 +117,7 @@ Button Button &amp;lt;button class=&amp;ldquo;button outline&amp;rdquo;&amp;gt;B
       <pubDate>Mon, 10 Apr 2017 16:42:03 +0100</pubDate>
       
       <guid>/docs/pagination/</guid>
-      <description>Base  ←    1  2   3   4   5    →    &amp;lt;nav class=&amp;ldquo;pagination&amp;rdquo;&amp;gt; &amp;lt;ul&amp;gt; &amp;lt;li class=&amp;ldquo;prev&amp;rdquo;&amp;gt;&amp;lt;a href=&amp;rdquo;&amp;rdquo;&amp;gt;&amp;amp;larr;&amp;lt;/a&amp;gt;&amp;lt;/li&amp;gt; &amp;lt;li&amp;gt; &amp;lt;ul&amp;gt; &amp;lt;li&amp;gt;&amp;lt;span&amp;gt;&amp;hellip;&amp;lt;/span&amp;gt;&amp;lt;/li&amp;gt; &amp;lt;li&amp;gt;&amp;lt;a href=&amp;rdquo;&amp;rdquo;&amp;gt;&amp;hellip;&amp;lt;/a&amp;gt;&amp;lt;/li&amp;gt; &amp;lt;/ul&amp;gt; &amp;lt;/li&amp;gt; &amp;lt;li class=&amp;ldquo;next&amp;rdquo;&amp;gt;&amp;lt;a href=&amp;rdquo;&amp;rdquo;&amp;gt;&amp;amp;rarr;&amp;lt;/a&amp;gt;&amp;lt;/li&amp;gt; &amp;lt;/ul&amp;gt; &amp;lt;/nav&amp;gt;   Centered  ←    1   2   3   4   5    →    &amp;lt;nav class=&amp;ldquo;pagination align-center&amp;rdquo;&amp;gt; &amp;lt;ul&amp;gt; &amp;lt;li class=&amp;ldquo;prev&amp;rdquo;&amp;gt;&amp;lt;a href=&amp;rdquo;&amp;rdquo;&amp;gt;&amp;amp;larr;&amp;lt;/a&amp;gt;&amp;lt;/li&amp;gt; &amp;lt;li&amp;gt; &amp;lt;ul&amp;gt; &amp;lt;li class=&amp;ldquo;active&amp;rdquo;&amp;gt;&amp;lt;a href=&amp;rdquo;#&amp;rdquo;&amp;gt;&amp;hellip;&amp;lt;/a&amp;gt;&amp;lt;/li&amp;gt; &amp;lt;li&amp;gt;&amp;lt;a href=&amp;rdquo;&amp;rdquo;&amp;gt;&amp;hellip;&amp;lt;/a&amp;gt;&amp;lt;/li&amp;gt; &amp;lt;/ul&amp;gt; &amp;lt;/li&amp;gt; &amp;lt;li class=&amp;ldquo;next&amp;rdquo;&amp;gt;&amp;lt;a href=&amp;rdquo;&amp;rdquo;&amp;gt;&amp;amp;rarr;&amp;lt;/a&amp;gt;&amp;lt;/li&amp;gt; &amp;lt;/ul&amp;gt; &amp;lt;/nav&amp;gt;   Wide Here you can see an example where previous and next buttons are aligned to the left and to the right, with a link in the center of the page.</description>
+      <description></description>
     </item>
     
     <item>
@@ -134,10 +126,7 @@ Button Button &amp;lt;button class=&amp;ldquo;button outline&amp;rdquo;&amp;gt;B
       <pubDate>Mon, 10 Apr 2017 16:42:12 +0100</pubDate>
       
       <guid>/docs/dropdown/</guid>
-      <description>Demo Show Dropdown 
-   Item 1   Item 2  Item 3   Item 4   Item 5   Item 6    // Toggle &amp;lt;a href=&amp;rdquo;#&amp;rdquo; data-component=&amp;ldquo;dropdown&amp;rdquo; data-target=&amp;rdquo;#my-dropdown&amp;rdquo;&amp;gt;Show &amp;lt;span class=&amp;ldquo;caret down&amp;rdquo;&amp;gt;&amp;lt;/span&amp;gt;&amp;lt;/a&amp;gt;
-// Dropdown &amp;lt;div class=&amp;ldquo;dropdown hide&amp;rdquo; id=&amp;ldquo;my-dropdown&amp;rdquo;&amp;gt; &amp;lt;a href=&amp;rdquo;&amp;rdquo; class=&amp;ldquo;close show-sm&amp;rdquo;&amp;gt;&amp;lt;/a&amp;gt; &amp;lt;ul&amp;gt; &amp;lt;li&amp;gt;&amp;lt;a href=&amp;rdquo;&amp;rdquo;&amp;gt;&amp;hellip;&amp;lt;/a&amp;gt;&amp;lt;/li&amp;gt; &amp;lt;/ul&amp;gt; &amp;lt;/div&amp;gt;   Show Dropdown 
-Lorem ipsum dolor sit amet, consectetur adipisicing elit, sed do eiusmod tempor incididunt ut labore et dolore magna aliqua.</description>
+      <description>// Dropdown &amp;lt;divclass=&amp;quot;dropdown hide&amp;quot;id=&amp;quot;my-dropdown&amp;quot;&amp;gt;&amp;lt;ahref=&amp;quot;&amp;ldquo;class=&amp;quot;close show-sm&amp;quot;&amp;gt;&amp;lt;/a&amp;gt;&amp;lt;ul&amp;gt;&amp;lt;li&amp;gt;&amp;lt;ahref=&amp;quot;&amp;ldquo;&amp;gt;&amp;hellip;&amp;lt;/a&amp;gt;&amp;lt;/li&amp;gt;&amp;lt;/ul&amp;gt;&amp;lt;/div&amp;gt;// Dropdown &amp;lt;divclass=&amp;quot;dropdown hide&amp;quot;id=&amp;quot;my-dropdown&amp;quot;&amp;gt;&amp;lt;span class=&amp;quot;hljs-tag&amp;quot;&amp;gt;&amp;amp;lt;&amp;lt;span class=&amp;quot;hljs-name&amp;quot;&amp;gt;p&amp;lt;/span&amp;gt;&amp;amp;gt;&amp;lt;/span&amp;gt;...&amp;lt;span class=&amp;quot;hljs-tag&amp;quot;&amp;gt;&amp;amp;lt;/&amp;lt;span class=&amp;quot;hljs-name&amp;quot;&amp;gt;p&amp;lt;/span&amp;gt;&amp;amp;gt;&amp;lt;/span&amp;gt; &amp;lt;span class=&amp;quot;hljs-tag&amp;quot;&amp;gt;&amp;amp;lt;&amp;lt;span class=&amp;quot;hljs-name&amp;quot;&amp;gt;a&amp;lt;/span&amp;gt; &amp;lt;span class=&amp;quot;hljs-attr&amp;quot;&amp;gt;href&amp;lt;/span&amp;gt;=&amp;lt;span class=&amp;quot;hljs-string&amp;quot;&amp;gt;&amp;quot;#&amp;quot;&amp;lt;/span&amp;gt; &amp;lt;span class=&amp;quot;hljs-attr&amp;quot;&amp;gt;data-action&amp;lt;/span&amp;gt;=&amp;lt;span class=&amp;quot;hljs-string&amp;quot;&amp;gt;&amp;quot;dropdown-close&amp;quot;&amp;lt;/span&amp;gt;&amp;amp;gt;&amp;lt;/span&amp;gt;Close&amp;lt;span class=&amp;quot;hljs-tag&amp;quot;&amp;gt;&amp;amp;lt;/&amp;lt;span class=&amp;quot;hljs-name&amp;quot;&amp;gt;a&amp;lt;/span&amp;gt;&amp;amp;gt;&amp;lt;/span&amp;gt;  &amp;lt;/div&amp;gt;// Dropdown &amp;lt;divclass=&amp;quot;dropdown hide&amp;quot;id=&amp;quot;dropdown-fixed&amp;quot;&amp;gt;&amp;lt;ul&amp;gt;&amp;lt;li&amp;gt;&amp;lt;ahref=&amp;quot;&amp;ldquo;&amp;gt;&amp;hellip;&amp;lt;/a&amp;gt;&amp;lt;/li&amp;gt;&amp;lt;/ul&amp;gt;&amp;lt;/div&amp;gt;</description>
     </item>
     
     <item>
@@ -146,10 +135,8 @@ Lorem ipsum dolor sit amet, consectetur adipisicing elit, sed do eiusmod tempor 
       <pubDate>Mon, 10 Apr 2017 16:42:18 +0100</pubDate>
       
       <guid>/docs/modal/</guid>
-      <description>Calling Here you add an actual call to the modal window. Clicking the &amp;ldquo;Open&amp;rdquo; button below will launch a modal with content of a #my-modal div. You can use buttons or links to open modals in Kube. Clicking anywhere outside of the modal or hitting ESC will close the window.
-Open
-// Call &amp;lt;button data-component=&amp;ldquo;modal&amp;rdquo; data-target=&amp;rdquo;#my-modal&amp;rdquo;&amp;gt;Open&amp;lt;/button&amp;gt;
-// Markup &amp;lt;div id=&amp;ldquo;my-modal&amp;rdquo; class=&amp;ldquo;modal-box hide&amp;rdquo;&amp;gt; &amp;lt;div class=&amp;ldquo;modal&amp;rdquo;&amp;gt; &amp;lt;span class=&amp;ldquo;close&amp;rdquo;&amp;gt;&amp;lt;/span&amp;gt; &amp;lt;div class=&amp;ldquo;modal-header&amp;rdquo;&amp;gt;Modal Header&amp;lt;/div&amp;gt; &amp;lt;div class=&amp;ldquo;modal-body&amp;rdquo;&amp;gt;&amp;hellip;&amp;lt;/div&amp;gt; &amp;lt;/div&amp;gt; &amp;lt;/div&amp;gt;   Open from url</description>
+      <description>// Markup &amp;lt;divid=&amp;quot;my-modal&amp;quot;class=&amp;quot;modal-box hide&amp;quot;&amp;gt; &amp;lt;divclass=&amp;quot;modal&amp;quot;&amp;gt; &amp;lt;span class=&amp;quot;close&amp;quot;&amp;gt;&amp;lt;/span&amp;gt; &amp;lt;divclass=&amp;quot;modal-header&amp;quot;&amp;gt;Modal Header&amp;lt;/div&amp;gt; &amp;lt;divclass=&amp;quot;modal-body&amp;quot;&amp;gt;&amp;hellip;&amp;lt;/div&amp;gt; &amp;lt;/div&amp;gt; &amp;lt;/div&amp;gt; // Markup &amp;lt;divid=&amp;quot;ui-modal&amp;quot;class=&amp;quot;modal-box hide&amp;quot;&amp;gt; &amp;lt;divclass=&amp;quot;modal&amp;quot;&amp;gt; &amp;lt;span class=&amp;quot;close&amp;quot;&amp;gt;&amp;lt;/span&amp;gt; &amp;lt;divclass=&amp;quot;modal-header&amp;quot;&amp;gt;UI Modal&amp;lt;/div&amp;gt; &amp;lt;divclass=&amp;quot;modal-body&amp;quot;&amp;gt;&amp;hellip; contentfrommodal.html &amp;hellip;&amp;lt;/div&amp;gt; &amp;lt;/div&amp;gt; &amp;lt;/div&amp;gt;
+// modal.html &amp;lt;p&amp;gt;&amp;hellip;&amp;lt;/p&amp;gt; &amp;lt;a href=&amp;rdquo;#&amp;ldquo;data-action=&amp;quot;modal-close&amp;quot;&amp;gt;Close&amp;lt;/a&amp;gt; </description>
     </item>
     
     <item>
@@ -158,10 +145,7 @@ Open
       <pubDate>Mon, 10 Apr 2017 16:42:26 +0100</pubDate>
       
       <guid>/docs/sticky/</guid>
-      <description>Demo Scroll down to fix the navigation.
-    Shop   News   Contact   Blog   Account     &amp;lt;div data-component=&amp;ldquo;sticky&amp;rdquo;&amp;gt;&amp;hellip;&amp;lt;/div&amp;gt;  Settings offset  Type: int Default: 0  Sets top offset in pixels when navigation is fixed.
-Callbacks fixed Using this callback, you can act upon menu becoming fixed at the top of the page.
-$(&amp;rsquo;#my-nav&amp;rsquo;).on(&amp;lsquo;fixed.sticky&amp;rsquo;, function() { // do something&amp;hellip; });  unfixed Whenever fixed position of the menu is released, you can do something with this callback.</description>
+      <description></description>
     </item>
     
     <item>
@@ -199,9 +183,7 @@ This blog post showcases only the visible changes, a substantial amount of work 
       <pubDate>Fri, 02 Feb 2018 00:00:00 +0000</pubDate>
       
       <guid>/blog/rstudio-conf/</guid>
-      <description>Link to video 
-Connecting to open source databases – RStudio
-Slides   Full screen version</description>
+      <description>Link to video Slides Full screen version</description>
     </item>
     
     <item>
@@ -220,7 +202,7 @@ Slides   Full screen version</description>
       <pubDate>Mon, 10 Apr 2017 16:42:50 +0100</pubDate>
       
       <guid>/docs/collapse/</guid>
-      <description>Base Item 1 Lorem ipsum dolor sit amet, consectetur adipisicing elit, sed do eiusmod tempor incididunt ut labore et dolore magna aliqua. Ut enim ad minim veniam, quis nostrud exercitation ullamco laboris nisi ut aliquip ex ea commodo consequat. Duis aute irure dolor in reprehenderit in voluptate velit esse cillum dolore eu fugiat nulla pariatur. Excepteur sint occaecat cupidatat non proident, sunt in culpa qui officia deserunt mollit anim id est laborum.</description>
+      <description>&amp;lt;divid=&amp;quot;my-collapse-api&amp;quot;data-component=&amp;quot;collapse&amp;quot;&amp;gt;&amp;lt;span class=&amp;quot;hljs-tag&amp;quot;&amp;gt;&amp;amp;lt;&amp;lt;span class=&amp;quot;hljs-name&amp;quot;&amp;gt;h4&amp;lt;/span&amp;gt;&amp;amp;gt;&amp;lt;/span&amp;gt;&amp;lt;span class=&amp;quot;hljs-tag&amp;quot;&amp;gt;&amp;amp;lt;&amp;lt;span class=&amp;quot;hljs-name&amp;quot;&amp;gt;a&amp;lt;/span&amp;gt; &amp;lt;span class=&amp;quot;hljs-attr&amp;quot;&amp;gt;href&amp;lt;/span&amp;gt;=&amp;lt;span class=&amp;quot;hljs-string&amp;quot;&amp;gt;&amp;quot;#box-1&amp;quot;&amp;lt;/span&amp;gt; &amp;lt;span class=&amp;quot;hljs-attr&amp;quot;&amp;gt;class&amp;lt;/span&amp;gt;=&amp;lt;span class=&amp;quot;hljs-string&amp;quot;&amp;gt;&amp;quot;collapse-toggle&amp;quot;&amp;lt;/span&amp;gt;&amp;amp;gt;&amp;lt;/span&amp;gt;...&amp;lt;span class=&amp;quot;hljs-tag&amp;quot;&amp;gt;&amp;amp;lt;/&amp;lt;span class=&amp;quot;hljs-name&amp;quot;&amp;gt;a&amp;lt;/span&amp;gt;&amp;amp;gt;&amp;lt;/span&amp;gt;&amp;lt;span class=&amp;quot;hljs-tag&amp;quot;&amp;gt;&amp;amp;lt;/&amp;lt;span class=&amp;quot;hljs-name&amp;quot;&amp;gt;h4&amp;lt;/span&amp;gt;&amp;amp;gt;&amp;lt;/span&amp;gt; &amp;lt;span class=&amp;quot;hljs-tag&amp;quot;&amp;gt;&amp;amp;lt;&amp;lt;span class=&amp;quot;hljs-name&amp;quot;&amp;gt;div&amp;lt;/span&amp;gt; &amp;lt;span class=&amp;quot;hljs-attr&amp;quot;&amp;gt;class&amp;lt;/span&amp;gt;=&amp;lt;span class=&amp;quot;hljs-string&amp;quot;&amp;gt;&amp;quot;collapse-box hide&amp;quot;&amp;lt;/span&amp;gt; &amp;lt;span class=&amp;quot;hljs-attr&amp;quot;&amp;gt;id&amp;lt;/span&amp;gt;=&amp;lt;span class=&amp;quot;hljs-string&amp;quot;&amp;gt;&amp;quot;box-1&amp;quot;&amp;lt;/span&amp;gt;&amp;amp;gt;&amp;lt;/span&amp;gt;...&amp;lt;span class=&amp;quot;hljs-tag&amp;quot;&amp;gt;&amp;amp;lt;/&amp;lt;span class=&amp;quot;hljs-name&amp;quot;&amp;gt;div&amp;lt;/span&amp;gt;&amp;amp;gt;&amp;lt;/span&amp;gt; &amp;lt;span class=&amp;quot;hljs-tag&amp;quot;&amp;gt;&amp;amp;lt;&amp;lt;span class=&amp;quot;hljs-name&amp;quot;&amp;gt;h4&amp;lt;/span&amp;gt;&amp;amp;gt;&amp;lt;/span&amp;gt;&amp;lt;span class=&amp;quot;hljs-tag&amp;quot;&amp;gt;&amp;amp;lt;&amp;lt;span class=&amp;quot;hljs-name&amp;quot;&amp;gt;a&amp;lt;/span&amp;gt; &amp;lt;span class=&amp;quot;hljs-attr&amp;quot;&amp;gt;href&amp;lt;/span&amp;gt;=&amp;lt;span class=&amp;quot;hljs-string&amp;quot;&amp;gt;&amp;quot;#box-2&amp;quot;&amp;lt;/span&amp;gt; &amp;lt;span class=&amp;quot;hljs-attr&amp;quot;&amp;gt;class&amp;lt;/span&amp;gt;=&amp;lt;span class=&amp;quot;hljs-string&amp;quot;&amp;gt;&amp;quot;collapse-toggle&amp;quot;&amp;lt;/span&amp;gt;&amp;amp;gt;&amp;lt;/span&amp;gt;...&amp;lt;span class=&amp;quot;hljs-tag&amp;quot;&amp;gt;&amp;amp;lt;/&amp;lt;span class=&amp;quot;hljs-name&amp;quot;&amp;gt;a&amp;lt;/span&amp;gt;&amp;amp;gt;&amp;lt;/span&amp;gt;&amp;lt;span class=&amp;quot;hljs-tag&amp;quot;&amp;gt;&amp;amp;lt;/&amp;lt;span class=&amp;quot;hljs-name&amp;quot;&amp;gt;h4&amp;lt;/span&amp;gt;&amp;amp;gt;&amp;lt;/span&amp;gt; &amp;lt;span class=&amp;quot;hljs-tag&amp;quot;&amp;gt;&amp;amp;lt;&amp;lt;span class=&amp;quot;hljs-name&amp;quot;&amp;gt;div&amp;lt;/span&amp;gt; &amp;lt;span class=&amp;quot;hljs-attr&amp;quot;&amp;gt;class&amp;lt;/span&amp;gt;=&amp;lt;span class=&amp;quot;hljs-string&amp;quot;&amp;gt;&amp;quot;collapse-box hide&amp;quot;&amp;lt;/span&amp;gt; &amp;lt;span class=&amp;quot;hljs-attr&amp;quot;&amp;gt;id&amp;lt;/span&amp;gt;=&amp;lt;span class=&amp;quot;hljs-string&amp;quot;&amp;gt;&amp;quot;box-2&amp;quot;&amp;lt;/span&amp;gt;&amp;amp;gt;&amp;lt;/span&amp;gt;...&amp;lt;span class=&amp;quot;hljs-tag&amp;quot;&amp;gt;&amp;amp;lt;/&amp;lt;span class=&amp;quot;hljs-name&amp;quot;&amp;gt;div&amp;lt;/span&amp;gt;&amp;amp;gt;&amp;lt;/span&amp;gt; &amp;lt;span class=&amp;quot;hljs-tag&amp;quot;&amp;gt;&amp;amp;lt;&amp;lt;span class=&amp;quot;hljs-name&amp;quot;&amp;gt;h4&amp;lt;/span&amp;gt;&amp;amp;gt;&amp;lt;/span&amp;gt;&amp;lt;span class=&amp;quot;hljs-tag&amp;quot;&amp;gt;&amp;amp;lt;&amp;lt;span class=&amp;quot;hljs-name&amp;quot;&amp;gt;a&amp;lt;/span&amp;gt; &amp;lt;span class=&amp;quot;hljs-attr&amp;quot;&amp;gt;href&amp;lt;/span&amp;gt;=&amp;lt;span class=&amp;quot;hljs-string&amp;quot;&amp;gt;&amp;quot;#box-3&amp;quot;&amp;lt;/span&amp;gt; &amp;lt;span class=&amp;quot;hljs-attr&amp;quot;&amp;gt;class&amp;lt;/span&amp;gt;=&amp;lt;span class=&amp;quot;hljs-string&amp;quot;&amp;gt;&amp;quot;collapse-toggle&amp;quot;&amp;lt;/span&amp;gt;&amp;amp;gt;&amp;lt;/span&amp;gt;...&amp;lt;span class=&amp;quot;hljs-tag&amp;quot;&amp;gt;&amp;amp;lt;/&amp;lt;span class=&amp;quot;hljs-name&amp;quot;&amp;gt;a&amp;lt;/span&amp;gt;&amp;amp;gt;&amp;lt;/span&amp;gt;&amp;lt;span class=&amp;quot;hljs-tag&amp;quot;&amp;gt;&amp;amp;lt;/&amp;lt;span class=&amp;quot;hljs-name&amp;quot;&amp;gt;h4&amp;lt;/span&amp;gt;&amp;amp;gt;&amp;lt;/span&amp;gt; &amp;lt;span class=&amp;quot;hljs-tag&amp;quot;&amp;gt;&amp;amp;lt;&amp;lt;span class=&amp;quot;hljs-name&amp;quot;&amp;gt;div&amp;lt;/span&amp;gt; &amp;lt;span class=&amp;quot;hljs-attr&amp;quot;&amp;gt;class&amp;lt;/span&amp;gt;=&amp;lt;span class=&amp;quot;hljs-string&amp;quot;&amp;gt;&amp;quot;collapse-box hide&amp;quot;&amp;lt;/span&amp;gt; &amp;lt;span class=&amp;quot;hljs-attr&amp;quot;&amp;gt;id&amp;lt;/span&amp;gt;=&amp;lt;span class=&amp;quot;hljs-string&amp;quot;&amp;gt;&amp;quot;box-3&amp;quot;&amp;lt;/span&amp;gt;&amp;amp;gt;&amp;lt;/span&amp;gt;.</description>
     </item>
     
     <item>
@@ -229,9 +211,7 @@ Slides   Full screen version</description>
       <pubDate>Mon, 10 Apr 2017 16:42:43 +0100</pubDate>
       
       <guid>/docs/offcanvas/</guid>
-      <description>Demo This feature is very easy to set up. It is based on data-component set to offcanvas, data-target set to the menu layer (#offcanvas-right in example below) and a feature-specific data-direction which is required for right menu to be set to right.
- Open Left Open Right 
-   Home   About   Showcase   Help   Contact         Home   About   Showcase   Help   Contact     // Left &amp;lt;a href=&amp;rdquo;#&amp;rdquo; data-component=&amp;ldquo;offcanvas&amp;rdquo; data-target=&amp;rdquo;#offcanvas-left&amp;rdquo;&amp;gt;Open Left&amp;lt;/a&amp;gt;</description>
+      <description>&amp;lt;divid=&amp;quot;offcanvas-left&amp;quot;class=&amp;quot;hide&amp;quot;&amp;gt;&amp;lt;nav&amp;gt;&amp;lt;ul&amp;gt;&amp;lt;li&amp;gt;&amp;hellip;&amp;lt;/li&amp;gt;&amp;lt;/ul&amp;gt;&amp;lt;/nav&amp;gt;&amp;lt;/div&amp;gt;// Right + Close &amp;lt;ahref=&amp;rdquo;#&amp;ldquo;data-component=&amp;quot;offcanvas&amp;quot;data-target=&amp;rdquo;#offcanvas-right&amp;quot;data-direction=&amp;quot;right&amp;quot;&amp;gt;Open Right&amp;lt;/a&amp;gt;&amp;lt;divid=&amp;quot;offcanvas-right&amp;quot;class=&amp;quot;hide&amp;quot;&amp;gt;&amp;lt;ahref=&amp;rdquo;#&amp;ldquo;class=&amp;quot;close&amp;quot;&amp;gt;&amp;lt;/a&amp;gt;&amp;lt;nav&amp;gt;&amp;lt;ul&amp;gt;&amp;lt;li&amp;gt;&amp;hellip;&amp;lt;/li&amp;gt;&amp;lt;/ul&amp;gt;&amp;lt;/nav&amp;gt;&amp;lt;/div&amp;gt;</description>
     </item>
     
     <item>
@@ -250,9 +230,8 @@ Slides   Full screen version</description>
       <pubDate>Mon, 10 Apr 2017 16:42:59 +0100</pubDate>
       
       <guid>/docs/toggleme/</guid>
-      <description>Demo Toggleme works on mobile devices as well as on desktops. To see Toggleme in action, just resize this window or open this page on a mobile device.
-Toggle      Shop   News   Contact   Blog   Account      &amp;lt;div class=&amp;ldquo;show-sm&amp;rdquo;&amp;gt; &amp;lt;a href=&amp;rdquo;#&amp;rdquo; data-component=&amp;ldquo;toggleme&amp;rdquo; data-target=&amp;rdquo;#navbar&amp;rdquo;&amp;gt;Toggle&amp;lt;/a&amp;gt; &amp;lt;/div&amp;gt;
-&amp;lt;nav id=&amp;ldquo;navbar&amp;rdquo; class=&amp;ldquo;hide-sm&amp;rdquo;&amp;gt; &amp;lt;ul&amp;gt; &amp;lt;li&amp;gt;&amp;lt;a href=&amp;rdquo;#&amp;rdquo;&amp;gt;&amp;hellip;&amp;lt;/a&amp;gt;&amp;lt;/li&amp;gt; &amp;lt;/ul&amp;gt; &amp;lt;/nav&amp;gt;   Usage Show Me</description>
+      <description>&amp;lt;navid=&amp;quot;navbar&amp;quot;class=&amp;quot;hide-sm&amp;quot;&amp;gt;&amp;lt;ul&amp;gt;&amp;lt;li&amp;gt;&amp;lt;ahref=&amp;rdquo;#&amp;ldquo;&amp;gt;&amp;hellip;&amp;lt;/a&amp;gt;&amp;lt;/li&amp;gt;&amp;lt;/ul&amp;gt;&amp;lt;/nav&amp;gt;&amp;lt;divid=&amp;quot;togglebox-target&amp;quot;class=&amp;quot;hide&amp;quot;&amp;gt; &amp;hellip; &amp;lt;/div&amp;gt; &amp;lt;divid=&amp;quot;togglebox-target-1&amp;quot;class=&amp;quot;hide&amp;quot;&amp;gt; &amp;hellip; &amp;lt;/div&amp;gt;
+&amp;lt;divid=&amp;quot;togglebox-target-2&amp;quot;class=&amp;quot;hide&amp;quot;&amp;gt; &amp;hellip; &amp;lt;/div&amp;gt; </description>
     </item>
     
     <item>
@@ -261,7 +240,7 @@ Toggle      Shop   News   Contact   Blog   Account      &amp;lt;div class=&amp;l
       <pubDate>Mon, 10 Apr 2017 16:43:08 +0100</pubDate>
       
       <guid>/docs/animation/</guid>
-      <description>Slide slideUp   slideDown   Slide Up Slide Down $(&amp;rsquo;#element&amp;rsquo;).animation(&amp;lsquo;slideUp&amp;rsquo;); $(&amp;rsquo;#element&amp;rsquo;).animation(&amp;lsquo;slideDown&amp;rsquo;);  Fade fadeIn   fadeOut   Fade In Fade Out $(&amp;rsquo;#element&amp;rsquo;).animation(&amp;lsquo;fadeIn&amp;rsquo;); $(&amp;rsquo;#element&amp;rsquo;).animation(&amp;lsquo;fadeOut&amp;rsquo;);  Flip flipIn   flipOut   Flip In Flip Out $(&amp;rsquo;#element&amp;rsquo;).animation(&amp;lsquo;flipIn&amp;rsquo;); $(&amp;rsquo;#element&amp;rsquo;).animation(&amp;lsquo;flipOut&amp;rsquo;);  Zoom zoomIn   zoomOut   Zoom In Zoom Out $(&amp;rsquo;#element&amp;rsquo;).animation(&amp;lsquo;zoomIn&amp;rsquo;); $(&amp;rsquo;#element&amp;rsquo;).animation(&amp;lsquo;zoomOut&amp;rsquo;);  Rotate rotate   Rotate $(&amp;rsquo;#element&amp;rsquo;).animation(&amp;lsquo;rotate&amp;rsquo;);  Shake shake   Shake $(&amp;rsquo;#element&amp;rsquo;).animation(&amp;lsquo;shake&amp;rsquo;);  Pulse pulse   Pulse $(&amp;rsquo;#element&amp;rsquo;).</description>
+      <description></description>
     </item>
     
     <item>
@@ -270,13 +249,7 @@ Toggle      Shop   News   Contact   Blog   Account      &amp;lt;div class=&amp;l
       <pubDate>Mon, 10 Apr 2017 16:43:14 +0100</pubDate>
       
       <guid>/docs/colors/</guid>
-      <description>Text Contrasting black color for headings and less intense dark gray for the text helps to improve readability.
- Headings $color-headings
-  Text $color-text
-   Links Classic blue links and soft red for the hover state makes links visible and predictable.
- Link $color-link
-  Hover $color-link-hover
-   Buttons Blue color for primary buttons for greater consistency with links. Black color for secondary buttons allows you build a variety of UI.</description>
+      <description></description>
     </item>
     
     <item>
@@ -285,9 +258,7 @@ Toggle      Shop   News   Contact   Blog   Account      &amp;lt;div class=&amp;l
       <pubDate>Mon, 10 Apr 2017 16:43:21 +0100</pubDate>
       
       <guid>/docs/sizing/</guid>
-      <description>Width w5  w10  w15  w20  w25  w30  w35  w40  w45  w50  w55  w60  w65  w70  w75  w80  w85  w90  w95  w100  &amp;lt;div class=&amp;ldquo;w5&amp;rdquo;&amp;gt;w5&amp;lt;/div&amp;gt; &amp;hellip; &amp;lt;div class=&amp;ldquo;w100&amp;rdquo;&amp;gt;w100&amp;lt;/div&amp;gt;   100% width on small devices.
-w100-sm  &amp;lt;div class=&amp;ldquo;w50 w100-sm&amp;rdquo;&amp;gt;&amp;hellip;&amp;lt;/div&amp;gt;   Auto Width .w-auto
-.w-auto-sm  Max Width .max-w5 — .max-w100</description>
+      <description></description>
     </item>
     
     <item>
@@ -296,9 +267,10 @@ w100-sm  &amp;lt;div class=&amp;ldquo;w50 w100-sm&amp;rdquo;&amp;gt;&amp;hellip;
       <pubDate>Mon, 10 Apr 2017 16:43:36 +0100</pubDate>
       
       <guid>/docs/mixins/</guid>
-      <description>Get Started Kube has been designed to help you with web development, that&amp;rsquo;s why it&amp;rsquo;s so easy to use Kube when building websites. To move forward quickly and efficiently, just link kube.scss from Kube package: this file contains variables, mixins and everything you need to simplify daily routine tasks.
-For example, import kube.scss into your master.scss styles file, which you will later compile into master.css
-// master.scss @import &amp;ldquo;dist/scss/kube.scss&amp;rdquo;;  Now all Kube&amp;rsquo;s variables and mixins are readily available in master.</description>
+      <description>// use mixins#my-layout{ @includeflex; }
+// use variables#my-layout{ padding: $base-line; } // use mixins@includetext-font(&amp;quot;Lato, &amp;lsquo;Helvetica Neue&amp;rsquo;, sans-serif&amp;quot;); @includeheadings-font(&amp;quot;Lato, &amp;lsquo;Helvetica Neue&amp;rsquo;, sans-serif&amp;quot;); @includebuttons-font(&amp;quot;Lato, &amp;lsquo;Helvetica Neue&amp;rsquo;, sans-serif&amp;quot;); @includeinputs-font(&amp;quot;Lato, &amp;lsquo;Helvetica Neue&amp;rsquo;, sans-serif&amp;quot;); // Headingsh1.title, h1, h2, h3, h4, h5, h6, .h1, .h2, .h3, .h4, .h5, .h6{ font-family: Lato, &#39;Helvetica Neue&#39;, sans-serif; }
+// Buttonsbutton, .button{ font-family: Lato, &#39;Helvetica Neue&#39;, sans-serif; }
+// Inputsinput, textarea, select { font-family: Lato, &#39;Helvetica Neue&#39;, sans-serif; } // min-width 768px and max-width 1024px;@includebreakpoint(768px, 1024px) {}</description>
     </item>
     
     <item>
@@ -307,9 +279,7 @@ For example, import kube.scss into your master.scss styles file, which you will 
       <pubDate>Mon, 10 Apr 2017 16:43:30 +0100</pubDate>
       
       <guid>/docs/utils/</guid>
-      <description>Group Combines float elements to group with a clearfix.
-This text is visibly floating left  This text looks like a case of right float   &amp;lt;div class=&amp;ldquo;group&amp;rdquo;&amp;gt; &amp;lt;div class=&amp;ldquo;float-left&amp;rdquo;&amp;gt;&amp;hellip;&amp;lt;/div&amp;gt; &amp;lt;div class=&amp;ldquo;float-right&amp;rdquo;&amp;gt;&amp;hellip;&amp;lt;/div&amp;gt; &amp;lt;/div&amp;gt;   Visibility Below is an invisible div with class invisible. You can&amp;rsquo;t see it, because it is invisible. You can&amp;rsquo;t see invisible things.
-invisible  But you can see this div because it has visible class.</description>
+      <description></description>
     </item>
     
   </channel>

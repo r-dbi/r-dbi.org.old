@@ -1,0 +1,194 @@
+---
+author: "Kirill Müller"
+date: "2019-10-16"
+draft: true
+weight: 180
+title: "Maintaining DBI, 2/4"
+description: "Summarizing the progress of 2019"
+output: html_document 
+  # md_document:
+  #   md_extensions: "-smart"
+---
+
+<script src="/rmarkdown-libs/header-attrs/header-attrs.js"></script>
+
+
+<!-- +++ -->
+<!-- author = "Kirill Müller" -->
+<!-- date = "2019-10-16" -->
+<!-- draft = true -->
+<!-- weight = 180 -->
+<!-- title = "Maintaining DBI, 2/4" -->
+<!-- description = "Summarizing the progress of 2019" -->
+<!-- +++ -->
+<div id="what-is-dbi" class="section level2">
+<h2>What is DBI?</h2>
+<p>DBI stands for <strong>d</strong>ata<strong>b</strong>ase <strong>i</strong>nterface, and DBI is a package for connecting to database management systems (DBMS).
+The goal of DBI is to provide a common interface for accessing a database, regardless of the specific underlying DBMS.</p>
+<p>DBI works with a variety of DBMS, such as Postgres, MariaDB, and SQLite, allowing users to focus on the specifics of their project instead of setting up the infrastructure for data import and export.</p>
+<p>The DBI package is perfect for anyone looking to connect to a database, read/write entire tables, and/or execute SQL queries.
+DBI offers more control to the user than packages such as <a href="https://dbplyr.tidyverse.org/">{dbplyr}</a>.</p>
+<p>DBI 1.1.0 has been released to CRAN a few days ago.</p>
+</div>
+<div id="whats-new-with-dbi" class="section level2">
+<h2>What’s new with DBI?</h2>
+<div id="specification-of-immediate-argument-to-dbsendquery-and-friends" class="section level3">
+<h3>Specification of <code>immediate</code> argument to <code>dbSendQuery()</code> and friends</h3>
+<p>It’s been noted that in MariaDB and SQL Server (when accessed through {odbc}), some statements cannot be executed as prepared statements.
+Because DBI has historically used a prepared statement or query for everything, the <code>immediate</code> argument has been introduced, creating a direct query and thereby giving the user more control.</p>
+<p>While the user may not need this feature often, it is important to note that it is backward compatible with default values and has already been implemented in the {odbc} package.</p>
+<ul>
+<li>Implementation in RMariaDB and RPostgres follows.</li>
+</ul>
+<p><strong>Examples using <code>immediate</code></strong></p>
+<pre class="r"><code>library(DBI)
+con &lt;- dbConnect(odbc::odbc(), dsn = &quot;SQLServerConnection&quot;)
+
+# Isolate database updates:
+# Did not work before, the transaction was terminated immediately.
+dbExecute(con, &quot;BEGIN TRANSACTION&quot;, immediate = TRUE)
+dbExecute(con, &quot;COMMIT TRANSACTION&quot;, immediate = TRUE)
+
+# Create local temporary tables:
+# Did not work before, temporary table was removed immediately.
+dbExecute(con, &quot;CREATE TABLE #temp (a integer)&quot;, immediate = TRUE)
+dbExecute(con, &quot;INSERT INTO #temp VALUES (1)&quot;, immediate = TRUE)</code></pre>
+</div>
+<div id="driver-can-contain-connection-objects" class="section level3">
+<h3>Driver can contain connection objects</h3>
+<p>The existing method in DBI has been to create the driver object and then call <code>dbConnect()</code> with the connection arguments.
+However there are times when a user may need to do the following:</p>
+<ul>
+<li>Separate connection arguments from establishing a connection</li>
+<li>Serialize the connector to file in order to establish the same connection later</li>
+<li>Maintain multiple connectors in a list for testing different DBMS</li>
+</ul>
+<p>In order to address these use cases, users now have the ability to create a “connector object” that combines the driver and connection arguments, allowing the user to call <code>dbConnect()</code> without additional arguments.
+This feature is both implemented in {DBI} and works out of the box for all DBI backends.</p>
+<p>In addition, arguments can be functions, a useful feature for passwords.</p>
+<ul>
+<li>… and other sensitive connection data</li>
+</ul>
+<p><strong>Examples of the driver containing connection objects</strong></p>
+<ul>
+<li>split this code chunk and insert clarifying text inbetween?</li>
+</ul>
+<pre class="r"><code>library(DBI)
+
+# Old way:
+drv &lt;- RSQLite::SQLite()
+con &lt;- dbConnect(drv, dbname = &quot;:memory:&quot;)
+dbDisconnect(con)
+
+# New connector object:
+cnr &lt;- new(&quot;DBIConnector&quot;,
+  .drv = RSQLite::SQLite(),
+  .conn_args = list(dbname = &quot;:memory:&quot;)
+)
+cnr</code></pre>
+<pre><code>## &lt;DBIConnector&gt;&lt;SQLiteDriver&gt;
+## Arguments:
+## $dbname
+## [1] &quot;:memory:&quot;</code></pre>
+<pre class="r"><code>con &lt;- dbConnect(cnr)
+dbDisconnect(con)
+
+# Functions protect sensitive data:
+my_path &lt;- function() &quot;:memory:&quot;
+cnr &lt;- new(&quot;DBIConnector&quot;,
+  .drv = RSQLite::SQLite(),
+  .conn_args = list(dbname = function() my_path())
+)
+cnr</code></pre>
+<pre><code>## &lt;DBIConnector&gt;&lt;SQLiteDriver&gt;
+## Arguments:
+## $dbname
+## function() my_path()</code></pre>
+<pre class="r"><code>con &lt;- dbConnect(cnr)
+dbDisconnect(con)</code></pre>
+</div>
+<div id="implementation-of-logging" class="section level3">
+<h3>Implementation of logging</h3>
+<p>When using applications in production, keeping logs is an invaluable part of a sound infrastructure.
+As such, in spring 2019 I implemented logging for DBI and published it as a package called <a href="https://github.com/krlmlr/DBIlog">{DBIlog}</a>.
+{DBIlog} is designed to be as simple as possible, and can be used as a standalone package or in conjunction with packages like {dplyr} and {dbplyr}.</p>
+<p>{DBIlog} helps both with troubleshooting as well as auditing the queries that that are used to access a database.
+Similar to Perl’s DBI::log, the goal of {DBIlog} is to implement logging for arbitrary DBI backends.</p>
+<p>{DBIlog} is straightforward in its use, and starts by initializing a logging driver using <code>LoggingDBI()</code> prior to connecting to a database management system.
+Following the initiation of a logging driver, all calls to DBI methods are logged and by default printed to the console (or redirected to a file).
+The entirety of the logging output is runnable R code, so users can copy, paste, and execute the logging code as part of the debugging process.</p>
+<p>Oftentimes DBI is used under the hood by other packages like <a href="https://dbplyr.tidyverse.org/">dbplyr</a> or <a href="https://tidymodels.github.io/tidypredict/">tidypredict</a>.
+For example, because functions like <code>dplyr::src_dbi()</code> work with underlying DBI operations, {DBIlog} will also work in these scenarios.</p>
+<ul>
+<li><p>Can we do one line per sentence, please?</p></li>
+<li><p>I’ll rename the package to {dblog}.</p></li>
+<li><p>Can you use/adapt a few examples from the dblog README?</p></li>
+</ul>
+</div>
+</div>
+<div id="other-notable-additions-from-2019" class="section level2">
+<h2>Other notable additions from 2019</h2>
+<div id="better-handling-of-time-zones-in-rmariadb" class="section level3">
+<h3>Better handling of time zones in RMariaDB</h3>
+<p>{odbc} has set an example for how to handle time zones in RMariaDB, and DBI is also striving for consistent time zone handling across all backends.</p>
+<ul>
+<li>Why is this a problem? How does {odbc} solve it?</li>
+</ul>
+</div>
+<div id="maintenance-updates" class="section level3">
+<h3>Maintenance updates</h3>
+<ul>
+<li><p>Can you please expand on the bullet points below?</p></li>
+<li><p>Minor DBItest improvements (see NEWS.md)</p></li>
+<li><p>RSQLite update with sqlite 3.29.0, introducing window functions</p></li>
+</ul>
+<p><strong>Example using window functions</strong></p>
+<pre class="r"><code>library(tidyverse)
+library(dbplyr)</code></pre>
+<pre class="r"><code>tbl &lt;- memdb_frame(a = rep(1:2, 5), b = 1:10)
+
+tbl %&gt;% 
+  group_by(a) %&gt;%
+  window_order(b) %&gt;% 
+  mutate(c = cumsum(b)) %&gt;% 
+  ungroup()</code></pre>
+<pre><code>## # Source:     lazy query [?? x 3]
+## # Database:   sqlite 3.34.0 [:memory:]
+## # Ordered by: b
+##        a     b     c
+##    &lt;int&gt; &lt;int&gt; &lt;int&gt;
+##  1     1     1     1
+##  2     1     3     4
+##  3     1     5     9
+##  4     1     7    16
+##  5     1     9    25
+##  6     2     2     2
+##  7     2     4     6
+##  8     2     6    12
+##  9     2     8    20
+## 10     2    10    30</code></pre>
+</div>
+<div id="cii-best-practices-badges-for-all-repos" class="section level3">
+<h3>CII “best practices” badges for all repos</h3>
+<ul>
+<li>Implemented, FIXME: need to add to README</li>
+</ul>
+</div>
+<div id="update-of-all-packages" class="section level3">
+<h3>Update of all packages</h3>
+<ul>
+<li>Minor updates were necessary due to toolchain updates (compiler warnings)</li>
+<li>DBI 1.1.0 along with this blog post</li>
+<li>{RSQLite}, {RMariaDB}, {RPostgres} and {DBItest} follow suit, with a focus on standardizing time zone handling</li>
+<li>A new package, likely named {DBIlogging}, will be released in 2020</li>
+</ul>
+</div>
+</div>
+<div id="links-to-existing-dbi-tutorials" class="section level2">
+<h2>Links to existing DBI tutorials</h2>
+<ul>
+<li><a href="https://master.bioconductor.org/help/course-materials/2006/rforbioinformatics/labs/thurs/DBI-howto.pdf" class="uri">https://master.bioconductor.org/help/course-materials/2006/rforbioinformatics/labs/thurs/DBI-howto.pdf</a></li>
+<li><a href="https://db.rstudio.com/dbi/" class="uri">https://db.rstudio.com/dbi/</a></li>
+<li>I anticipate releasing a DBI tutorial in 2020</li>
+</ul>
+</div>

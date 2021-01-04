@@ -2,7 +2,7 @@
 <html lang="en-us">
 
 <head>
-  <meta name="generator" content="Hugo 0.39" />
+  <meta name="generator" content="Hugo 0.68.3" />
   <meta charset="utf-8">
   <meta http-equiv="X-UA-Compatible" content="IE=edge">
   <meta name="viewport" content="width=device-width, initial-scale=1">
@@ -25,22 +25,8 @@
 <meta property="og:description" content="Intermediate status report on the “Improving DBI” project" />
 <meta property="og:type" content="article" />
 <meta property="og:url" content="/blog/dbi-1-halfway/" />
-
-
-
-<meta property="article:published_time" content="2016-12-06T00:00:00&#43;00:00"/>
-
-<meta property="article:modified_time" content="2016-12-06T00:00:00&#43;00:00"/>
-
-
-
-
-
-
-
-
-
-
+<meta property="article:published_time" content="2016-12-06T00:00:00+00:00" />
+<meta property="article:modified_time" content="2016-12-06T00:00:00+00:00" />
 
   
 
@@ -110,11 +96,8 @@
  </header>
   <main>
 <div class="push-center" itemscope itemtype="http://schema.org/BlogPosting">
-    
-<meta itemprop="name" content="Halfway through “Improving DBI”">
+    <meta itemprop="name" content="Halfway through “Improving DBI”">
 <meta itemprop="description" content="Intermediate status report on the “Improving DBI” project">
-
-
 <meta itemprop="datePublished" content="2016-12-06T00:00:00&#43;00:00" />
 <meta itemprop="dateModified" content="2016-12-06T00:00:00&#43;00:00" />
 <meta itemprop="wordCount" content="750">
@@ -122,7 +105,6 @@
 
 
 <meta itemprop="keywords" content="" />
-
 <div id="hero">
     <h1 itemprop="headline">  Halfway through “Improving DBI”</h1>
     
@@ -143,16 +125,13 @@
 <div id="post-box">
 <div id="post" itemprop="articleBody">
 
-    
-
-<p>In early 2016 the R Consortium partially accepted my “Improving DBI”
+    <p>In early 2016 the R Consortium partially accepted my “Improving DBI”
 proposal. An important part is the design and implementation of a
 testable DBI specification. Initially I also proposed to make three DBI
 backends to open-source databases engines (RSQLite, RMySQL, and
 RPostgres) compatible to the new DBI specification, but funding allows
 to work on only one DBI backend. I chose RSQLite for a number of
 reasons:</p>
-
 <ul>
 <li>It is a very important package, judging by the number of reverse
 CRAN and Bioconductor dependencies</li>
@@ -164,22 +143,17 @@ completed) DBI specification</li>
 poll</a> supports
 this decision by a tiny margin</li>
 </ul>
-
 <p>The project has reached an important milestone, with the release of
 RSQLite 1.1. This post reports the progress achieved so far, and
 outlines the next steps.</p>
-
 <h2 id="rsqlite">RSQLite</h2>
-
 <p>While the RSQLite API has changed very little (hence the minor version
 update), it includes a complete rewrite of the original 1.0.0 sources in
 C++. This has considerably simplified the code, which makes future
 maintenance easier, and allows us to take advantage of the more
 sophisticated memory management tools available in Rcpp, which help
 protect against memory leaks and crashes.</p>
-
 <p>RSQLite 1.1 brings a number of improvements:</p>
-
 <ul>
 <li>New strategy for prepared queries: Create a prepared query with
 <code>dbSendQuery()</code> or <code>dbSendStatement()</code> and bind values with <code>dbBind()</code>.
@@ -197,11 +171,9 @@ more consistent and stricter about parameter validation.</li>
 data should just work without any additional intervention.</li>
 <li>Improved mapping between SQLite’s cell-types and R’s column-types.</li>
 </ul>
-
 <p>See the <a href="https://github.com/rstats-db/RSQLite/releases/tag/v1.1">release
 notes</a> for
 further changes.</p>
-
 <p>The rewrite was implemented by Hadley Wickham before the “Improving DBI”
 project started, and has been available for a long time on GitHub.
 Nevertheless, the CRAN release has proven much more challenging than
@@ -215,9 +187,7 @@ quickly!) as they did with v1.0.0. Most tests from v1.0.0 are still
 present in the current codebase. This means that non-packaged code also
 has a good chance to work unchanged. I’m happy to work with package
 maintainers or users whose code breaks after the update.</p>
-
 <h2 id="dbi">DBI</h2>
-
 <p>I have also released several DBI updates to CRAN, mostly to introduce
 new generics such as <code>dbBind()</code> (for parametrized/prepared queries) or
 <code>dbSendStatement()</code> and <code>dbExecute()</code> (for statements which don’t return
@@ -225,9 +195,7 @@ data). The definition of a formal DBI specification is part of the
 project, a <a href="http://rstats-db.github.io/DBI/DBIspec.html">formatted
 version</a> is updated
 continuously.</p>
-
 <h2 id="dbitest">DBItest</h2>
-
 <p>In addition to the textual specification in the DBI package, the DBItest
 package provides backend independent tests for DBI packages. It can be
 easily used by package authors to ensure that they follow the DBI
@@ -238,9 +206,7 @@ programming techniques using advanced features of roxygen2 help keeping
 both code and textual specifications in close proximity, so that
 amendments to the text can be easily tracked back to changes of the test
 code, and vice versa.</p>
-
 <h2 id="next-steps">Next steps</h2>
-
 <p>The rest of the project will focus on finalizing the specification in
 both code and text (mostly discussed on GitHub in the issue trackers for
 the <a href="https://github.com/rstats-db/DBI/issues">DBI</a> and
@@ -249,7 +215,6 @@ least one new helper package (to handle 64-bit integer types) will be
 created, and DBI, DBItest, and RSQLite will see yet another release: The
 first two will finalize the DBI specification, and RSQLite will fully
 conform to it.</p>
-
 <p>The development happens entirely on GitHub in repositories of the
 <a href="https://github.com/rstats-db">rstats-db</a> organization. Feel free to try
 out development versions of the packages found there, and to report any

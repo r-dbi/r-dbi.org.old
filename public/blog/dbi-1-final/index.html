@@ -2,7 +2,7 @@
 <html lang="en-us">
 
 <head>
-  <meta name="generator" content="Hugo 0.39" />
+  <meta name="generator" content="Hugo 0.68.3" />
   <meta charset="utf-8">
   <meta http-equiv="X-UA-Compatible" content="IE=edge">
   <meta name="viewport" content="width=device-width, initial-scale=1">
@@ -25,22 +25,8 @@
 <meta property="og:description" content="Summary of the “Improving DBI” project" />
 <meta property="og:type" content="article" />
 <meta property="og:url" content="/blog/dbi-1-final/" />
-
-
-
-<meta property="article:published_time" content="2017-05-15T00:00:00&#43;00:00"/>
-
-<meta property="article:modified_time" content="2017-05-15T00:00:00&#43;00:00"/>
-
-
-
-
-
-
-
-
-
-
+<meta property="article:published_time" content="2017-05-15T00:00:00+00:00" />
+<meta property="article:modified_time" content="2017-05-15T00:00:00+00:00" />
 
   
 
@@ -110,11 +96,8 @@
  </header>
   <main>
 <div class="push-center" itemscope itemtype="http://schema.org/BlogPosting">
-    
-<meta itemprop="name" content="Improving DBI: A Retrospect">
+    <meta itemprop="name" content="Improving DBI: A Retrospect">
 <meta itemprop="description" content="Summary of the “Improving DBI” project">
-
-
 <meta itemprop="datePublished" content="2017-05-15T00:00:00&#43;00:00" />
 <meta itemprop="dateModified" content="2017-05-15T00:00:00&#43;00:00" />
 <meta itemprop="wordCount" content="1341">
@@ -122,7 +105,6 @@
 
 
 <meta itemprop="keywords" content="" />
-
 <div id="hero">
     <h1 itemprop="headline">  Improving DBI: A Retrospect</h1>
     
@@ -143,50 +125,36 @@
 <div id="post-box">
 <div id="post" itemprop="articleBody">
 
-    
-
-<p>The &ldquo;Improving DBI&rdquo; project, funded by the R consortium, started about a year ago.
+    <p>The &ldquo;Improving DBI&rdquo; project, funded by the R consortium, started about a year ago.
 It includes</p>
-
 <ol>
 <li>the definition and implementation of a testable specification for DBI,</li>
 <li>making <code>RSQLite</code> fully compliant to the new specification.</li>
 </ol>
-
 <p>Besides the established <code>DBI</code> and <code>RSQLite</code> packages, I have spent a lot of time on the new <code>DBItest</code> package.
 Final updates to these packages will be pushed to CRAN end of May this year, to give downstream maintainers some time to accommodate.</p>
-
 <p>The follow-up project &ldquo;Establishing DBI&rdquo; will focus on fully DBI-compliant backends for MySQL/MariaDB and PostgreSQL, and on minor updates to the specs where appropriate.</p>
-
 <h2 id="dbitest-specification"><code>DBItest</code>: Specification</h2>
-
 <p>A comprehensive backend-agnostic test suite for DBI backends is provided by the new <code>DBItest</code> package.
 When the project started, it was merely a collection of test cases.
 I have considerably expanded the test cases and provided a human-readable description for each, using literate programming techniques powered by <code>roxygen2</code>.
 The <code>DBI</code> package weaves these chunks of text to a single document that describes all test cases covered by the test suite, the textual <em>DBI specification</em>.
 This approach ensures that further updates to the specification are reflected in both the automatic tests and the text.</p>
-
 <p>This package is aimed at backend implementers, who now can programmatically check with very little effort if their DBI backend conforms to the DBI specification.
 The verification can be integrated in the automated tests which are run as part of R&rsquo;s package check mechanism in <code>R CMD check</code>.
 The <code>odbc</code> package, a new DBI-compliant interface to the ODBC interface, has been using <code>DBItest</code> from day one to enable test-driven development.
 The <code>bigrquery</code> package is another user of <code>DBItest</code>.</p>
-
 <p>Because not all DBMS support all aspects of DBI, the <code>DBItest</code> package allows to restrict which parts of the specification are tested, or &ldquo;tweak&rdquo; certain aspects of the tests, e.g., the format of placeholders in parametrized queries.
 Adapting to other DBMS may require more work due to subtle differences in the implementation of SQL between various DBMS.</p>
-
 <h2 id="dbi-definition"><code>DBI</code>: Definition</h2>
-
 <p>This package has been around since 2001, it defines the actual <em>DataBase Interface</em> in R.
 I have taken over maintenance, and released versions 0.4-1, 0.5-1, and 0.6-1, with release of version 0.7 pending.</p>
-
 <p>The most prominent change in this package is, of course, the textual <a href="https://cran.r-project.org/web/packages/DBI/vignettes/spec.html">DBI specification</a>, which is included as an HTML vignette in the package.
 The documentation for the various methods defined by <code>DBI</code> is obtained directly from the specification.
 These help topics are combined in a sensible order to a single, self-contained document.
 This format is useful for both DBI users and implementers: users can look up the behavior of a method directly from its help page, and implementers can browse a comprehensive document that describes all aspects of the interface.
 I have also revised the description and the examples for all help topics.</p>
-
 <p>Other changes include:</p>
-
 <ul>
 <li>the definition of new generics <code>dbSendStatement()</code> and <code>dbExecute()</code>, for backends that distinguish between queries that return a table and statements that manipulate data,</li>
 <li>the new <code>dbWithTransaction()</code> generic and the <code>dbBreak()</code> helper function, thanks Barbara Borges Ribero,</li>
@@ -194,67 +162,50 @@ I have also revised the description and the examples for all help topics.</p>
 <li>internal changes that allow methods that don&rsquo;t have a meaningful return value to return silently,</li>
 <li>translation of a helper function from C++ to R, to remove the dependency on <code>Rcpp</code> (thanks Hannes Mühleisen).</li>
 </ul>
-
 <p>Fortunately, none of the changes seemed to have introduced any major regressions with downstream packages.
 The <a href="https://github.com/rstats-db/DBI/blob/master/NEWS.md">news</a> contain a comprehensive list of changes.</p>
-
 <h2 id="rsqlite-implementation"><code>RSQLite</code>: Implementation</h2>
-
 <p><code>RSQLite</code> 1.1-2 is a complete rewrite of the original C implementation.
 Before focusing on compliance to the new DBI specification, it was important to assert compatibility to more than 100 packages on CRAN and Bioconductor that use <code>RSQLite</code>.
 These packages revealed many usage patterns that were difficult to foresee.
 Most of these usage patterns are supported in version 1.1-2, the more esoteric ones (such as supplying an <code>integer</code> where a <code>logical</code> is required) trigger a warning.</p>
-
 <p>Several rounds of &ldquo;revdep checking&rdquo; were necessary before most packages showed no difference in their check output compared to the original implementation.
 The downstream maintainers and the Bioconductor team were very supportive, and helped spotting functional and performance regressions during the release process.
 Two point releases were necessary to finally achieve a stable state.</p>
-
 <p>Supporting 64-bit integers also was trickier than anticipated.
 There is no built-in way to represent 64-bit integers in R.
 The <code>bit64</code> package works around this limitation by using a <code>numeric</code> vector as storage, which also happens to use 8 bytes per element, and providing coercion functions.
 But when an integer column is fetched, it cannot be foreseen if a 64-bit value will occur in the result, and smaller integers must use R&rsquo;s built-in <code>integer</code> type.
 For this purpose, an efficient data structure for collecting vectors, which is capable of changing the data type on the fly, has been implemented in C++.
 This data structure will be useful for many other DBI backends that need support for a 64-bit integer data type, and will be ported to the <code>RKazam</code> package in the follow-up project.</p>
-
 <p>Once the DBI specification was completed, the process of making <code>RSQLite</code> compliant was easy: enable one of the disabled tests, fix the code, make sure all tests pass, rinse, and repeat.
 If you haven&rsquo;t tried it, I seriosly recommend test-driven development, especially when the tests are already implemented.</p>
-
 <p>The upcoming release of <code>RSQLite</code> 2.0 will require stronger adherence to the DBI specification also from callers.
 Where possible I tried to maintain backward compatibility, but in some cases breaks were inevitable because otherwise I&rsquo;d have had to introduce far too many exceptions and corner cases in the DBI spec.
 For instance, row names are no longer included by default when writing or reading tables.
 The original behavior can be reenabled by calling <code>pkgconfig::set_config()</code>, so that packages or scripts that rely on row names continue to work as before.
 (The setting is active for the duration of the session, but only for the caller that has called <code>pkgconfig::set_config()</code>.)
 I&rsquo;m happy to include compatibility switches for other breaking changes if necessary and desired, to achieve both adherence to the specs and compatibility with existing behavior.</p>
-
 <p>A comprehensive list of changes can be found in the <a href="https://github.com/rstats-db/RSQLite/blob/master/NEWS.md">news</a>.</p>
-
 <h2 id="other-bits-and-pieces">Other bits and pieces</h2>
-
 <p>The <code>RKazam</code> package is a ready-to-use boilerplate for a DBI backend, named after the hypothetical DBMS used as example in a DBI vignette.
 It already &ldquo;passes&rdquo; all tests of the <code>DBItest</code> package, mostly by calling a function that skips the current test.
 Starting a DBI backend from scratch requires only copying and renaming the package&rsquo;s code.</p>
-
 <p>R has limited support for time-of-day data.
 The <code>hms</code> package aims at filling this gap.
 It will be useful especially in the follow-up project, because SQLite doesn&rsquo;t have an intrinsic type for time-of-day data, unlike many other DBMS.</p>
-
 <h2 id="next-steps">Next steps</h2>
-
 <p>The ensemble CRAN release of the three packages <code>DBI</code>, <code>DBItest</code> and <code>RSQLite</code> will occur in parallel to the startup phase for the &ldquo;Establishing DBI&rdquo; follow-up project.
 This project consists of:</p>
-
 <ul>
 <li>Fully DBI compatible backends for MySQL/MariaDB and Postgres</li>
 <li>A backend-agnostic C++ data structure to collect column data in the <code>RKazam</code> package</li>
 <li>Support for spatial data</li>
 </ul>
-
 <p>In addition, it will contain an update to the DBI specification, mostly concerning support for schemas and for querying the structure of the table returned for a query.
 Targeting three DBMS instead of one will help properly specify these two particularly tricky parts of DBI.
 I&rsquo;m happy to take further feedback from users and backend implementers towards further improvement of the DBI specification.</p>
-
 <h2 id="acknowledgments">Acknowledgments</h2>
-
 <p>Many thanks to the R Consortium, who has sponsored this project, and to the many contributors who have spotted problems, suggested improvements, submitted pull requests, or otherwise helped make this project a great success.
 In particular, I&rsquo;d like to thank Hadley Wickham, who suggested the idea, supported initial development of the <code>DBItest</code> package, and provided helpful feedback; and Christoph Hösler, Hannes Mühleisen, Imanuel Costigan, Jim Hester, Marcel Boldt, and @thrasibule for using it and contributing to it.
 I enjoyed working on this project, looking forward to &ldquo;Establishing DBI&rdquo;!</p>
