@@ -154,8 +154,8 @@
       <pubDate>Mon, 04 Jan 2021 00:00:00 +0000</pubDate>
       
       <guid>/blog/dbi-3-3/</guid>
-      <description>What is DBI? DBI stands for database interface. The DBI package connects R to database management systems (DBMS). The goal of DBI is to provide a common interface for database access, regardless of the specific underlying DBMS. DBI works with a variety of DBMS, such as Postgres, MariaDB, and SQLite, through dedicated backend packages.
-The DBI package is perfect for anyone looking to connect to a database, read/write entire tables, and/or execute SQL queries.</description>
+      <description>What is DBI? DBI stands for database interface. The DBI package connects R to database management systems (DBMS). The goal of DBI is to provide a common interface for database access, regardless of the specific underlying DBMS. DBI works with a variety of DBMS, such as Postgres, MariaDB, and SQLite, through dedicated backend packages. For first-time users I recommend the new introductory tutorial.
+The current version of DBI is 1.1.1. This blog post attempts to define the scope of the DBI project, summarizes recent developments in DBI and related packages, and showcases future work.</description>
     </item>
     
     <item>
