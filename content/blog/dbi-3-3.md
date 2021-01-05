@@ -166,7 +166,7 @@ Three more parts of the infrastructure were updated as part of the move:
   Updates to backends are applied automatically.
   Every time a new backend is found, a pull request is opened.
 
-1. A new pull request is opened in RSQLite when a new version of the SQLite library is available.
+1. A new [pull request](https://github.com/r-dbi/RSQLite/pull/337) is opened in RSQLite when a new version of the SQLite library is available.
   This makes it much easier to keep the bundled SQLite version up to date.
 
 
