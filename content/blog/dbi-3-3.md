@@ -162,7 +162,7 @@ Three more parts of the infrastructure were updated as part of the move:
   This ensures that new or amended specifications do not break these packages.
   If you maintain a DBI backend that uses DBItest, get in touch for integrating your backend with these checks.
 
-1. The [list of DBI backends](https://github.com/r-dbi/backends) is now continuously updated.
+1. The [list of DBI backends](https://github.com/r-dbi/backends#readme) is now continuously updated.
   Updates to backends are applied automatically.
   Every time a new backend is found, a pull request is opened.
 
