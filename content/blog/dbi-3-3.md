@@ -17,7 +17,7 @@ provide a common interface for database access,
 regardless of the
 specific underlying DBMS.
 DBI works with a variety of DBMS, such as Postgres, MariaDB, and SQLite, through dedicated [backend packages](https://github.com/r-dbi/backends#readme).
-For first-time users I recommend the new [introductory tutorial](https://dbi.r-dbi.org/articles/dbi).
+For first-time users I recommend starting with the new [introductory tutorial](https://dbi.r-dbi.org/articles/dbi).
 
 The current version of DBI is 1.1.1.
 This blog post attempts to define the scope of the DBI project, summarizes recent developments in DBI and related packages, and showcases future work.
@@ -80,7 +80,7 @@ This section discusses:
 
 - the move to GitHub Actions.
 
-The first three items directly affect DBI users, the last item much less so: it is nevertheless an important investment in the stability of the DBI infrastructure.
+The first three items directly affect DBI users, the last item much less so. It is nevertheless an important investment in the stability of the DBI infrastructure.
 
 ### New tutorials
 
@@ -100,7 +100,7 @@ This poses a few problems in practice:
 
 - Other systems often use the default setting for time zone, this harms interoperability of DBI in these cases.
 
-- Conversion of timestamps to dates via the SQL function `DATE` is only correct when the session time zone set correctly.
+- Conversion of timestamps to dates via the SQL function `DATE` is only correct when the session time zone is set correctly.
 
 RMariaDB 1.1.0 and RPostgres 1.3.0 gained more robust support for datetime values.
 As proposed in the [previous blog post](https://www.r-dbi.org/blog/dbi-3-2/), new arguments `timezone` and `timezone_out` were added.
@@ -191,7 +191,7 @@ Other minor issues include:
 
 - SSL connections
 
-- authentification plugins
+- authentication plugins
 
 - support for more data types: arrays, JSON, ...
 
