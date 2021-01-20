@@ -1,6 +1,6 @@
 +++
 author = "Kirill Müller"
-date = "2021-01-04"
+date = "2021-01-20"
 draft = false
 weight = 180
 title = "Maintaining DBI, 3/4"
@@ -118,7 +118,7 @@ The following package versions were sent to CRAN since the last blog post:
 
 - DBI 1.1.0 -> 1.1.1 ([NEWS](https://dbi.r-dbi.org/news/))
 - RMariaDB 1.0.8 -> 1.1.0 ([NEWS](https://rmariadb.r-dbi.org/news/))
-- RPostgres 1.2.0 -> 1.3.0 ([NEWS](https://rpostgres.r-dbi.org/news/))
+- RPostgres 1.2.0 -> 1.3.1 ([NEWS](https://rpostgres.r-dbi.org/news/))
 - RSQLite 2.1.5 -> 2.2.2 ([NEWS](https://rsqlite.r-dbi.org/news/))
 
 Highlights are:
