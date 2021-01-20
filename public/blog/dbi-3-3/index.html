@@ -25,8 +25,8 @@
 <meta property="og:description" content="Summarizing the progress of 2020" />
 <meta property="og:type" content="article" />
 <meta property="og:url" content="/blog/dbi-3-3/" />
-<meta property="article:published_time" content="2021-01-04T00:00:00+00:00" />
-<meta property="article:modified_time" content="2021-01-04T00:00:00+00:00" />
+<meta property="article:published_time" content="2021-01-20T00:00:00+00:00" />
+<meta property="article:modified_time" content="2021-01-20T00:00:00+00:00" />
 
   
 
@@ -98,9 +98,9 @@
 <div class="push-center" itemscope itemtype="http://schema.org/BlogPosting">
     <meta itemprop="name" content="Maintaining DBI, 3/4">
 <meta itemprop="description" content="Summarizing the progress of 2020">
-<meta itemprop="datePublished" content="2021-01-04T00:00:00&#43;00:00" />
-<meta itemprop="dateModified" content="2021-01-04T00:00:00&#43;00:00" />
-<meta itemprop="wordCount" content="1368">
+<meta itemprop="datePublished" content="2021-01-20T00:00:00&#43;00:00" />
+<meta itemprop="dateModified" content="2021-01-20T00:00:00&#43;00:00" />
+<meta itemprop="wordCount" content="1371">
 
 
 
@@ -118,7 +118,7 @@
  <i class="fa fa-pencil" aria-hidden="true"></i>
 </span>
 
-  Published: <time datetime="2021-01-04T00:00:00&#43;00:00">4 Jan, 2021</time>
+  Published: <time datetime="2021-01-20T00:00:00&#43;00:00">20 Jan, 2021</time>
 
 </time>
 </div>
@@ -133,7 +133,7 @@ provide a common interface for database access,
 regardless of the
 specific underlying DBMS.
 DBI works with a variety of DBMS, such as Postgres, MariaDB, and SQLite, through dedicated <a href="https://github.com/r-dbi/backends#readme">backend packages</a>.
-For first-time users I recommend the new <a href="https://dbi.r-dbi.org/articles/dbi">introductory tutorial</a>.</p>
+For first-time users I recommend starting with the new <a href="https://dbi.r-dbi.org/articles/dbi">introductory tutorial</a>.</p>
 <p>The current version of DBI is 1.1.1.
 This blog post attempts to define the scope of the DBI project, summarizes recent developments in DBI and related packages, and showcases future work.</p>
 <h2 id="scope-of-the-dbi-project">Scope of the DBI project</h2>
@@ -206,7 +206,7 @@ It should offer a robust reliable interface for dependent packages; anything bey
 <p>the move to GitHub Actions.</p>
 </li>
 </ul>
-<p>The first three items directly affect DBI users, the last item much less so: it is nevertheless an important investment in the stability of the DBI infrastructure.</p>
+<p>The first three items directly affect DBI users, the last item much less so. It is nevertheless an important investment in the stability of the DBI infrastructure.</p>
 <h3 id="new-tutorials">New tutorials</h3>
 <p>James Wondrasek substantially expanded the  &ldquo;Introduction to DBI&rdquo; article and added a second article.
 DBI now features two tutorials.
@@ -224,7 +224,7 @@ This poses a few problems in practice:</p>
 <p>Other systems often use the default setting for time zone, this harms interoperability of DBI in these cases.</p>
 </li>
 <li>
-<p>Conversion of timestamps to dates via the SQL function <code>DATE</code> is only correct when the session time zone set correctly.</p>
+<p>Conversion of timestamps to dates via the SQL function <code>DATE</code> is only correct when the session time zone is set correctly.</p>
 </li>
 </ul>
 <p>RMariaDB 1.1.0 and RPostgres 1.3.0 gained more robust support for datetime values.
@@ -239,7 +239,7 @@ A promising <a href="https://github.com/r-dbi/RSQLite/pull/333">pull request</a>
 <ul>
 <li>DBI 1.1.0 -&gt; 1.1.1 (<a href="https://dbi.r-dbi.org/news/">NEWS</a>)</li>
 <li>RMariaDB 1.0.8 -&gt; 1.1.0 (<a href="https://rmariadb.r-dbi.org/news/">NEWS</a>)</li>
-<li>RPostgres 1.2.0 -&gt; 1.3.0 (<a href="https://rpostgres.r-dbi.org/news/">NEWS</a>)</li>
+<li>RPostgres 1.2.0 -&gt; 1.3.1 (<a href="https://rpostgres.r-dbi.org/news/">NEWS</a>)</li>
 <li>RSQLite 2.1.5 -&gt; 2.2.2 (<a href="https://rsqlite.r-dbi.org/news/">NEWS</a>)</li>
 </ul>
 <p>Highlights are:</p>
@@ -323,7 +323,7 @@ This makes it much easier to keep the bundled SQLite version up to date.</p>
 <p>SSL connections</p>
 </li>
 <li>
-<p>authentification plugins</p>
+<p>authentication plugins</p>
 </li>
 <li>
 <p>support for more data types: arrays, JSON, &hellip;</p>
@@ -347,12 +347,12 @@ Future work might shift towards providing or improving useful extensions.</p>
       by <span itemprop="author">Kirill Müller</span>
     
   
-  <time datetime="2021-01-04T00:00:00&#43;00:00">
-    4 Jan, 2021
+  <time datetime="2021-01-20T00:00:00&#43;00:00">
+    20 Jan, 2021
   </time>
   
   
-  using <span itemprop="wordCount">1368</span> words.
+  using <span itemprop="wordCount">1371</span> words.
 </p>
 
         
