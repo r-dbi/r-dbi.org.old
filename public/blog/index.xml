@@ -6,10 +6,20 @@
     <description>Recent content in Blogs on DBI for R</description>
     <generator>Hugo -- gohugo.io</generator>
     <language>en-us</language>
-    <lastBuildDate>Thu, 19 Dec 2019 00:00:00 +0000</lastBuildDate>
+    <lastBuildDate>Wed, 20 Jan 2021 00:00:00 +0000</lastBuildDate>
     
 	<atom:link href="/blog/index.xml" rel="self" type="application/rss+xml" />
     
+    
+    <item>
+      <title>Maintaining DBI, 3/4</title>
+      <link>/blog/dbi-3-3/</link>
+      <pubDate>Wed, 20 Jan 2021 00:00:00 +0000</pubDate>
+      
+      <guid>/blog/dbi-3-3/</guid>
+      <description>What is DBI? DBI stands for database interface. The DBI package connects R to database management systems (DBMS). The goal of DBI is to provide a common interface for database access, regardless of the specific underlying DBMS. DBI works with a variety of DBMS, such as Postgres, MariaDB, and SQLite, through dedicated backend packages. For first-time users I recommend starting with the new introductory tutorial.
+The current version of DBI is 1.</description>
+    </item>
     
     <item>
       <title>Maintaining DBI, 2/4</title>
