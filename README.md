@@ -11,3 +11,7 @@ Source for https://r-dbi.org .
 - Render to .md
 - Remove .Rmd (?)
 - Run `blogdown::build_site()`
+
+## Wire transfer form
+
+Search e-mails for "wire transfer form".
