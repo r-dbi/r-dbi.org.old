@@ -100,7 +100,7 @@
     <meta itemprop="name" content="Maintaining DBI, 4/4">
 <meta itemprop="description" content="Summarizing the progress of 2021"><meta itemprop="datePublished" content="2021-12-21T00:00:00+00:00" />
 <meta itemprop="dateModified" content="2021-12-21T00:00:00+00:00" />
-<meta itemprop="wordCount" content="1801">
+<meta itemprop="wordCount" content="1818">
 <meta itemprop="keywords" content="" />
 <div id="hero">
     <h1 itemprop="headline">  Maintaining DBI, 4/4</h1>
@@ -127,15 +127,16 @@
 It is an interface that only offers a common interface.
 Connectivity to DBMS is established through dedicated <a href="https://github.com/r-dbi/backends#readme">backend packages</a> such as
 <a href="https://rpostgres.r-dbi.org/">RPostgres</a>, <a href="https://rmariadb.r-dbi.org/">RMariaDB</a>, and <a href="https://rsqlite.r-dbi.org/">RSQLite</a>.
-Read the <a href="https://dbi.r-dbi.org/articles/dbi">introductory tutorial</a> to get started.</p>
+If you&rsquo;re new to DBI, read the <a href="https://dbi.r-dbi.org/articles/dbi">introductory tutorial</a> to get started.</p>
 <p>The current version of DBI is 1.1.2.
-A summary of recent developments in {DBI} and related packages is provided, see the three previous blog posts for earlier summaries.</p>
+In this blog post, a summary of recent developments in {DBI} and related packages is provided.
+See the three previous blog posts for summaries from earlier years.</p>
 <ul>
 <li><a href="https://www.r-dbi.org/blog/dbi-3-1/">1/4: December 2018</a></li>
 <li><a href="https://www.r-dbi.org/blog/dbi-3-2/">2/4: December 2019</a></li>
 <li><a href="https://www.r-dbi.org/blog/dbi-3-3/">3/4: January 2021</a></li>
 </ul>
-<p>This blog post concludes with an outlook on future development in DBI and related packages.</p>
+<p>The post concludes with an outlook on future development in DBI and related packages.</p>
 <h2 id="recent-developments-in-dbi">Recent developments in DBI</h2>
 <p>A few updates happened since the last blog post:</p>
 <ul>
@@ -154,36 +155,36 @@ This makes it easier to access your database: some backends provide extended fun
 Both databases pass the entire DBItest test suite, except for Redshift&rsquo;s missing support for BLOB data.
 Use <code>Redshift()</code> instead of <code>Postgres()</code> to connect to a Redshift cluster.</p>
 <h3 id="faster-table-imports">Faster table imports</h3>
-<p>Previous versions of RMariaDB and RPostgres relied on passing multiple values to <code>dbBind()</code>.
+<p>Previous versions of {RMariaDB} and {RPostgres} relied on passing multiple values to <code>dbBind()</code> for writing tables.
 This is very slow for sending data to the database, because each row requires a communication roundtrip to the server.
-To improve the situation, RMariaDB now uses <code>LOAD DATA LOCAL INFILE</code> to load data from a temporary CSV file.
+To improve the situation, {RMariaDB} now uses <code>LOAD DATA LOCAL INFILE</code> to load data from a temporary CSV file.
 Because recent versions of the MySQL database server disable this capability, this must be explicitly enabled by passing <code>load_data_local_infile = TRUE</code> to <code>dbConnect()</code>.
-For RPostgres, <code>dbAppendTable()</code> now uses the same fast strategy as <code>dbWriteTable()</code> for writing data.</p>
+For {RPostgres}, <code>dbAppendTable()</code> now uses the same fast strategy as <code>dbWriteTable()</code> for writing data.</p>
 <h3 id="windows-compatibility">Windows compatibility</h3>
-<p>RMariaDB now can use the <code>caching_sha2_password</code> plugin on Windows which was disabled on previous versions.
-This is important to connect to recent versions of MySQL which require this plugin.</p>
+<p>{RMariaDB} now can use the <code>caching_sha2_password</code> plugin on Windows which was disabled on previous versions.
+This is important for connecting to recent versions of MySQL which require this plugin.</p>
 <h3 id="extended-data-types-for-sqlite">Extended data types for SQLite</h3>
-<p>Thanks to Eric Anderson, RSQLite now returns typed data for columns declared with <code>DATE</code>, <code>TIME</code> and <code>TIMESTAMP</code>.
+<p>Thanks to Eric Anderson, {RSQLite} now returns typed data for columns declared with <code>DATE</code>, <code>TIME</code> and <code>TIMESTAMP</code>.
 Set <code>extended_types = TRUE</code> in <code>dbConnect()</code> to enable this feature.</p>
 <h3 id="interrupt-handling">Interrupt handling</h3>
 <p>The <code>check_interrupts = TRUE</code> argument to <code>dbConnect()</code> for Postgres database now correctly cancels the query and returns to the user as soon as Ctrl+C (or Escape in RStudio) is pressed.
 Thanks to Mateusz Żółtak for tests and discussion.</p>
 <h3 id="automation">Automation</h3>
-<p>RMariaDB is tested with all combinations of MariaDB and MySQL client + server on GitHub Actions.
-RPostgres is tested with all versions of PostgreSQL &gt;= 10 on GitHub Actions.
+<p>{RMariaDB} is tested with all combinations of MariaDB and MySQL client + server on GitHub Actions.
+{RPostgres} is tested with all versions of PostgreSQL &gt;= 10 on GitHub Actions.
 This ensures that future updates of these packages continue to work in all scenarios.
 All tests also run daily, this ensures that upstream updates do not break our backend.</p>
 <p>Thanks to the automated checks for upgraded SQLite3 versions, the vendored code could be updated continuously shortly after upstream releases.
-RSQLite now uses SQLite3 3.37.0, released to CRAN about 10 days after the upstream release.</p>
+{RSQLite} now uses SQLite3 3.37.0, released to CRAN about 10 days after the upstream release.</p>
 <h3 id="simpler-upgrade-path-for-dbitest">Simpler upgrade path for DBItest</h3>
 <p>It is now simpler to bring changes to DBItest to CRAN.
-Backends declare the version of DBItest they support with the new <code>dbitest_version</code> tweak.
-New tests in DBItest check this tweak and skip the test if the declared version is too low.
-Skipped tests are visible and can be fixed independently of the DBItest releases.</p>
+Backends declare the version of {DBItest} they support with the new <code>dbitest_version</code> tweak.
+New tests in DBItest are skipped if the declared version is too low.
+Skipped tests are reported in the test results and can be fixed independently of the {DBItest} releases.</p>
 <h3 id="inlined-boost-headers">Inlined Boost headers</h3>
-<p>The BH package is a header-only C++ package with more than 10000 files.
+<p>The {BH} package is a header-only C++ package with more than 10000 files.
 Installing this package proved challenging on some file systems, namely Amazon Elastic File System.
-By inlining only the required files into RSQLite, RMariaDB and RPostgres, it is no longer necessary to install BH to use these packages, and the total number of files required to build these packages is greatly reduced.
+By inlining only the required files into {RSQLite}, {RMariaDB} and {RPostgres}, it is no longer necessary to install {BH} to use these packages, and the total number of files required to build these packages is greatly reduced.
 Thanks to RStudio for supporting this change.</p>
 <h3 id="reorganized-structure-of-the-r-code">Reorganized structure of the R code</h3>
 <p>DBI uses S4 to declare its classes, generics, and methods.
@@ -209,16 +210,16 @@ Code for the methods is declared with <code>setMethod()</code>, with a syntax si
 Data query and manipulation tasks outside of {DBI}&rsquo;s limited scope are left to packages like <a href="https://dbplyr.tidyverse.org/">dbplyr</a>, <a href="https://cynkra.github.io/dm/">dm</a>, <a href="https://github.com/ankane/dbx">dbx</a> and <a href="https://winvector.github.io/rquery/">rquery</a>.</p>
 <p>{DBI} is based on S4, a system for object-oriented programming in R.
 It offered several advantages over S3, e.g. strictness and multiple dispatch.
-One of the weaknesses encountered when working with on the DBI projects was rigidity: once defined and published, it proved to be very difficult to extend the definition of a generic.</p>
+One of the weaknesses encountered when working with on the DBI projects was rigidity: once a generic is defined and published, it is very difficult to change its definition.</p>
 <p>The first release of {DBI} happened about 20 years ago.
 Many packages use it to access databases or provide a <a href="https://github.com/r-dbi/backends#readme">backend</a> to a DBMS.
 Combined with the rigidity it seems very difficult to extend {DBI} or even add new generics: there is pressure to &ldquo;get it right&rdquo; with the first attempt.</p>
-<p>The DBI specification aims at standardizing the features of DBI, the {DBItest} package provides a test suite.
+<p>The DBI specification aims at standardizing the features of {DBI}, the {DBItest} package provides a test suite.
 Due to differences between database implementations, not all features of the DBI specification and not all tests are supported by all backend packages.
 Backends declare, by means of &ldquo;tweaks&rdquo;, which tests to run in what way.
 This solves the problem of implementing a test suite that works for many backends.
 However, general-purpose clients only can assume which capabilities are supported by a backend or a connection, a formal way to declare these capabilities are missing.</p>
-<p>Based on these observations, for extending DBI, the following two issues should be addressed first and foremost:</p>
+<p>Based on these observations, for extending DBI, it may be worthwhile to address the following two issues first and foremost:</p>
 <ol>
 <li>Formal declaration of capabilities,</li>
 <li>Decoupling the user&rsquo;s from the implementer&rsquo;s interface.</li>
@@ -266,7 +267,7 @@ The backend would indicate the maximum length of a query, large tables would be 
 <p>Similarly, a backend that supports asynchronous operations might use a default implementation for the corresponding synchronous operations: the user interface detects that async is supported and implements sync by forwarding to async and waiting.</p>
 <p>This allows generics declared by {DBI} to remain frozen.
 To extend or alter the signature of a generic, a new generic (e.g. with a numeric suffix) is conceived: <code>dbAppendTable1()</code>, <code>dbAppendTable2()</code>, etc..
-All arguments in new generics could be made required and explicitly declared in the new generic.</p>
+All arguments in new generics could be declared explicitly, without relying on passing them through <code>...</code> as is done currently.</p>
 <p>The new user interface is responsible for deciding which methods to call.
 When a new version of a generic is declared, {DBI} documents and proposes an upgrade path for backend implementers.
 In the long run this also allows transitioning to another object-oriented system such as S3 or <a href="https://github.com/RConsortium/OOP-WG/">R7</a>.</p>
@@ -306,7 +307,7 @@ Use cases include:</p>
   </time>
   
   
-  using <span itemprop="wordCount">1801</span> words.
+  using <span itemprop="wordCount">1818</span> words.
 </p>
 
         

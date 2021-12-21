@@ -13,8 +13,8 @@
       <pubDate>Tue, 21 Dec 2021 00:00:00 +0000</pubDate>
       
       <guid>/blog/dbi-3-4/</guid>
-      <description>What is DBI? The {DBI} package (database interface) connects R to database management systems (DBMS). It is an interface that only offers a common interface. Connectivity to DBMS is established through dedicated backend packages such as RPostgres, RMariaDB, and RSQLite. Read the introductory tutorial to get started.
-The current version of DBI is 1.1.2. A summary of recent developments in {DBI} and related packages is provided, see the three previous blog posts for earlier summaries.</description>
+      <description>What is DBI? The {DBI} package (database interface) connects R to database management systems (DBMS). It is an interface that only offers a common interface. Connectivity to DBMS is established through dedicated backend packages such as RPostgres, RMariaDB, and RSQLite. If you&amp;rsquo;re new to DBI, read the introductory tutorial to get started.
+The current version of DBI is 1.1.2. In this blog post, a summary of recent developments in {DBI} and related packages is provided.</description>
     </item>
     
     <item>
