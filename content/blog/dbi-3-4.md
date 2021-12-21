@@ -1,7 +1,7 @@
 +++
 author = "Kirill Müller"
 date = "2021-12-20"
-draft = true
+draft = false
 weight = 180
 title = "Maintaining DBI, 4/4"
 description = "Summarizing the progress of 2021"
@@ -9,10 +9,11 @@ description = "Summarizing the progress of 2021"
 
 ## What is DBI?
 
-DBI stands for **d**ata**b**ase **i**nterface.
-The {DBI} package connects R to database management systems (DBMS) through a common interface.
-DBI supports a variety of DBMS, such as Postgres, MariaDB, and SQLite, through dedicated backend packages. A [full list](https://github.com/r-dbi/backends#readme) is available, please [open an issue](https://github.com/r-dbi/backends/issues/new) if you think that a package is missing.
-For first-time users I recommend starting with the [introductory tutorial](https://dbi.r-dbi.org/articles/dbi).
+The {DBI} package (**d**ata**b**ase **i**nterface) connects R to database management systems (DBMS).
+It is an interface that only offers a common interface.
+Connectivity to DBMS is established through dedicated [backend packages](https://github.com/r-dbi/backends#readme) such as
+[RPostgres](https://rpostgres.r-dbi.org/), [RMariaDB](https://rmariadb.r-dbi.org/), and [RSQLite](https://rsqlite.r-dbi.org/).
+Read the [introductory tutorial](https://dbi.r-dbi.org/articles/dbi) to get started.
 
 The current version of DBI is 1.1.2.
 A summary of recent developments in {DBI} and related packages is provided, see the three previous blog posts for earlier summaries.
