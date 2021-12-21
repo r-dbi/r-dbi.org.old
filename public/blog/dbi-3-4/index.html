@@ -168,7 +168,7 @@ Set <code>extended_types = TRUE</code> in <code>dbConnect()</code> to enable thi
 <h3 id="interrupt-handling">Interrupt handling</h3>
 <p>The <code>check_interrupts = TRUE</code> argument to <code>dbConnect()</code> for Postgres database now correctly cancels the query and returns to the user as soon as Ctrl+C (or Escape in RStudio) is pressed.
 Thanks to Mateusz Żółtak for tests and discussion.</p>
-<h2 id="automation">Automation</h2>
+<h3 id="automation">Automation</h3>
 <p>RMariaDB is tested with all combinations of MariaDB and MySQL client + server on GitHub Actions.
 RPostgres is tested with all versions of PostgreSQL &gt;= 10 on GitHub Actions.
 This ensures that future updates of these packages continue to work in all scenarios.

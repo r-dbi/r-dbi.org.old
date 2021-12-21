@@ -71,7 +71,7 @@ Set `extended_types = TRUE` in `dbConnect()` to enable this feature.
 The `check_interrupts = TRUE` argument to `dbConnect()` for Postgres database now correctly cancels the query and returns to the user as soon as Ctrl+C (or Escape in RStudio) is pressed.
 Thanks to Mateusz Żółtak for tests and discussion.
 
-## Automation
+### Automation
 
 RMariaDB is tested with all combinations of MariaDB and MySQL client + server on GitHub Actions.
 RPostgres is tested with all versions of PostgreSQL >= 10 on GitHub Actions.
