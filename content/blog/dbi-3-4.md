@@ -13,8 +13,8 @@ description = "Summarizing the progress of 2021"
 ## What is DBI?
 
 The {DBI} package (**d**ata**b**ase **i**nterface) provides an abstraction for communication between R and database management systems (DBMSes) by specifying a common application programming interface (API).
-Actual connectivity to DBMSes is established via database specific [backend packages](https://github.com/r-dbi/backends#readme), implementing this interface. Examples for such backends include
-[RPostgres](https://rpostgres.r-dbi.org/), [RMariaDB](https://rmariadb.r-dbi.org/), and [RSQLite](https://rsqlite.r-dbi.org/).
+Actual connectivity to DBMSes is established via database specific [backend packages](https://github.com/r-dbi/backends#readme), implementing this interface.
+Examples for such backends include [RPostgres](https://rpostgres.r-dbi.org/), [RMariaDB](https://rmariadb.r-dbi.org/), and [RSQLite](https://rsqlite.r-dbi.org/).
 For users that are new to DBI, the [introductory tutorial](https://dbi.r-dbi.org/articles/dbi) provides a good entry point for getting acquainted with some key concepts.
 
 This blog post summarizes recent developments in {DBI} and related packages and concludes with an outlook on potential future directions.
@@ -116,7 +116,8 @@ setMethod("foo", c("myclass", "character"), foo_myclass_mycharacter)
 ```
 
 Reasons for this transformation were to make the respective implementations more accessible, as function definitions now can be displayed more easily via `mypkg:::foo_myclass_character`, and to generally make the code-base easier to read and navigate.
-In similar spirit, each such generic implementation is now defined in its own file with file names constructed as `foo_myclass_mycharacter.R`. This makes it immediately clear, exactly which methods are implemented by a package, simply from the list of associated files.
+In similar spirit, each such generic implementation is now defined in its own file with file names constructed as `foo_myclass_mycharacter.R`.
+This makes it immediately clear, exactly which methods are implemented by a package, simply from the list of associated files.
 Code transformation was carried out in semi-automated fashion, with the help of a [script](https://github.com/pre-processing-r/rpp/blob/main/script/un-s4.R) that uses infrastructure from the "Pre-processing R code" project.
 
 ## Future work
@@ -132,7 +133,8 @@ While S4 offers several advantages over its predecessor S3, including increased 
 Consequently, once the definition of a generic is published, it is difficult to make changes without breaking downstream dependencies.
 
 The first release of {DBI} dates back roughly 20 years and since, the package has been widely adopted by others, both for accessing databases or providing [backends](https://github.com/r-dbi/backends#readme) to DBMSes.
-Its success, combined with the rigidity imposed by S4, has made it difficult to extend the interface beyond what is currently offered by {DBI}. When considering new additions, there is pressure to get it right in the first attempt, thereby holding back less essential improvements.
+Its success, combined with the rigidity imposed by S4, has made it difficult to extend the interface beyond what is currently offered.
+When considering new additions, there is pressure to get it right in the first attempt, thereby holding back less essential improvements.
 
 The DBI specification aims to standardize the feature set of {DBI}-compliant backends, while the {DBItest} package provides a test suite against which conformity of an implementation can be verified.
 Due to differences in design of individual DBMSes, not all features of the DBI specification and therefore not all tests provided by {DBItest} are supported by all backend packages.
@@ -168,7 +170,8 @@ Users can in turn query these capabilities and act accordingly.
 ### Separate user interface
 
 As an evolution of the current approach, where users of DBI will often directly call methods that are mostly implemented by backends themselves, introduction of a separate user-facing API may be worthwhile.
-Based on plain functions and essentially providing a [facade](https://en.wikipedia.org/wiki/Facade_pattern), this user interface would be sufficient for the overwhelming majority of use cases. At the same time, such an approach should contribute to simpler code with less duplication in backend packages.
+Based on plain functions and essentially providing a [facade](https://en.wikipedia.org/wiki/Facade_pattern), this user interface would be sufficient for the overwhelming majority of use cases.
+At the same time, such an approach should contribute to simpler code with less duplication in backend packages.
 
 The new user interface performs tasks that are common to all database backends (e.g. validation of arguments), and calls methods provided by the backends, in some cases dependent on declared capabilities.
 Overall, this should lead to less code that needs to be reimplemented across backends and the decoupling of interfaces could help with iterative improvements, while guaranteeing stability for users.
@@ -187,7 +190,8 @@ In the latter case, the SQL statement could be constructed using quoted literals
 <!-- I don't understand what max query length means and how this relates to chunking of tables -->
 The backend could indicate the maximum length of a query and large tables could be split into chunks automatically based on that size.
 
-As a final example, a backend supporting asynchronous operations might rely entirely on DBI for providing the corresponding blocking operations. The asynchronous procedure provided by the backend could automatically be wrapped by a DBI function that only returns upon completion.
+As a final example, a backend supporting asynchronous operations might rely entirely on DBI for providing the corresponding blocking operations.
+The asynchronous procedure provided by the backend could automatically be wrapped by a DBI function that only returns upon completion.
 
 Such a split API would allow for generics declared by {DBI} for interfacing with backends to remain frozen.
 To extend or alter the signature of a generic, a new generic can be added, using some form of versioning (e.g. with a numeric suffix, such as `dbAppendTable1()`, `dbAppendTable2()`, etc.).
