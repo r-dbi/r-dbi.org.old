@@ -118,10 +118,8 @@ Code transformation was carried out in semi-automated fashion, with the help of 
 
 ## Future work
 
-<!-- what is the intention behind this first paragraph? do we want to broaden the scope of DBI or not? -->
-The {DBI} package provides a low-level interface for database connectivity, that has been designed with a [narrow scope](https://www.r-dbi.org/blog/dbi-3-3/) in mind.
+The {DBI} package provides a low-level interface for database connectivity with a [narrow scope](https://www.r-dbi.org/blog/dbi-3-3/).
 Data query and manipulation tasks that are not in-scope for {DBI} are currently left to auxiliary packages, including [dbplyr](https://dbplyr.tidyverse.org/), [dm](https://cynkra.github.io/dm/), [dbx](https://github.com/ankane/dbx) and [rquery](https://winvector.github.io/rquery/).
-
 {DBI} uses S4, one of several systems for object-oriented programming in R.
 While S4 offers several advantages over its predecessor S3, including increased strictness and multiple dispatch, it also is more rigid compared to S3.
 <!-- I don't see how this is specific to S4, but then again, I haven't really used S4 myself, so I'm no expert; it might still be worthwhile to elaborate a bit here -->
