@@ -48,9 +48,8 @@ For connecting to a Redshift cluster, the RPostgres package exports `Redshift()`
 
 ### Faster table imports
 
-<!-- I find this first sentence unclear: what exactly is meant by "passing multiple values"? -->
-Previous versions of {RMariaDB} and {RPostgres} relied on passing multiple values to `dbBind()` for writing tables.
-This can be inefficient when sending data to the database, because each row requires a communication roundtrip to the server.
+Previous versions of {RMariaDB} and {RPostgres} relied `dbBind()` for writing tables, using a prepared `INSERT INTO ... VALUES (...)` statement with placeholders.
+Contrary to the expectation, this was very inefficient, because each row requires a communication roundtrip to the server.
 To improve the situation, {RMariaDB} now uses `LOAD DATA LOCAL INFILE` to load data from a temporary CSV file.
 Recent MySQL server versions disable this capability by default, and it must therefore be explicitly enabled by passing `load_data_local_infile = TRUE` to `dbConnect()`.
 For {RPostgres}, `dbAppendTable()` has been updated to use the same optimization as `dbWriteTable()` when writing data.
