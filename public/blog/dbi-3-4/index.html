@@ -100,7 +100,7 @@
     <meta itemprop="name" content="Maintaining DBI, 4/4">
 <meta itemprop="description" content="Summarizing the progress of 2021"><meta itemprop="datePublished" content="2021-12-21T00:00:00+00:00" />
 <meta itemprop="dateModified" content="2021-12-21T00:00:00+00:00" />
-<meta itemprop="wordCount" content="1818">
+<meta itemprop="wordCount" content="2102">
 <meta itemprop="keywords" content="" />
 <div id="hero">
     <h1 itemprop="headline">  Maintaining DBI, 4/4</h1>
@@ -110,7 +110,7 @@
 <time class="post-time"><span class="icon">
   <i class="fa fa-clock-o" aria-hidden="true"></i>
 </span>
-<span>9 minute read</span>
+<span>10 minute read</span>
 <span class="icon">
  <i class="fa fa-pencil" aria-hidden="true"></i>
 </span>
@@ -122,23 +122,21 @@
 <div id="post-box">
 <div id="post" itemprop="articleBody">
 
-    <h2 id="what-is-dbi">What is DBI?</h2>
-<p>The {DBI} package (<strong>d</strong>ata<strong>b</strong>ase <strong>i</strong>nterface) connects R to database management systems (DBMS).
-It is an interface that only offers a common interface.
-Connectivity to DBMS is established through dedicated <a href="https://github.com/r-dbi/backends#readme">backend packages</a> such as
-<a href="https://rpostgres.r-dbi.org/">RPostgres</a>, <a href="https://rmariadb.r-dbi.org/">RMariaDB</a>, and <a href="https://rsqlite.r-dbi.org/">RSQLite</a>.
-If you&rsquo;re new to DBI, read the <a href="https://dbi.r-dbi.org/articles/dbi">introductory tutorial</a> to get started.</p>
-<p>The current version of DBI is 1.1.2.
-In this blog post, a summary of recent developments in {DBI} and related packages is provided.
-See the three previous blog posts for summaries from earlier years.</p>
+    <!-- raw HTML omitted -->
+<h2 id="what-is-dbi">What is DBI?</h2>
+<p>The {DBI} package (<strong>d</strong>ata<strong>b</strong>ase <strong>i</strong>nterface) provides an abstraction for communication between R and database management systems (DBMSes) by specifying a common application programming interface (API).
+Actual connectivity to DBMSes is established via database specific <a href="https://github.com/r-dbi/backends#readme">backend packages</a>, implementing this interface.
+Examples for such backends include <a href="https://rpostgres.r-dbi.org/">RPostgres</a>, <a href="https://rmariadb.r-dbi.org/">RMariaDB</a>, and <a href="https://rsqlite.r-dbi.org/">RSQLite</a>.
+For users that are new to DBI, the <a href="https://dbi.r-dbi.org/articles/dbi">introductory tutorial</a> provides a good entry point for getting acquainted with some key concepts.</p>
+<p>This blog post summarizes recent developments in {DBI} and related packages and concludes with an outlook on potential future directions.
+Similar articles are available from previous years, reporting on earlier states of the {DBI} ecosystem:</p>
 <ul>
-<li><a href="https://www.r-dbi.org/blog/dbi-3-1/">1/4: December 2018</a></li>
-<li><a href="https://www.r-dbi.org/blog/dbi-3-2/">2/4: December 2019</a></li>
 <li><a href="https://www.r-dbi.org/blog/dbi-3-3/">3/4: January 2021</a></li>
+<li><a href="https://www.r-dbi.org/blog/dbi-3-2/">2/4: December 2019</a></li>
+<li><a href="https://www.r-dbi.org/blog/dbi-3-1/">1/4: December 2018</a></li>
 </ul>
-<p>The post concludes with an outlook on future development in DBI and related packages.</p>
-<h2 id="recent-developments-in-dbi">Recent developments in DBI</h2>
-<p>A few updates happened since the last blog post:</p>
+<h2 id="recent-developments">Recent developments</h2>
+<p>Several packages associated with DBI have been updated since <a href="https://www.r-dbi.org/blog/dbi-3-3/">early 2021</a>:</p>
 <ul>
 <li>DBI 1.1.1 -&gt; 1.1.2 (<a href="https://dbi.r-dbi.org/news/">NEWS</a>)</li>
 <li>RMariaDB 1.1.0 -&gt; 1.2.1 (<a href="https://rmariadb.r-dbi.org/news/">NEWS</a>)</li>
@@ -146,140 +144,138 @@ See the three previous blog posts for summaries from earlier years.</p>
 <li>RSQLite 2.2.2 -&gt; 2.2.9 (<a href="https://rsqlite.r-dbi.org/news/">NEWS</a>)</li>
 <li>DBItest 1.7.0 -&gt; 1.7.2 (<a href="https://dbitest.r-dbi.org/news/">NEWS</a>)</li>
 </ul>
-<p>This section discusses a few noteworthy improvements, both visible and internal.</p>
+<p>And the following sections elaborate on some of the noteworthy changes and improvements contained in these updates, both user-visible and internal.</p>
 <h3 id="clickable-method-documentation">Clickable method documentation</h3>
-<p>The DBI method reference on <a href="https://dbi.r-dbi.org/reference/">https://dbi.r-dbi.org/reference/</a> has been enhanced with clickable links to known DBI backends.
-This makes it easier to access your database: some backends provide extended functionality through optional arguments in their methods, and these should be documented in the backend&rsquo;s reference.</p>
+<p>The DBI method reference on <a href="https://dbi.r-dbi.org/reference/">https://dbi.r-dbi.org/reference/</a> has been updated to include clickable links to known DBI backends.
+This makes documentation specific to certain backends more accessible, as optional function arguments used by some backend implementations are only documented by the respective packages.</p>
 <h3 id="full-support-for-aws-redshift">Full support for AWS Redshift</h3>
-<p>Thanks to Adam Foryś, Redshift support is now on par with regular Postgres databases in the RPostgres package.
-Both databases pass the entire DBItest test suite, except for Redshift&rsquo;s missing support for BLOB data.
-Use <code>Redshift()</code> instead of <code>Postgres()</code> to connect to a Redshift cluster.</p>
+<p>Redshift support has been greatly improved by Adam Foryś as part of the RPostgres package and both databases now pass all applicable tests offered by DBItest. The BLOB data type is currently not supported by Redshift and consequently, related tests are skipped.
+For connecting to a Redshift cluster, the RPostgres package exports <code>Redshift()</code> (to be used over <code>Postgres()</code>).</p>
 <h3 id="faster-table-imports">Faster table imports</h3>
-<p>Previous versions of {RMariaDB} and {RPostgres} relied on passing multiple values to <code>dbBind()</code> for writing tables.
-This is very slow for sending data to the database, because each row requires a communication roundtrip to the server.
+<p>Previous versions of {RMariaDB} and {RPostgres} relied <code>dbBind()</code> for writing tables, using a prepared <code>INSERT INTO ... VALUES (...)</code> statement with placeholders.
+Contrary to the expectation, this was very inefficient, because each row requires a communication roundtrip to the server.
 To improve the situation, {RMariaDB} now uses <code>LOAD DATA LOCAL INFILE</code> to load data from a temporary CSV file.
-Because recent versions of the MySQL database server disable this capability, this must be explicitly enabled by passing <code>load_data_local_infile = TRUE</code> to <code>dbConnect()</code>.
-For {RPostgres}, <code>dbAppendTable()</code> now uses the same fast strategy as <code>dbWriteTable()</code> for writing data.</p>
+Recent MySQL server versions disable this capability by default, and therefore it is also disabled by default in {RMariaDB}.
+If your server supports this, enable fast loading by passing <code>load_data_local_infile = TRUE</code> to <code>dbConnect()</code>.
+For {RPostgres}, <code>dbAppendTable()</code> has been updated to use the same optimization as <code>dbWriteTable()</code> when writing data.</p>
 <h3 id="windows-compatibility">Windows compatibility</h3>
-<p>{RMariaDB} now can use the <code>caching_sha2_password</code> plugin on Windows which was disabled on previous versions.
+<p>{RMariaDB} can now use the <code>caching_sha2_password</code> plugin on Windows which was permanently disabled on previous versions.
 This is important for connecting to recent versions of MySQL which require this plugin.</p>
 <h3 id="extended-data-types-for-sqlite">Extended data types for SQLite</h3>
-<p>Thanks to Eric Anderson, {RSQLite} now returns typed data for columns declared with <code>DATE</code>, <code>TIME</code> and <code>TIMESTAMP</code>.
-Set <code>extended_types = TRUE</code> in <code>dbConnect()</code> to enable this feature.</p>
+<p>Thanks to Eric Anderson, {RSQLite} now returns typed data for columns declared with <code>DATE</code>, <code>TIME</code> and <code>TIMESTAMP</code> data types.
+To enable this feature, <code>extended_types = TRUE</code> has to be passed in <code>dbConnect()</code>.</p>
 <h3 id="interrupt-handling">Interrupt handling</h3>
-<p>The <code>check_interrupts = TRUE</code> argument to <code>dbConnect()</code> for Postgres database now correctly cancels the query and returns to the user as soon as Ctrl+C (or Escape in RStudio) is pressed.
+<p>The <code>check_interrupts = TRUE</code> argument to <code>dbConnect()</code> in {RPostgres} now correctly cancels the query and returns to the user as soon as an interrupt is signalled (by pressing Ctrl+C or Escape in RStudio).
 Thanks to Mateusz Żółtak for tests and discussion.</p>
 <h3 id="automation">Automation</h3>
-<p>{RMariaDB} is tested with all combinations of MariaDB and MySQL client + server on GitHub Actions.
-{RPostgres} is tested with all versions of PostgreSQL &gt;= 10 on GitHub Actions.
-This ensures that future updates of these packages continue to work in all scenarios.
-All tests also run daily, this ensures that upstream updates do not break our backend.</p>
-<p>Thanks to the automated checks for upgraded SQLite3 versions, the vendored code could be updated continuously shortly after upstream releases.
-{RSQLite} now uses SQLite3 3.37.0, released to CRAN about 10 days after the upstream release.</p>
+<p>{RMariaDB} is tested against all combinations of major MariaDB and MySQL client/server releases, while {RPostgres} is tested against all versions of PostgreSQL ≥ 10 using GitHub Actions.
+This guarantees compatibility with a broader range of database instances for both backends and for future updates to the corresponding packages.
+All tests are run daily, thereby ensuring that upstream updates remain compatible with backend implementations.
+The database servers are installed on GitHub Actions using dedicated actions for installing <a href="https://github.com/ankane/setup-mariadb/">MariaDB</a>, <a href="https://github.com/ankane/setup-mysql">MySQL</a> and <a href="https://github.com/ankane/setup-postgres">Postgres</a>, maintained by Andrew Kane.</p>
+<p>Thanks to the automated monitoring of SQLite3 releases, the vendored code can be updated continuously with minimal delay over upstream releases.
+{RSQLite} now uses SQLite3 3.37.0 and became available from CRAN only 10 days after the upstream release.</p>
 <h3 id="simpler-upgrade-path-for-dbitest">Simpler upgrade path for DBItest</h3>
-<p>It is now simpler to bring changes to DBItest to CRAN.
-Backends declare the version of {DBItest} they support with the new <code>dbitest_version</code> tweak.
-New tests in DBItest are skipped if the declared version is too low.
+<p>By making it possible for backends to specify the supported version of {DBItest}, using <code>tweaks(dbitest_version = &quot;x.y.z&quot;)</code>, it is now simpler to update {DBItest} on CRAN.
+Newly added tests in {DBItest} are skipped if the declared version is too low.
 Skipped tests are reported in the test results and can be fixed independently of the {DBItest} releases.</p>
 <h3 id="inlined-boost-headers">Inlined Boost headers</h3>
-<p>The {BH} package is a header-only C++ package with more than 10000 files.
-Installing this package proved challenging on some file systems, namely Amazon Elastic File System.
-By inlining only the required files into {RSQLite}, {RMariaDB} and {RPostgres}, it is no longer necessary to install {BH} to use these packages, and the total number of files required to build these packages is greatly reduced.
+<p>The {BH} package is a C++ header-only package containing in excess of 10,000 individual files and installation has proven challenging for some systems, such as Amazon&rsquo;s Elastic File System.
+By vendoring only the required files into {RSQLite}, {RMariaDB} and {RPostgres}, it is no longer necessary to install {BH} to use these packages, and therefore the total number of files required to build these packages is greatly reduced.
 Thanks to RStudio for supporting this change.</p>
 <h3 id="reorganized-structure-of-the-r-code">Reorganized structure of the R code</h3>
-<p>DBI uses S4 to declare its classes, generics, and methods.
-Code for the methods is declared with <code>setMethod()</code>, with a syntax similar to this:</p>
+<p>{DBI} uses S4 classes and generic functions to specify the interface to be implemented by backends, using database specific subclasses.
+Class specific generic implementations are consequently declared with <code>setMethod()</code>, using the following convention:</p>
 <div class="highlight"><pre tabindex="0" style="color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4"><code class="language-r" data-lang="r"><span style="color:#a6e22e">setMethod</span>(<span style="color:#e6db74">&#34;foo&#34;</span>, <span style="color:#a6e22e">c</span>(<span style="color:#e6db74">&#34;myclass&#34;</span>, <span style="color:#e6db74">&#34;character&#34;</span>), <span style="color:#a6e22e">function</span>(x, char_arg, <span style="color:#66d9ef">...</span>) {
   <span style="color:#66d9ef">...</span>
 })
-</code></pre></div><p>This notation has been replaced with the following way of writing the same code, throughout all packages mentioned in this post:</p>
+</code></pre></div><p>Instead of passing an anonymous function as <code>definition</code> argument to <code>setMethod()</code>, this has been changed to a semantic equivalent which is more explicit:</p>
 <div class="highlight"><pre tabindex="0" style="color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4"><code class="language-r" data-lang="r">foo_myclass_character <span style="color:#f92672">&lt;-</span> <span style="color:#a6e22e">function</span>(x, char_arg, <span style="color:#66d9ef">...</span>) {
   <span style="color:#66d9ef">...</span>
 }
 
-<span style="color:#a6e22e">setMethod</span>(<span style="color:#e6db74">&#34;foo&#34;</span>, <span style="color:#a6e22e">c</span>(<span style="color:#e6db74">&#34;myclass&#34;</span>, <span style="color:#e6db74">&#34;character&#34;</span>), foo_myclass_mycharacter
-</code></pre></div><p>This brings the following advantages:</p>
-<ul>
-<li>From the list of files it&rsquo;s obvious which methods are implemented in a package,</li>
-<li>Code is easier to read and navigate,</li>
-<li>The source code of the implementation of an S4 method can be displayed easily via <code>mypkg:::foo_myclass_character</code>.</li>
-</ul>
-<p>The code transformation was semi-automated, with the help of a <a href="https://github.com/pre-processing-r/rpp/blob/main/script/un-s4.R">script</a> that uses infrastructure from the &ldquo;Pre-processing R code&rdquo; project.</p>
+<span style="color:#a6e22e">setMethod</span>(<span style="color:#e6db74">&#34;foo&#34;</span>, <span style="color:#a6e22e">c</span>(<span style="color:#e6db74">&#34;myclass&#34;</span>, <span style="color:#e6db74">&#34;character&#34;</span>), foo_myclass_mycharacter)
+</code></pre></div><p>Reasons for this transformation were to make the respective implementations more accessible, as function definitions now can be displayed more easily via <code>mypkg:::foo_myclass_character</code>, and to generally make the code-base easier to read and navigate.
+In similar spirit, each such generic implementation is now defined in its own file with file names constructed as <code>foo_myclass_mycharacter.R</code>.
+This makes it immediately clear, exactly which methods are implemented by a package, simply from the list of associated files.
+Code transformation was carried out in semi-automated fashion, with the help of a <a href="https://github.com/pre-processing-r/rpp/blob/main/script/un-s4.R">script</a> that uses infrastructure from the &ldquo;Pre-processing R code&rdquo; project.</p>
 <h2 id="future-work">Future work</h2>
-<p>The {DBI} package provides a low-level interface for database connectivity, with a <a href="https://www.r-dbi.org/blog/dbi-3-3/">limited scope</a>.
-Data query and manipulation tasks outside of {DBI}&rsquo;s limited scope are left to packages like <a href="https://dbplyr.tidyverse.org/">dbplyr</a>, <a href="https://cynkra.github.io/dm/">dm</a>, <a href="https://github.com/ankane/dbx">dbx</a> and <a href="https://winvector.github.io/rquery/">rquery</a>.</p>
-<p>{DBI} is based on S4, a system for object-oriented programming in R.
-It offered several advantages over S3, e.g. strictness and multiple dispatch.
-One of the weaknesses encountered when working with on the DBI projects was rigidity: once a generic is defined and published, it is very difficult to change its definition.</p>
-<p>The first release of {DBI} happened about 20 years ago.
-Many packages use it to access databases or provide a <a href="https://github.com/r-dbi/backends#readme">backend</a> to a DBMS.
-Combined with the rigidity it seems very difficult to extend {DBI} or even add new generics: there is pressure to &ldquo;get it right&rdquo; with the first attempt.</p>
-<p>The DBI specification aims at standardizing the features of {DBI}, the {DBItest} package provides a test suite.
-Due to differences between database implementations, not all features of the DBI specification and not all tests are supported by all backend packages.
-Backends declare, by means of &ldquo;tweaks&rdquo;, which tests to run in what way.
-This solves the problem of implementing a test suite that works for many backends.
-However, general-purpose clients only can assume which capabilities are supported by a backend or a connection, a formal way to declare these capabilities are missing.</p>
-<p>Based on these observations, for extending DBI, it may be worthwhile to address the following two issues first and foremost:</p>
+<p>The {DBI} package provides a low-level interface for database connectivity with a <a href="https://www.r-dbi.org/blog/dbi-3-3/">narrow scope</a>.
+Data query and manipulation tasks that are not in-scope for {DBI} are currently left to auxiliary packages, including <a href="https://dbplyr.tidyverse.org/">dbplyr</a>, <a href="https://cynkra.github.io/dm/">dm</a>, <a href="https://github.com/ankane/dbx">dbx</a> and <a href="https://winvector.github.io/rquery/">rquery</a>.
+{DBI} uses S4, one of several systems for object-oriented programming in R.
+While S4 offers several advantages over its predecessor S3, including increased strictness and multiple dispatch, it also is more rigid compared to S3.</p>
+<!-- raw HTML omitted -->
+<!-- raw HTML omitted -->
+<p>Consequently, once the definition of a generic is published, it is difficult to make changes without breaking downstream dependencies.</p>
+<p>The first release of {DBI} dates back roughly 20 years and since, the package has been widely adopted by others, both for accessing databases or providing <a href="https://github.com/r-dbi/backends#readme">backends</a> to DBMSes.
+Its success, combined with the rigidity imposed by S4, has made it difficult to extend the interface beyond what is currently offered.
+When considering new additions, there is pressure to get it right in the first attempt, thereby holding back less essential improvements.</p>
+<p>The DBI specification in the {DBItest} package aims to standardize the feature set of {DBI}-compliant backends, and to provide a test suite against which conformity of an implementation can be verified.
+Due to differences in design of individual DBMSes, not all features of the DBI specification and therefore not all tests provided by {DBItest} are supported by all backend packages.
+Using a newly introduced mechanism, backends can declare, by means of <em>tweaks</em>, which tests to run in what way.
+This addresses some of the problems associated with implementing a test suite that can be re-used for several backends.
+General-purpose clients however, can only make guesses as to the exact feature set supported by a given backend or connection. There currently is no formal way to declare certain capabilities as missing (or available).</p>
+<p>Based on these observations, for extending DBI, it may be worthwhile to address the following two issues:</p>
 <ol>
-<li>Formal declaration of capabilities,</li>
-<li>Decoupling the user&rsquo;s from the implementer&rsquo;s interface.</li>
+<li>Formal declaration of capabilities.</li>
+<li>Decoupling the user from the backend interface.</li>
 </ol>
-<p>The new <a href="https://github.com/r-dbi/dbi3">dbi3 repository</a> contains a collection of issues that will be much easier to address after these changes are in place.</p>
+<p>The new <a href="https://github.com/r-dbi/dbi3">dbi3 repository</a> contains a collection of issues, some of which will be easier to address after these changes are in place.</p>
 <h3 id="capabilities">Capabilities</h3>
-<p>Backends declare explicitly which features of DBI a particular connection supports.
-Examples for existing functionality include:</p>
+<p>A mechanism is introduced by which backends can declare explicitly which features of DBI a particular connection supports.
+Examples for existing functionality that varies over backends include:</p>
 <ul>
-<li>Support for BLOBs (not available e.g. in Redshift)</li>
-<li>Support for logical columns (not available e.g. in SQL Server or SQLite)</li>
-<li>Support for named or nested transactions (not standardized)</li>
-<li>Which placeholder to use for parameterized queries (different across databases)</li>
+<li>Support for BLOBs (not available e.g. in Redshift).</li>
+<li>Support for logical columns (not available e.g. in SQL Server or SQLite).</li>
+<li>Support for named or nested transactions (not standardized).</li>
+<li>Placeholder character to use in parameterized queries (different across databases).</li>
 </ul>
-<p>In the future, backends may indicate:</p>
+<p>In the future, backends may also indicate:</p>
 <ul>
-<li>if asynchronous queries are supported (important for web development),</li>
-<li>if the database supports SQL or a different query language (DBI currently assumes SQL).</li>
+<li>Whether asynchronous queries are supported (important for web development).</li>
+<li>Whether the database supports SQL or a different query language (DBI currently assumes SQL).</li>
 </ul>
-<p>The list of possible capabilities is maintained by DBI.
-An updated version of {DBItest} can rely solely on these capabilities.
-Users can query these capabilities and act based on the results, but very often will not need to &ndash; read on.</p>
+<p>The list of possible capabilities will be maintained by DBI and {DBItest} will rely solely on these capabilities, foregoing the current <em>tweaking</em> mechanism.
+Users can in turn query these capabilities and act accordingly.</p>
 <h3 id="separate-user-interface">Separate user interface</h3>
-<p>The idea here is that users of DBI should not <em>need to</em> call methods implemented by backends directly.
-Instead, a separate user interface based on plain functions &ndash; a <a href="https://en.wikipedia.org/wiki/Facade_pattern">facade</a> &ndash; is provided.
-This user interface can be designed to be sufficient for the overwhelming majority of users and use cases, and at the same time contribute to simpler code with fewer duplication in backend packages.</p>
-<p>The new user interface performs tasks that are common to all database backends (e.g. validation of arguments), and calls methods provided by the backends, determined by the declared capability.
-This leads to fewer code that needs to be reimplemented across backends.
-For example, a rich <code>dbi_write_table()</code> function that optionally creates and writes data to a database table might:</p>
+<p>As an evolution of the current approach, where users of DBI will often directly call methods that are mostly implemented by backends themselves, introduction of a separate user-facing API may be worthwhile.
+Based on plain functions and essentially providing a <a href="https://en.wikipedia.org/wiki/Facade_pattern">facade</a>, this user interface would be sufficient for the overwhelming majority of use cases.
+At the same time, such an approach should contribute to simpler code with less duplication in backend packages.</p>
+<p>The new user interface performs tasks that are common to all database backends (e.g. validation of arguments), and calls methods provided by the backends, in some cases dependent on declared capabilities.
+Overall, this should lead to less code that needs to be reimplemented across backends.
+The decoupling of interfaces could help with iterative improvements, while guaranteeing stability for users.
+As an example, a <code>dbi_write_table()</code> function that optionally creates and writes data to a database table might encompass the following functionality:</p>
 <ul>
-<li>if the backend supports transactions:
+<li>If the backend supports transactions:
 <ul>
-<li>call <code>dbi_is_transacting()</code> to determine if the statement is inside a transaction</li>
-<li>call <code>dbi_begin_transaction()</code> if not inside a transaction</li>
-<li>always call <code>dbi_begin_transaction(name = &quot;...&quot;)</code> if the backend supports named transactions</li>
+<li>Call <code>dbi_is_transacting()</code> to determine if the statement is occurring as part of a transaction.</li>
+<li>Call <code>dbi_begin_transaction()</code> if it is not already part a transaction.</li>
+<li>Use <code>dbi_begin_transaction(name = &quot;...&quot;)</code> if the backend supports named transactions.</li>
 </ul>
 </li>
-<li>call <code>dbi_remove_table()</code> and/or <code>dbi_create_table()</code> if necessary</li>
-<li>call <code>dbi_append_table()</code></li>
-<li>call <code>dbi_commit()</code> on success or <code>dbi_rollback()</code> on failure if transactions are supported</li>
+<li>Call <code>dbi_remove_table()</code> and/or <code>dbi_create_table()</code> if necessary.</li>
+<li>Call <code>dbi_append_table()</code>.</li>
+<li>Call <code>dbi_commit()</code> on success or <code>dbi_rollback()</code> on failure whenever transactions are supported.</li>
 </ul>
-<p>In turn, for appending rows to a table, <code>dbi_append_table()</code> might check if the backend supports streamed upload or if it should create SQL to insert rows.
-In the latter case, the SQL would be constructed using quoted literals obtained from <code>dbi_quote_literal()</code>.
-The backend would indicate the maximum length of a query, large tables would be split into chunks automatically based on that size.</p>
-<p>Similarly, a backend that supports asynchronous operations might use a default implementation for the corresponding synchronous operations: the user interface detects that async is supported and implements sync by forwarding to async and waiting.</p>
-<p>This allows generics declared by {DBI} to remain frozen.
-To extend or alter the signature of a generic, a new generic (e.g. with a numeric suffix) is conceived: <code>dbAppendTable1()</code>, <code>dbAppendTable2()</code>, etc..
-All arguments in new generics could be declared explicitly, without relying on passing them through <code>...</code> as is done currently.</p>
-<p>The new user interface is responsible for deciding which methods to call.
-When a new version of a generic is declared, {DBI} documents and proposes an upgrade path for backend implementers.
-In the long run this also allows transitioning to another object-oriented system such as S3 or <a href="https://github.com/RConsortium/OOP-WG/">R7</a>.</p>
-<p>This approach also enables support of rich callbacks: each function in the facade notifies listeners before it is called and after results are complete.
-For example, a call to <code>dbi_connect()</code> will notify interested parties that a new connection has been established, and a call to <code>dbi_query()</code> issues callback with the query and the result.
-Use cases include:</p>
+<p>For appending rows to a table, <code>dbi_append_table()</code> might check if the backend supports streaming uploads or if SQL should be created for inserting rows.
+In the latter case, the SQL statement (or multiple statements for large tables) could be constructed using quoted literals obtained from <code>dbi_quote_literal()</code>.
+The backend could indicate the maximum supported length of a statement, so that splitting of large tables into multiple chunks can happen automatically.</p>
+<p>As a final example, a backend supporting asynchronous operations might rely entirely on DBI for providing the corresponding blocking operations.
+The asynchronous procedure provided by the backend could automatically be wrapped by a DBI function that only returns upon completion.</p>
+<p>Such a split API would allow for generics declared by {DBI} for interfacing with backends to remain frozen.
+To extend or alter the signature of a generic, a new generic can be added, using some form of versioning (e.g. with a numeric suffix, such as <code>dbAppendTable1()</code>, <code>dbAppendTable2()</code>, etc.).
+With such an architecture, arguments in generics could be declared explicitly, without relying on forwarding via <code>...</code>, as is done currently.
+The user is presented with a stable API with only backward-compatible changes, {DBI} internally decides which versions of a method to call.
+When a new version of a generic is introduced, {DBI} documents and proposes an upgrade path for backend implementers.
+In the long run this would also allow for transitioning to another object-oriented system such as S3 or <a href="https://github.com/RConsortium/OOP-WG/">R7</a> without introducing user-facing breaking changes.</p>
+<p>This approach also enables support of rich callbacks: each function in the facade can notify listeners on entry and before returning.
+For example, a call to <code>dbi_connect()</code> would notify interested parties that a new connection has been established, and a call to <code>dbi_query()</code> issues callbacks with the query and the result.
+Potential use cases include:</p>
 <ul>
-<li>logging as in {dblog}</li>
-<li>the &ldquo;Connections&rdquo; pane in the RStudio IDE</li>
-<li>mocking as in {dittodb} (with hooks)</li>
+<li>Logging as in {dblog}.</li>
+<li>The <em>Connections</em> pane in RStudio.</li>
+<li>Mocking (with hooks) as in {dittodb}.</li>
 </ul>
-<p>Similarly to methods, existing callbacks will remain frozen but new extended callbacks can be defined, e.g. with a numeric suffix.</p>
+<p>A versioning scheme could also be implemented for callbacks, keeping existing callbacks frozen while allowing for addition of new features that alter callback signatures.</p>
 <h2 id="acknowledgments">Acknowledgments</h2>
 <p>I&rsquo;d like to thank Jeroen Ooms and Gábor Csárdi for providing crucial infrastructure to support this and many other projects in the R ecosystem.</p>
 <p>Thanks the numerous contributors to the packages in the &ldquo;Maintaining DBI&rdquo; project in 2021:</p>
@@ -307,7 +303,7 @@ Use cases include:</p>
   </time>
   
   
-  using <span itemprop="wordCount">1818</span> words.
+  using <span itemprop="wordCount">2102</span> words.
 </p>
 
         
