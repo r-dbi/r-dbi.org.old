@@ -178,7 +178,7 @@ As an example, a `dbi_write_table()` function that optionally creates and writes
   - Call `dbi_begin_transaction()` if it is not already part a transaction.
   - Use `dbi_begin_transaction(name = "...")` if the backend supports named transactions.
 - Call `dbi_remove_table()` and/or `dbi_create_table()` if necessary.
-- Call `dbi_append_table()` otherwise.
+- Call `dbi_append_table()`.
 - Call `dbi_commit()` on success or `dbi_rollback()` on failure whenever transactions are supported.
 
 For appending rows to a table, `dbi_append_table()` might check if the backend supports streaming uploads or if SQL should be created for inserting rows.
