@@ -191,8 +191,7 @@ The asynchronous procedure provided by the backend could automatically be wrappe
 Such a split API would allow for generics declared by {DBI} for interfacing with backends to remain frozen.
 To extend or alter the signature of a generic, a new generic can be added, using some form of versioning (e.g. with a numeric suffix, such as `dbAppendTable1()`, `dbAppendTable2()`, etc.).
 With such an architecture, arguments in generics could be declared explicitly, without relying on forwarding via `...`, as is done currently.
-
-Furthermore, while presenting the user with a stable API, {DBI} internally decides which method versions to call.
+The user is presented with a stable API with only backward-compatible changes, {DBI} internally decides which versions of a method to call.
 When a new version of a generic is introduced, {DBI} documents and proposes an upgrade path for backend implementers.
 In the long run this would also allow for transitioning to another object-oriented system such as S3 or [R7](https://github.com/RConsortium/OOP-WG/) without introducing user-facing breaking changes.
 
