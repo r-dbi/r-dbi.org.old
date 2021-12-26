@@ -169,7 +169,8 @@ Based on plain functions and essentially providing a [facade](https://en.wikiped
 At the same time, such an approach should contribute to simpler code with less duplication in backend packages.
 
 The new user interface performs tasks that are common to all database backends (e.g. validation of arguments), and calls methods provided by the backends, in some cases dependent on declared capabilities.
-Overall, this should lead to less code that needs to be reimplemented across backends and the decoupling of interfaces could help with iterative improvements, while guaranteeing stability for users.
+Overall, this should lead to less code that needs to be reimplemented across backends.
+The decoupling of interfaces could help with iterative improvements, while guaranteeing stability for users.
 As an example, a `dbi_write_table()` function that optionally creates and writes data to a database table might encompass the following functionality:
 
 - If the backend supports transactions:
