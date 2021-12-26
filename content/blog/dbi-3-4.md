@@ -80,9 +80,9 @@ Thanks to the automated monitoring of SQLite3 releases, the vendored code can be
 
 ### Simpler upgrade path for DBItest
 
-<!-- does the word "tweak" have a domain specific meaning? maybe italicize to signal this? -->
-By making it possible for backends to specify the supported version of {DBItest}, using the new `dbitest_version` *tweak*, it is now simpler to update DBItest on CRAN.
-Newly added tests in DBItest are skipped if the declared version is too low and skipped tests are reported in the test results and can be fixed independently of the {DBItest} releases.
+By making it possible for backends to specify the supported version of {DBItest}, using `tweaks(dbitest_version = "x.y.z")`, it is now simpler to update {DBItest} on CRAN.
+Newly added tests in {DBItest} are skipped if the declared version is too low.
+Skipped tests are reported in the test results and can be fixed independently of the {DBItest} releases.
 
 ### Inlined Boost headers
 
