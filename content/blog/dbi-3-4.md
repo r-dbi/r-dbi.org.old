@@ -180,9 +180,8 @@ As an example, a `dbi_write_table()` function that optionally creates and writes
 - Call `dbi_commit()` on success or `dbi_rollback()` on failure whenever transactions are supported.
 
 For appending rows to a table, `dbi_append_table()` might check if the backend supports streaming uploads or if SQL should be created for inserting rows.
-In the latter case, the SQL statement could be constructed using quoted literals obtained from `dbi_quote_literal()`.
-<!-- I don't understand what max query length means and how this relates to chunking of tables -->
-The backend could indicate the maximum length of a query and large tables could be split into chunks automatically based on that size.
+In the latter case, the SQL statement (or multiple statements for large tables) could be constructed using quoted literals obtained from `dbi_quote_literal()`.
+The backend could indicate the maximum supported length of a statement, so that splitting of large tables into multiple chunks can happen automatically.
 
 As a final example, a backend supporting asynchronous operations might rely entirely on DBI for providing the corresponding blocking operations.
 The asynchronous procedure provided by the backend could automatically be wrapped by a DBI function that only returns upon completion.
