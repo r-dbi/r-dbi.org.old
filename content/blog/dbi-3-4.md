@@ -93,7 +93,7 @@ Thanks to RStudio for supporting this change.
 
 ### Reorganized structure of the R code
 
-{DBI} uses S4 generic functions to specify the interface to be implemented by backends, using database specific subclasses.
+{DBI} uses S4 classes and generic functions to specify the interface to be implemented by backends, using database specific subclasses.
 Class specific generic implementations are consequently declared with `setMethod()`, using the following convention:
 
 ```r
