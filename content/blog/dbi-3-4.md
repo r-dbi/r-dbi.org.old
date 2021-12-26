@@ -8,7 +8,6 @@ description = "Summarizing the progress of 2021"
 +++
 
 <!-- how do you want to pluralize abbreviations? DBMSes, DBMS's DBMSs? -->
-<!-- braces for package names are used inconsistently; is there some pattern I'm missing? -->
 
 ## What is DBI?
 
@@ -66,7 +65,7 @@ To enable this feature, `extended_types = TRUE` has to be passed in `dbConnect()
 
 ### Interrupt handling
 
-The `check_interrupts = TRUE` argument to `dbConnect()` for Postgres now correctly cancels the query and returns to the user as soon as an interrupt is signalled (by pressing Ctrl+C or Escape in RStudio).
+The `check_interrupts = TRUE` argument to `dbConnect()` in {RPostgres} now correctly cancels the query and returns to the user as soon as an interrupt is signalled (by pressing Ctrl+C or Escape in RStudio).
 Thanks to Mateusz Żółtak for tests and discussion.
 
 ### Automation
@@ -95,7 +94,7 @@ Thanks to RStudio for supporting this change.
 
 ### Reorganized structure of the R code
 
-DBI uses S4 generic functions to specify the interface to be implemented by backends, using database specific subclasses.
+{DBI} uses S4 generic functions to specify the interface to be implemented by backends, using database specific subclasses.
 Class specific generic implementations are consequently declared with `setMethod()`, using the following convention:
 
 ```r
