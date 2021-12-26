@@ -87,8 +87,7 @@ Skipped tests are reported in the test results and can be fixed independently of
 ### Inlined Boost headers
 
 The {BH} package is a C++ header-only package containing in excess of 10,000 individual files and installation has proven challenging for some systems, such as Amazon's Elastic File System.
-<!-- what is meant by "inlining"? isn't this more a form of vendoring? -->
-By inlining only the required files into {RSQLite}, {RMariaDB} and {RPostgres}, it is no longer necessary to install {BH} to use these packages, and therefore the total number of files required to build these packages is greatly reduced.
+By vendoring only the required files into {RSQLite}, {RMariaDB} and {RPostgres}, it is no longer necessary to install {BH} to use these packages, and therefore the total number of files required to build these packages is greatly reduced.
 Thanks to RStudio for supporting this change.
 
 ### Reorganized structure of the R code
