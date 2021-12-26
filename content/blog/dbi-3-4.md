@@ -79,7 +79,7 @@ This guarantees compatibility with a broader range of database instances for bot
 All tests are run daily, thereby ensuring that upstream updates remain compatible with backend implementations.
 
 Thanks to the automated monitoring of SQLite3 releases, the vendored code can be updated continuously with minimal delay over upstream releases.
-{RSQLite} now uses SQLite3 3.37.0 and became available form CRAN only 10 days after the upstream release.
+{RSQLite} now uses SQLite3 3.37.0 and became available from CRAN only 10 days after the upstream release.
 
 ### Simpler upgrade path for DBItest
 
@@ -123,7 +123,7 @@ Code transformation was carried out in semi-automated fashion, with the help of 
 
 <!-- what is the intention behind this first paragraph? do we want to broaden the scope of DBI or not? -->
 The {DBI} package provides a low-level interface for database connectivity, that has been designed with a [narrow scope](https://www.r-dbi.org/blog/dbi-3-3/) in mind.
-Data query and manipulation tasks that are not in-scope for {DBI} are currently left to auxillary packages, including [dbplyr](https://dbplyr.tidyverse.org/), [dm](https://cynkra.github.io/dm/), [dbx](https://github.com/ankane/dbx) and [rquery](https://winvector.github.io/rquery/).
+Data query and manipulation tasks that are not in-scope for {DBI} are currently left to auxiliary packages, including [dbplyr](https://dbplyr.tidyverse.org/), [dm](https://cynkra.github.io/dm/), [dbx](https://github.com/ankane/dbx) and [rquery](https://winvector.github.io/rquery/).
 
 {DBI} uses S4, one of several systems for object-oriented programming in R.
 While S4 offers several advantages over its predecessor S3, including increased strictness and multiple dispatch, it also is more rigid compared to S3.
