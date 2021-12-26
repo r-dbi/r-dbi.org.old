@@ -70,11 +70,10 @@ Thanks to Mateusz Żółtak for tests and discussion.
 
 ### Automation
 
-<!-- maybe be a bit more specific? all combinations of major releases? -->
-{RMariaDB} is tested against all combinations of MariaDB and MySQL client/server releases, while
-{RPostgres} is tested against all versions of PostgreSQL &ge; 10 using GitHub Actions.
+{RMariaDB} is tested against all combinations of major MariaDB and MySQL client/server releases, while {RPostgres} is tested against all versions of PostgreSQL &ge; 10 using GitHub Actions.
 This guarantees compatibility with a broader range of database instances for both backends and for future updates to the corresponding packages.
 All tests are run daily, thereby ensuring that upstream updates remain compatible with backend implementations.
+The database servers are installed on GitHub Actions using dedicated actions for installing [MariaDB](https://github.com/ankane/setup-mariadb/), [MySQL](https://github.com/ankane/setup-mysql) and [Postgres](https://github.com/ankane/setup-postgres), maintained by Andrew Kane.
 
 Thanks to the automated monitoring of SQLite3 releases, the vendored code can be updated continuously with minimal delay over upstream releases.
 {RSQLite} now uses SQLite3 3.37.0 and became available from CRAN only 10 days after the upstream release.
