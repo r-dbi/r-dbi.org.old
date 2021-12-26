@@ -131,7 +131,7 @@ The first release of {DBI} dates back roughly 20 years and since, the package ha
 Its success, combined with the rigidity imposed by S4, has made it difficult to extend the interface beyond what is currently offered.
 When considering new additions, there is pressure to get it right in the first attempt, thereby holding back less essential improvements.
 
-The DBI specification aims to standardize the feature set of {DBI}-compliant backends, while the {DBItest} package provides a test suite against which conformity of an implementation can be verified.
+The DBI specification in the {DBItest} package aims to standardize the feature set of {DBI}-compliant backends, and to provide a test suite against which conformity of an implementation can be verified.
 Due to differences in design of individual DBMSes, not all features of the DBI specification and therefore not all tests provided by {DBItest} are supported by all backend packages.
 Using a newly introduced mechanism, backends can declare, by means of *tweaks*, which tests to run in what way.
 This addresses some of the problems associated with implementing a test suite that can be re-used for several backends.
@@ -195,8 +195,8 @@ The user is presented with a stable API with only backward-compatible changes, {
 When a new version of a generic is introduced, {DBI} documents and proposes an upgrade path for backend implementers.
 In the long run this would also allow for transitioning to another object-oriented system such as S3 or [R7](https://github.com/RConsortium/OOP-WG/) without introducing user-facing breaking changes.
 
-This approach also enables support of rich callbacks: each function in the facade can notify listeners before when called and before returning.
-For example, a call to `dbi_connect()` would notify interested parties that a new connection has been established, and a call to `dbi_query()` issues callback with the query and the result.
+This approach also enables support of rich callbacks: each function in the facade can notify listeners on entry and before returning.
+For example, a call to `dbi_connect()` would notify interested parties that a new connection has been established, and a call to `dbi_query()` issues callbacks with the query and the result.
 Potential use cases include:
 
 - Logging as in {dblog}.
