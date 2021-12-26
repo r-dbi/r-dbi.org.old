@@ -19,9 +19,9 @@ For users that are new to DBI, the [introductory tutorial](https://dbi.r-dbi.org
 This blog post summarizes recent developments in {DBI} and related packages and concludes with an outlook on potential future directions.
 Similar articles are available from previous years, reporting on earlier states of the {DBI} ecosystem:
 
-- [1/4: December 2018](https://www.r-dbi.org/blog/dbi-3-1/)
-- [2/4: December 2019](https://www.r-dbi.org/blog/dbi-3-2/)
 - [3/4: January 2021](https://www.r-dbi.org/blog/dbi-3-3/)
+- [2/4: December 2019](https://www.r-dbi.org/blog/dbi-3-2/)
+- [1/4: December 2018](https://www.r-dbi.org/blog/dbi-3-1/)
 
 ## Recent developments
 
