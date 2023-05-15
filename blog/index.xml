@@ -559,7 +559,7 @@ tbl %&gt;%
 <div class="quarto-figure quarto-figure-center">
 <figure class="figure">
 <p><a href="https://bestpractices.coreinfrastructure.org/projects/1882"><img src="https://maelle.github.io/rdbidotorg/blog/posts/https:/bestpractices.coreinfrastructure.org/projects/1882/badge.png" class="img-fluid figure-img"></a></p>
-<figcaption class="figure-caption">CII Best Practices</figcaption>
+<figcaption class="figure-caption">OpenSSF Best Practices</figcaption>
 </figure>
 </div>
 <p>A click on the badge takes you to the detailed assessment. In addition to the badge, completing the self-certification allows the maintainer to rethink if workflows and practices can be improved.</p>
