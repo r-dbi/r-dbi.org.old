@@ -70,11 +70,11 @@
     "text": "dittodb 0.1.6 (2023-04-17) 🔗 🐛\nA Test Environment for Database Requests\nTesting and documenting code that communicates with remote databases can be painful. Although the interaction with R is usually relatively simple (e.g. data(frames) passed to and from a database), because they rely on a separate service and the data there, testing them can be difficult to set up, unsustainable in a continuous integration environment, or impossible without replicating an entire production cluster. This package addresses that by allowing you to make recordings from your database interactions and then play them back while testing (or in other contexts) all without needing to spin up or have access to the database your code would typically connect to.\nMaintainer: Jonathan Keane jkeane@gmail.com. License: Apache License (&gt;= 2.0)"
   },
   {
-    "objectID": "backends/index.html#duckdb-0.8.0-2023-05-23",
-    "href": "backends/index.html#duckdb-0.8.0-2023-05-23",
+    "objectID": "backends/index.html#duckdb-0.8.1-2023-06-16",
+    "href": "backends/index.html#duckdb-0.8.1-2023-06-16",
     "title": "Backends for R-DBI",
-    "section": "duckdb 0.8.0 (2023-05-23) 🔗 🐛",
-    "text": "duckdb 0.8.0 (2023-05-23) 🔗 🐛\nDBI Package for the DuckDB Database Management System\nThe DuckDB project is an embedded analytical data management system with support for the Structured Query Language (SQL). This package includes all of DuckDB and a R Database Interface (DBI) connector.\nMaintainer: Hannes Mühleisen hannes@cwi.nl. License: MIT + file LICENSE"
+    "section": "duckdb 0.8.1 (2023-06-16) 🔗 🐛",
+    "text": "duckdb 0.8.1 (2023-06-16) 🔗 🐛\nDBI Package for the DuckDB Database Management System\nThe DuckDB project is an embedded analytical data management system with support for the Structured Query Language (SQL). This package includes all of DuckDB and a R Database Interface (DBI) connector.\nMaintainer: Hannes Mühleisen hannes@cwi.nl. License: MIT + file LICENSE"
   },
   {
     "objectID": "backends/index.html#implyr-0.4.0-2021-03-29",
