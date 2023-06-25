@@ -42,11 +42,11 @@
     "text": "connections 0.1.1 (2020-02-07) 🐛\nIntegrates with the ‘RStudio’ Connections Pane and ‘pins’\nEnables ‘DBI’ compliant packages to integrate with the ‘RStudio’ connections pane, and the ‘pins’ package. It automates the display of schemata, tables, views, as well as the preview of the table’s top 1000 records.\nMaintainer: Javier Luraschi javier@rstudio.com. License: GPL-3"
   },
   {
-    "objectID": "backends/index.html#databaseconnector-6.2.1-2023-05-10",
-    "href": "backends/index.html#databaseconnector-6.2.1-2023-05-10",
+    "objectID": "backends/index.html#databaseconnector-6.2.2-2023-06-23",
+    "href": "backends/index.html#databaseconnector-6.2.2-2023-06-23",
     "title": "Backends for R-DBI",
-    "section": "DatabaseConnector 6.2.1 (2023-05-10) 🔗 🐛",
-    "text": "DatabaseConnector 6.2.1 (2023-05-10) 🔗 🐛\nConnecting to Various Database Platforms\nAn R ‘DataBase Interface’ (‘DBI’) compatible interface to various database platforms (‘PostgreSQL’, ‘Oracle’, ‘Microsoft SQL Server’, ‘Amazon Redshift’, ‘Microsoft Parallel Database Warehouse’, ‘IBM Netezza’, ‘Apache Impala’, ‘Google BigQuery’, ‘Snowflake’, ‘Spark’, and ‘SQLite’). Also includes support for fetching data as ‘Andromeda’ objects. Uses either ‘Java Database Connectivity’ (‘JDBC’) or other ‘DBI’ drivers to connect to databases.\nMaintainer: Martijn Schuemie schuemie@ohdsi.org. License: Apache License"
+    "section": "DatabaseConnector 6.2.2 (2023-06-23) 🔗 🐛",
+    "text": "DatabaseConnector 6.2.2 (2023-06-23) 🔗 🐛\nConnecting to Various Database Platforms\nAn R ‘DataBase Interface’ (‘DBI’) compatible interface to various database platforms (‘PostgreSQL’, ‘Oracle’, ‘Microsoft SQL Server’, ‘Amazon Redshift’, ‘Microsoft Parallel Database Warehouse’, ‘IBM Netezza’, ‘Apache Impala’, ‘Google BigQuery’, ‘Snowflake’, ‘Spark’, and ‘SQLite’). Also includes support for fetching data as ‘Andromeda’ objects. Uses either ‘Java Database Connectivity’ (‘JDBC’) or other ‘DBI’ drivers to connect to databases.\nMaintainer: Martijn Schuemie schuemie@ohdsi.org. License: Apache License"
   },
   {
     "objectID": "backends/index.html#dbi.rodbc-0.1-2",
