@@ -434,11 +434,11 @@
     "text": "sergeant 0.9.1 (2021-11-29) 🐛\nTools to Transform and Query Data with Apache Drill\nApache Drill is a low-latency distributed query engine designed to enable data exploration and analysis on both relational and non-relational data stores, scaling to petabytes of data. Methods are provided that enable working with Apache Drill instances via the REST API, DBI methods and using ‘dplyr’/‘dbplyr’ idioms. Helper functions are included to facilitate using official Drill Docker images/containers.\nMaintainer: Bob Rudis bob@rud.is. License: MIT + file LICENSE"
   },
   {
-    "objectID": "backends/index.html#sparklyr-1.8.1-2023-03-22",
-    "href": "backends/index.html#sparklyr-1.8.1-2023-03-22",
+    "objectID": "backends/index.html#sparklyr-1.8.2-2023-07-01",
+    "href": "backends/index.html#sparklyr-1.8.2-2023-07-01",
     "title": "Backends for R-DBI",
-    "section": "sparklyr 1.8.1 (2023-03-22) 🐛",
-    "text": "sparklyr 1.8.1 (2023-03-22) 🐛\nR Interface to Apache Spark\nR interface to Apache Spark, a fast and general engine for big data processing, see https://spark.apache.org/. This package supports connecting to local and remote Apache Spark clusters, provides a ‘dplyr’ compatible back-end, and provides an interface to Spark’s built-in machine learning algorithms.\nMaintainer: Edgar Ruiz edgar@rstudio.com. License: Apache License 2.0 | file LICENSE"
+    "section": "sparklyr 1.8.2 (2023-07-01) 🐛",
+    "text": "sparklyr 1.8.2 (2023-07-01) 🐛\nR Interface to Apache Spark\nR interface to Apache Spark, a fast and general engine for big data processing, see https://spark.apache.org/. This package supports connecting to local and remote Apache Spark clusters, provides a ‘dplyr’ compatible back-end, and provides an interface to Spark’s built-in machine learning algorithms.\nMaintainer: Edgar Ruiz edgar@rstudio.com. License: Apache License 2.0 | file LICENSE"
   },
   {
     "objectID": "index.html",
