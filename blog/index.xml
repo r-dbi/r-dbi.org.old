@@ -558,7 +558,7 @@ tbl %&gt;%
 <p>After completing the process, projects are entitled to wear a badge like the one below for the DBI project:</p>
 <div class="quarto-figure quarto-figure-center">
 <figure class="figure">
-<p><a href="https://bestpractices.coreinfrastructure.org/projects/1882"><img src="https://maelle.github.io/rdbidotorg/blog/posts/https:/bestpractices.coreinfrastructure.org/projects/1882/badge.png" class="img-fluid figure-img"></a></p>
+<p><a href="https://bestpractices.coreinfrastructure.org/projects/1882"><img src="https://maelle.github.io/rdbidotorg/blog/posts/https:/bestpractices.coreinfrastructure.org/projects/1882/badge.svg" class="img-fluid figure-img"></a></p>
 <figcaption class="figure-caption">OpenSSF Best Practices</figcaption>
 </figure>
 </div>
