@@ -231,11 +231,11 @@
     "text": "ckanr 0.7.0 (2023-03-17) 🔗 🐛\nClient for the Comprehensive Knowledge Archive Network (‘CKAN’) API\nClient for ‘CKAN’ API (https://ckan.org/). Includes interface to ‘CKAN’ ‘APIs’ for search, list, show for packages, organizations, and resources. In addition, provides an interface to the ‘datastore’ API.\nMaintainer: Francisco Alves fjunior.alves.oliveira@gmail.com. License: MIT + file LICENSE"
   },
   {
-    "objectID": "backends/index.html#clickhousehttp-0.3.0-2023-02-16",
-    "href": "backends/index.html#clickhousehttp-0.3.0-2023-02-16",
+    "objectID": "backends/index.html#clickhousehttp-0.3.2-2023-07-04",
+    "href": "backends/index.html#clickhousehttp-0.3.2-2023-07-04",
     "title": "Backends for R-DBI",
-    "section": "ClickHouseHTTP 0.3.0 (2023-02-16) 🐛",
-    "text": "ClickHouseHTTP 0.3.0 (2023-02-16) 🐛\nA Simple HTTP Database Interface to ‘ClickHouse’\n‘ClickHouse’ (https://clickhouse.com/) is an open-source, high performance columnar OLAP (online analytical processing of queries) database management system for real-time analytics using SQL. This ‘DBI’ backend relies on the ‘ClickHouse’ HTTP interface and support HTTPS protocol.\nMaintainer: Patrice Godard patrice.godard@gmail.com. License: GPL-3"
+    "section": "ClickHouseHTTP 0.3.2 (2023-07-04) 🐛",
+    "text": "ClickHouseHTTP 0.3.2 (2023-07-04) 🐛\nA Simple HTTP Database Interface to ‘ClickHouse’\n‘ClickHouse’ (https://clickhouse.com/) is an open-source, high performance columnar OLAP (online analytical processing of queries) database management system for real-time analytics using SQL. This ‘DBI’ backend relies on the ‘ClickHouse’ HTTP interface and support HTTPS protocol.\nMaintainer: Patrice Godard patrice.godard@gmail.com. License: GPL-3"
   },
   {
     "objectID": "backends/index.html#connections-0.1.1-2020-02-07",
