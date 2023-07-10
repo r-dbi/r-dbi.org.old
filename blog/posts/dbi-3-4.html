@@ -1,0 +1,612 @@
+<!DOCTYPE html>
+<html xmlns="http://www.w3.org/1999/xhtml" lang="en" xml:lang="en"><head>
+
+<meta charset="utf-8">
+<meta name="generator" content="quarto-1.3.433">
+
+<meta name="viewport" content="width=device-width, initial-scale=1.0, user-scalable=yes">
+
+<meta name="author" content="Kirill Müller">
+<meta name="dcterms.date" content="2021-12-21">
+<meta name="description" content="Summarizing the progress of 2021">
+
+<title>R-DBI - Maintaining DBI, 4/4</title>
+<style>
+code{white-space: pre-wrap;}
+span.smallcaps{font-variant: small-caps;}
+div.columns{display: flex; gap: min(4vw, 1.5em);}
+div.column{flex: auto; overflow-x: auto;}
+div.hanging-indent{margin-left: 1.5em; text-indent: -1.5em;}
+ul.task-list{list-style: none;}
+ul.task-list li input[type="checkbox"] {
+  width: 0.8em;
+  margin: 0 0.8em 0.2em -1em; /* quarto-specific, see https://github.com/quarto-dev/quarto-cli/issues/4556 */ 
+  vertical-align: middle;
+}
+/* CSS for syntax highlighting */
+pre > code.sourceCode { white-space: pre; position: relative; }
+pre > code.sourceCode > span { display: inline-block; line-height: 1.25; }
+pre > code.sourceCode > span:empty { height: 1.2em; }
+.sourceCode { overflow: visible; }
+code.sourceCode > span { color: inherit; text-decoration: inherit; }
+div.sourceCode { margin: 1em 0; }
+pre.sourceCode { margin: 0; }
+@media screen {
+div.sourceCode { overflow: auto; }
+}
+@media print {
+pre > code.sourceCode { white-space: pre-wrap; }
+pre > code.sourceCode > span { text-indent: -5em; padding-left: 5em; }
+}
+pre.numberSource code
+  { counter-reset: source-line 0; }
+pre.numberSource code > span
+  { position: relative; left: -4em; counter-increment: source-line; }
+pre.numberSource code > span > a:first-child::before
+  { content: counter(source-line);
+    position: relative; left: -1em; text-align: right; vertical-align: baseline;
+    border: none; display: inline-block;
+    -webkit-touch-callout: none; -webkit-user-select: none;
+    -khtml-user-select: none; -moz-user-select: none;
+    -ms-user-select: none; user-select: none;
+    padding: 0 4px; width: 4em;
+  }
+pre.numberSource { margin-left: 3em;  padding-left: 4px; }
+div.sourceCode
+  {   }
+@media screen {
+pre > code.sourceCode > span > a:first-child::before { text-decoration: underline; }
+}
+</style>
+
+
+<script src="../../site_libs/quarto-nav/quarto-nav.js"></script>
+<script src="../../site_libs/quarto-nav/headroom.min.js"></script>
+<script src="../../site_libs/clipboard/clipboard.min.js"></script>
+<script src="../../site_libs/quarto-search/autocomplete.umd.js"></script>
+<script src="../../site_libs/quarto-search/fuse.min.js"></script>
+<script src="../../site_libs/quarto-search/quarto-search.js"></script>
+<meta name="quarto:offset" content="../../">
+<script src="../../site_libs/quarto-html/quarto.js"></script>
+<script src="../../site_libs/quarto-html/popper.min.js"></script>
+<script src="../../site_libs/quarto-html/tippy.umd.min.js"></script>
+<script src="../../site_libs/quarto-html/anchor.min.js"></script>
+<link href="../../site_libs/quarto-html/tippy.css" rel="stylesheet">
+<link href="../../site_libs/quarto-html/quarto-syntax-highlighting.css" rel="stylesheet" id="quarto-text-highlighting-styles">
+<script src="../../site_libs/bootstrap/bootstrap.min.js"></script>
+<link href="../../site_libs/bootstrap/bootstrap-icons.css" rel="stylesheet">
+<link href="../../site_libs/bootstrap/bootstrap.min.css" rel="stylesheet" id="quarto-bootstrap" data-mode="light">
+<script id="quarto-search-options" type="application/json">{
+  "location": "navbar",
+  "copy-button": false,
+  "collapse-after": 3,
+  "panel-placement": "end",
+  "type": "overlay",
+  "limit": 20,
+  "language": {
+    "search-no-results-text": "No results",
+    "search-matching-documents-text": "matching documents",
+    "search-copy-link-title": "Copy link to search",
+    "search-hide-matches-text": "Hide additional matches",
+    "search-more-match-text": "more match in this document",
+    "search-more-matches-text": "more matches in this document",
+    "search-clear-button-title": "Clear",
+    "search-detached-cancel-button-title": "Cancel",
+    "search-submit-button-title": "Submit",
+    "search-label": "Search"
+  }
+}</script>
+
+
+<link rel="stylesheet" href="../../styles.css">
+</head>
+
+<body class="nav-fixed">
+
+<div id="quarto-search-results"></div>
+  <header id="quarto-header" class="headroom fixed-top">
+    <nav class="navbar navbar-expand-lg navbar-dark ">
+      <div class="navbar-container container-fluid">
+      <div class="navbar-brand-container">
+    <a class="navbar-brand" href="../../index.html">
+    <span class="navbar-title">R-DBI</span>
+    </a>
+  </div>
+            <div id="quarto-search" class="" title="Search"></div>
+          <button class="navbar-toggler" type="button" data-bs-toggle="collapse" data-bs-target="#navbarCollapse" aria-controls="navbarCollapse" aria-expanded="false" aria-label="Toggle navigation" onclick="if (window.quartoToggleHeadroom) { window.quartoToggleHeadroom(); }">
+  <span class="navbar-toggler-icon"></span>
+</button>
+          <div class="collapse navbar-collapse" id="navbarCollapse">
+            <ul class="navbar-nav navbar-nav-scroll me-auto">
+  <li class="nav-item">
+    <a class="nav-link" href="../../index.html" rel="" target="">
+ <span class="menu-text">Home</span></a>
+  </li>  
+  <li class="nav-item">
+    <a class="nav-link" href="../../blog/index.html" rel="" target="">
+ <span class="menu-text">Blog</span></a>
+  </li>  
+  <li class="nav-item">
+    <a class="nav-link" href="../../backends/index.html" rel="" target="">
+ <span class="menu-text">Backends</span></a>
+  </li>  
+</ul>
+            <div class="quarto-navbar-tools ms-auto">
+</div>
+          </div> <!-- /navcollapse -->
+      </div> <!-- /container-fluid -->
+    </nav>
+</header>
+<!-- content -->
+<div id="quarto-content" class="quarto-container page-columns page-rows-contents page-layout-article page-navbar">
+<!-- sidebar -->
+<!-- margin-sidebar -->
+    <div id="quarto-margin-sidebar" class="sidebar margin-sidebar">
+        <nav id="TOC" role="doc-toc" class="toc-active">
+    <h2 id="toc-title">On this page</h2>
+   
+  <ul>
+  <li><a href="#what-is-dbi" id="toc-what-is-dbi" class="nav-link active" data-scroll-target="#what-is-dbi">What is DBI?</a></li>
+  <li><a href="#recent-developments" id="toc-recent-developments" class="nav-link" data-scroll-target="#recent-developments">Recent developments</a>
+  <ul class="collapse">
+  <li><a href="#clickable-method-documentation" id="toc-clickable-method-documentation" class="nav-link" data-scroll-target="#clickable-method-documentation">Clickable method documentation</a></li>
+  <li><a href="#full-support-for-aws-redshift" id="toc-full-support-for-aws-redshift" class="nav-link" data-scroll-target="#full-support-for-aws-redshift">Full support for AWS Redshift</a></li>
+  <li><a href="#faster-table-imports" id="toc-faster-table-imports" class="nav-link" data-scroll-target="#faster-table-imports">Faster table imports</a></li>
+  <li><a href="#windows-compatibility" id="toc-windows-compatibility" class="nav-link" data-scroll-target="#windows-compatibility">Windows compatibility</a></li>
+  <li><a href="#extended-data-types-for-sqlite" id="toc-extended-data-types-for-sqlite" class="nav-link" data-scroll-target="#extended-data-types-for-sqlite">Extended data types for SQLite</a></li>
+  <li><a href="#interrupt-handling" id="toc-interrupt-handling" class="nav-link" data-scroll-target="#interrupt-handling">Interrupt handling</a></li>
+  <li><a href="#automation" id="toc-automation" class="nav-link" data-scroll-target="#automation">Automation</a></li>
+  <li><a href="#simpler-upgrade-path-for-dbitest" id="toc-simpler-upgrade-path-for-dbitest" class="nav-link" data-scroll-target="#simpler-upgrade-path-for-dbitest">Simpler upgrade path for DBItest</a></li>
+  <li><a href="#inlined-boost-headers" id="toc-inlined-boost-headers" class="nav-link" data-scroll-target="#inlined-boost-headers">Inlined Boost headers</a></li>
+  <li><a href="#reorganized-structure-of-the-r-code" id="toc-reorganized-structure-of-the-r-code" class="nav-link" data-scroll-target="#reorganized-structure-of-the-r-code">Reorganized structure of the R code</a></li>
+  </ul></li>
+  <li><a href="#future-work" id="toc-future-work" class="nav-link" data-scroll-target="#future-work">Future work</a>
+  <ul class="collapse">
+  <li><a href="#capabilities" id="toc-capabilities" class="nav-link" data-scroll-target="#capabilities">Capabilities</a></li>
+  <li><a href="#separate-user-interface" id="toc-separate-user-interface" class="nav-link" data-scroll-target="#separate-user-interface">Separate user interface</a></li>
+  </ul></li>
+  <li><a href="#acknowledgments" id="toc-acknowledgments" class="nav-link" data-scroll-target="#acknowledgments">Acknowledgments</a></li>
+  </ul>
+</nav>
+    </div>
+<!-- main -->
+<main class="content" id="quarto-document-content">
+
+<header id="title-block-header" class="quarto-title-block default">
+<div class="quarto-title">
+<h1 class="title">Maintaining DBI, 4/4</h1>
+</div>
+
+<div>
+  <div class="description">
+    Summarizing the progress of 2021
+  </div>
+</div>
+
+
+<div class="quarto-title-meta">
+
+    <div>
+    <div class="quarto-title-meta-heading">Author</div>
+    <div class="quarto-title-meta-contents">
+             <p>Kirill Müller </p>
+          </div>
+  </div>
+    
+    <div>
+    <div class="quarto-title-meta-heading">Published</div>
+    <div class="quarto-title-meta-contents">
+      <p class="date">December 21, 2021</p>
+    </div>
+  </div>
+  
+    
+  </div>
+  
+
+</header>
+
+<!-- how do you want to pluralize abbreviations? DBMSes, DBMS's DBMSs? -->
+<section id="what-is-dbi" class="level2">
+<h2 class="anchored" data-anchor-id="what-is-dbi">What is DBI?</h2>
+<p>The {DBI} package (<strong>d</strong>ata<strong>b</strong>ase <strong>i</strong>nterface) provides an abstraction for communication between R and database management systems (DBMSes) by specifying a common application programming interface (API). Actual connectivity to DBMSes is established via database specific <a href="https://github.com/r-dbi/backends#readme">backend packages</a>, implementing this interface. Examples for such backends include <a href="https://rpostgres.r-dbi.org/">RPostgres</a>, <a href="https://rmariadb.r-dbi.org/">RMariaDB</a>, and <a href="https://rsqlite.r-dbi.org/">RSQLite</a>. For users that are new to DBI, the <a href="https://dbi.r-dbi.org/articles/dbi">introductory tutorial</a> provides a good entry point for getting acquainted with some key concepts.</p>
+<p>This blog post summarizes recent developments in {DBI} and related packages and concludes with an outlook on potential future directions. Similar articles are available from previous years, reporting on earlier states of the {DBI} ecosystem:</p>
+<ul>
+<li><a href="https://www.r-dbi.org/blog/dbi-3-3/">3/4: January 2021</a></li>
+<li><a href="https://www.r-dbi.org/blog/dbi-3-2/">2/4: December 2019</a></li>
+<li><a href="https://www.r-dbi.org/blog/dbi-3-1/">1/4: December 2018</a></li>
+</ul>
+</section>
+<section id="recent-developments" class="level2">
+<h2 class="anchored" data-anchor-id="recent-developments">Recent developments</h2>
+<p>Several packages associated with DBI have been updated since <a href="https://www.r-dbi.org/blog/dbi-3-3/">early 2021</a>:</p>
+<ul>
+<li>DBI 1.1.1 -&gt; 1.1.2 (<a href="https://dbi.r-dbi.org/news/">NEWS</a>)</li>
+<li>RMariaDB 1.1.0 -&gt; 1.2.1 (<a href="https://rmariadb.r-dbi.org/news/">NEWS</a>)</li>
+<li>RPostgres 1.3.1 -&gt; 1.4.3 (<a href="https://rpostgres.r-dbi.org/news/">NEWS</a>)</li>
+<li>RSQLite 2.2.2 -&gt; 2.2.9 (<a href="https://rsqlite.r-dbi.org/news/">NEWS</a>)</li>
+<li>DBItest 1.7.0 -&gt; 1.7.2 (<a href="https://dbitest.r-dbi.org/news/">NEWS</a>)</li>
+</ul>
+<p>And the following sections elaborate on some of the noteworthy changes and improvements contained in these updates, both user-visible and internal.</p>
+<section id="clickable-method-documentation" class="level3">
+<h3 class="anchored" data-anchor-id="clickable-method-documentation">Clickable method documentation</h3>
+<p>The DBI method reference on <a href="https://dbi.r-dbi.org/reference/" class="uri">https://dbi.r-dbi.org/reference/</a> has been updated to include clickable links to known DBI backends. This makes documentation specific to certain backends more accessible, as optional function arguments used by some backend implementations are only documented by the respective packages.</p>
+</section>
+<section id="full-support-for-aws-redshift" class="level3">
+<h3 class="anchored" data-anchor-id="full-support-for-aws-redshift">Full support for AWS Redshift</h3>
+<p>Redshift support has been greatly improved by Adam Foryś as part of the RPostgres package and both databases now pass all applicable tests offered by DBItest. The BLOB data type is currently not supported by Redshift and consequently, related tests are skipped. For connecting to a Redshift cluster, the RPostgres package exports <code>Redshift()</code> (to be used over <code>Postgres()</code>).</p>
+</section>
+<section id="faster-table-imports" class="level3">
+<h3 class="anchored" data-anchor-id="faster-table-imports">Faster table imports</h3>
+<p>Previous versions of {RMariaDB} and {RPostgres} relied <code>dbBind()</code> for writing tables, using a prepared <code>INSERT INTO ... VALUES (...)</code> statement with placeholders. Contrary to the expectation, this was very inefficient, because each row requires a communication roundtrip to the server. To improve the situation, {RMariaDB} now uses <code>LOAD DATA LOCAL INFILE</code> to load data from a temporary CSV file. Recent MySQL server versions disable this capability by default, and therefore it is also disabled by default in {RMariaDB}. If your server supports this, enable fast loading by passing <code>load_data_local_infile = TRUE</code> to <code>dbConnect()</code>. For {RPostgres}, <code>dbAppendTable()</code> has been updated to use the same optimization as <code>dbWriteTable()</code> when writing data.</p>
+</section>
+<section id="windows-compatibility" class="level3">
+<h3 class="anchored" data-anchor-id="windows-compatibility">Windows compatibility</h3>
+<p>{RMariaDB} can now use the <code>caching_sha2_password</code> plugin on Windows which was permanently disabled on previous versions. This is important for connecting to recent versions of MySQL which require this plugin.</p>
+</section>
+<section id="extended-data-types-for-sqlite" class="level3">
+<h3 class="anchored" data-anchor-id="extended-data-types-for-sqlite">Extended data types for SQLite</h3>
+<p>Thanks to Eric Anderson, {RSQLite} now returns typed data for columns declared with <code>DATE</code>, <code>TIME</code> and <code>TIMESTAMP</code> data types. To enable this feature, <code>extended_types = TRUE</code> has to be passed in <code>dbConnect()</code>.</p>
+</section>
+<section id="interrupt-handling" class="level3">
+<h3 class="anchored" data-anchor-id="interrupt-handling">Interrupt handling</h3>
+<p>The <code>check_interrupts = TRUE</code> argument to <code>dbConnect()</code> in {RPostgres} now correctly cancels the query and returns to the user as soon as an interrupt is signalled (by pressing Ctrl+C or Escape in RStudio). Thanks to Mateusz Żółtak for tests and discussion.</p>
+</section>
+<section id="automation" class="level3">
+<h3 class="anchored" data-anchor-id="automation">Automation</h3>
+<p>{RMariaDB} is tested against all combinations of major MariaDB and MySQL client/server releases, while {RPostgres} is tested against all versions of PostgreSQL ≥ 10 using GitHub Actions. This guarantees compatibility with a broader range of database instances for both backends and for future updates to the corresponding packages. All tests are run daily, thereby ensuring that upstream updates remain compatible with backend implementations. The database servers are installed on GitHub Actions using dedicated actions for installing <a href="https://github.com/ankane/setup-mariadb/">MariaDB</a>, <a href="https://github.com/ankane/setup-mysql">MySQL</a> and <a href="https://github.com/ankane/setup-postgres">Postgres</a>, maintained by Andrew Kane.</p>
+<p>Thanks to the automated monitoring of SQLite3 releases, the vendored code can be updated continuously with minimal delay over upstream releases. {RSQLite} now uses SQLite3 3.37.0 and became available from CRAN only 10 days after the upstream release.</p>
+</section>
+<section id="simpler-upgrade-path-for-dbitest" class="level3">
+<h3 class="anchored" data-anchor-id="simpler-upgrade-path-for-dbitest">Simpler upgrade path for DBItest</h3>
+<p>By making it possible for backends to specify the supported version of {DBItest}, using <code>tweaks(dbitest_version = "x.y.z")</code>, it is now simpler to update {DBItest} on CRAN. Newly added tests in {DBItest} are skipped if the declared version is too low. Skipped tests are reported in the test results and can be fixed independently of the {DBItest} releases.</p>
+</section>
+<section id="inlined-boost-headers" class="level3">
+<h3 class="anchored" data-anchor-id="inlined-boost-headers">Inlined Boost headers</h3>
+<p>The {BH} package is a C++ header-only package containing in excess of 10,000 individual files and installation has proven challenging for some systems, such as Amazon’s Elastic File System. By vendoring only the required files into {RSQLite}, {RMariaDB} and {RPostgres}, it is no longer necessary to install {BH} to use these packages, and therefore the total number of files required to build these packages is greatly reduced. Thanks to RStudio for supporting this change.</p>
+</section>
+<section id="reorganized-structure-of-the-r-code" class="level3">
+<h3 class="anchored" data-anchor-id="reorganized-structure-of-the-r-code">Reorganized structure of the R code</h3>
+<p>{DBI} uses S4 classes and generic functions to specify the interface to be implemented by backends, using database specific subclasses. Class specific generic implementations are consequently declared with <code>setMethod()</code>, using the following convention:</p>
+<div class="sourceCode" id="cb1"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb1-1"><a href="#cb1-1" aria-hidden="true" tabindex="-1"></a><span class="fu">setMethod</span>(<span class="st">"foo"</span>, <span class="fu">c</span>(<span class="st">"myclass"</span>, <span class="st">"character"</span>), <span class="cf">function</span>(x, char_arg, ...) {</span>
+<span id="cb1-2"><a href="#cb1-2" aria-hidden="true" tabindex="-1"></a>  ...</span>
+<span id="cb1-3"><a href="#cb1-3" aria-hidden="true" tabindex="-1"></a>})</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<p>Instead of passing an anonymous function as <code>definition</code> argument to <code>setMethod()</code>, this has been changed to a semantic equivalent which is more explicit:</p>
+<div class="sourceCode" id="cb2"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb2-1"><a href="#cb2-1" aria-hidden="true" tabindex="-1"></a>foo_myclass_character <span class="ot">&lt;-</span> <span class="cf">function</span>(x, char_arg, ...) {</span>
+<span id="cb2-2"><a href="#cb2-2" aria-hidden="true" tabindex="-1"></a>  ...</span>
+<span id="cb2-3"><a href="#cb2-3" aria-hidden="true" tabindex="-1"></a>}</span>
+<span id="cb2-4"><a href="#cb2-4" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb2-5"><a href="#cb2-5" aria-hidden="true" tabindex="-1"></a><span class="fu">setMethod</span>(<span class="st">"foo"</span>, <span class="fu">c</span>(<span class="st">"myclass"</span>, <span class="st">"character"</span>), foo_myclass_mycharacter)</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<p>Reasons for this transformation were to make the respective implementations more accessible, as function definitions now can be displayed more easily via <code>mypkg:::foo_myclass_character</code>, and to generally make the code-base easier to read and navigate. In similar spirit, each such generic implementation is now defined in its own file with file names constructed as <code>foo_myclass_mycharacter.R</code>. This makes it immediately clear, exactly which methods are implemented by a package, simply from the list of associated files. Code transformation was carried out in semi-automated fashion, with the help of a <a href="https://github.com/pre-processing-r/rpp/blob/main/script/un-s4.R">script</a> that uses infrastructure from the “Pre-processing R code” project.</p>
+</section>
+</section>
+<section id="future-work" class="level2">
+<h2 class="anchored" data-anchor-id="future-work">Future work</h2>
+<p>The {DBI} package provides a low-level interface for database connectivity with a <a href="https://www.r-dbi.org/blog/dbi-3-3/">narrow scope</a>. Data query and manipulation tasks that are not in-scope for {DBI} are currently left to auxiliary packages, including <a href="https://dbplyr.tidyverse.org/">dbplyr</a>, <a href="https://cynkra.github.io/dm/">dm</a>, <a href="https://github.com/ankane/dbx">dbx</a> and <a href="https://winvector.github.io/rquery/">rquery</a>. {DBI} uses S4, one of several systems for object-oriented programming in R. While S4 offers several advantages over its predecessor S3, including increased strictness and multiple dispatch, it also is more rigid compared to S3. <!-- I don't see how this is specific to S4, but then again, I haven't really used S4 myself, so I'm no expert; it might still be worthwhile to elaborate a bit here --> <!-- also, what is the intention of discussing S4 here? is it to justify a move away from S4? if so I feel a need for fleshing out this argument more --> Consequently, once the definition of a generic is published, it is difficult to make changes without breaking downstream dependencies.</p>
+<p>The first release of {DBI} dates back roughly 20 years and since, the package has been widely adopted by others, both for accessing databases or providing <a href="https://github.com/r-dbi/backends#readme">backends</a> to DBMSes. Its success, combined with the rigidity imposed by S4, has made it difficult to extend the interface beyond what is currently offered. When considering new additions, there is pressure to get it right in the first attempt, thereby holding back less essential improvements.</p>
+<p>The DBI specification in the {DBItest} package aims to standardize the feature set of {DBI}-compliant backends, and to provide a test suite against which conformity of an implementation can be verified. Due to differences in design of individual DBMSes, not all features of the DBI specification and therefore not all tests provided by {DBItest} are supported by all backend packages. Using a newly introduced mechanism, backends can declare, by means of <em>tweaks</em>, which tests to run in what way. This addresses some of the problems associated with implementing a test suite that can be re-used for several backends. General-purpose clients however, can only make guesses as to the exact feature set supported by a given backend or connection. There currently is no formal way to declare certain capabilities as missing (or available).</p>
+<p>Based on these observations, for extending DBI, it may be worthwhile to address the following two issues:</p>
+<ol type="1">
+<li>Formal declaration of capabilities.</li>
+<li>Decoupling the user from the backend interface.</li>
+</ol>
+<p>The new <a href="https://github.com/r-dbi/dbi3">dbi3 repository</a> contains a collection of issues, some of which will be easier to address after these changes are in place.</p>
+<section id="capabilities" class="level3">
+<h3 class="anchored" data-anchor-id="capabilities">Capabilities</h3>
+<p>A mechanism is introduced by which backends can declare explicitly which features of DBI a particular connection supports. Examples for existing functionality that varies over backends include:</p>
+<ul>
+<li>Support for BLOBs (not available e.g.&nbsp;in Redshift).</li>
+<li>Support for logical columns (not available e.g.&nbsp;in SQL Server or SQLite).</li>
+<li>Support for named or nested transactions (not standardized).</li>
+<li>Placeholder character to use in parameterized queries (different across databases).</li>
+</ul>
+<p>In the future, backends may also indicate:</p>
+<ul>
+<li>Whether asynchronous queries are supported (important for web development).</li>
+<li>Whether the database supports SQL or a different query language (DBI currently assumes SQL).</li>
+</ul>
+<p>The list of possible capabilities will be maintained by DBI and {DBItest} will rely solely on these capabilities, foregoing the current <em>tweaking</em> mechanism. Users can in turn query these capabilities and act accordingly.</p>
+</section>
+<section id="separate-user-interface" class="level3">
+<h3 class="anchored" data-anchor-id="separate-user-interface">Separate user interface</h3>
+<p>As an evolution of the current approach, where users of DBI will often directly call methods that are mostly implemented by backends themselves, introduction of a separate user-facing API may be worthwhile. Based on plain functions and essentially providing a <a href="https://en.wikipedia.org/wiki/Facade_pattern">facade</a>, this user interface would be sufficient for the overwhelming majority of use cases. At the same time, such an approach should contribute to simpler code with less duplication in backend packages.</p>
+<p>The new user interface performs tasks that are common to all database backends (e.g.&nbsp;validation of arguments), and calls methods provided by the backends, in some cases dependent on declared capabilities. Overall, this should lead to less code that needs to be reimplemented across backends. The decoupling of interfaces could help with iterative improvements, while guaranteeing stability for users. As an example, a <code>dbi_write_table()</code> function that optionally creates and writes data to a database table might encompass the following functionality:</p>
+<ul>
+<li>If the backend supports transactions:
+<ul>
+<li>Call <code>dbi_is_transacting()</code> to determine if the statement is occurring as part of a transaction.</li>
+<li>Call <code>dbi_begin_transaction()</code> if it is not already part a transaction.</li>
+<li>Use <code>dbi_begin_transaction(name = "...")</code> if the backend supports named transactions.</li>
+</ul></li>
+<li>Call <code>dbi_remove_table()</code> and/or <code>dbi_create_table()</code> if necessary.</li>
+<li>Call <code>dbi_append_table()</code>.</li>
+<li>Call <code>dbi_commit()</code> on success or <code>dbi_rollback()</code> on failure whenever transactions are supported.</li>
+</ul>
+<p>For appending rows to a table, <code>dbi_append_table()</code> might check if the backend supports streaming uploads or if SQL should be created for inserting rows. In the latter case, the SQL statement (or multiple statements for large tables) could be constructed using quoted literals obtained from <code>dbi_quote_literal()</code>. The backend could indicate the maximum supported length of a statement, so that splitting of large tables into multiple chunks can happen automatically.</p>
+<p>As a final example, a backend supporting asynchronous operations might rely entirely on DBI for providing the corresponding blocking operations. The asynchronous procedure provided by the backend could automatically be wrapped by a DBI function that only returns upon completion.</p>
+<p>Such a split API would allow for generics declared by {DBI} for interfacing with backends to remain frozen. To extend or alter the signature of a generic, a new generic can be added, using some form of versioning (e.g.&nbsp;with a numeric suffix, such as <code>dbAppendTable1()</code>, <code>dbAppendTable2()</code>, etc.). With such an architecture, arguments in generics could be declared explicitly, without relying on forwarding via <code>...</code>, as is done currently. The user is presented with a stable API with only backward-compatible changes, {DBI} internally decides which versions of a method to call. When a new version of a generic is introduced, {DBI} documents and proposes an upgrade path for backend implementers. In the long run this would also allow for transitioning to another object-oriented system such as S3 or <a href="https://github.com/RConsortium/OOP-WG/">R7</a> without introducing user-facing breaking changes.</p>
+<p>This approach also enables support of rich callbacks: each function in the facade can notify listeners on entry and before returning. For example, a call to <code>dbi_connect()</code> would notify interested parties that a new connection has been established, and a call to <code>dbi_query()</code> issues callbacks with the query and the result. Potential use cases include:</p>
+<ul>
+<li>Logging as in {dblog}.</li>
+<li>The <em>Connections</em> pane in RStudio.</li>
+<li>Mocking (with hooks) as in {dittodb}.</li>
+</ul>
+<p>A versioning scheme could also be implemented for callbacks, keeping existing callbacks frozen while allowing for addition of new features that alter callback signatures.</p>
+</section>
+</section>
+<section id="acknowledgments" class="level2">
+<h2 class="anchored" data-anchor-id="acknowledgments">Acknowledgments</h2>
+<p>I’d like to thank Jeroen Ooms and Gábor Csárdi for providing crucial infrastructure to support this and many other projects in the R ecosystem.</p>
+<p>Thanks to the numerous contributors to the packages in the “Maintaining DBI” project in 2021:</p>
+<ul>
+<li>DBI: <a href="https://github.com/bwohl">@bwohl</a>, <a href="https://github.com/cboettig">@cboettig</a>, <a href="https://github.com/dcassol">@dcassol</a>, <a href="https://github.com/jawond">@jawond</a>, <a href="https://github.com/mmccarthy404">@mmccarthy404</a>, <a href="https://github.com/pnacht">@pnacht</a>, <a href="https://github.com/r2evans">@r2evans</a>, <a href="https://github.com/vituri">@vituri</a>, and <a href="https://github.com/zoushucai">@zoushucai</a>;</li>
+<li>RSQLite: <a href="https://github.com/ablack3">@ablack3</a>, <a href="https://github.com/billy34">@billy34</a>, <a href="https://github.com/edwindj">@edwindj</a>, <a href="https://github.com/gaborcsardi">@gaborcsardi</a>, <a href="https://github.com/ggrothendieck">@ggrothendieck</a>, <a href="https://github.com/giocomai">@giocomai</a>, <a href="https://github.com/habilzare">@habilzare</a>, <a href="https://github.com/honghh2018">@honghh2018</a>, <a href="https://github.com/Jeff-Gui">@Jeff-Gui</a>, <a href="https://github.com/kevinushey">@kevinushey</a>, <a href="https://github.com/mgirlich">@mgirlich</a>, <a href="https://github.com/plantton">@plantton</a>, <a href="https://github.com/schuemie">@schuemie</a>, <a href="https://github.com/Shicheng-Guo">@Shicheng-Guo</a>, and <a href="https://github.com/tschoonj">@tschoonj</a>;</li>
+<li>RPostgres: <a href="https://github.com/aleaficionado">@aleaficionado</a>, <a href="https://github.com/armenic">@armenic</a>, <a href="https://github.com/ateucher">@ateucher</a>, <a href="https://github.com/baderstine">@baderstine</a>, <a href="https://github.com/beralef">@beralef</a>, <a href="https://github.com/carlganz">@carlganz</a>, <a href="https://github.com/ColinFay">@ColinFay</a>, <a href="https://github.com/dcaud">@dcaud</a>, <a href="https://github.com/dpprdan">@dpprdan</a>, <a href="https://github.com/f-ritter">@f-ritter</a>, <a href="https://github.com/galachad">@galachad</a>, <a href="https://github.com/GitHubGeniusOverlord">@GitHubGeniusOverlord</a>, <a href="https://github.com/gontcharovd">@gontcharovd</a>, <a href="https://github.com/gtm19">@gtm19</a>, <a href="https://github.com/hadley">@hadley</a>, <a href="https://github.com/jakob-r">@jakob-r</a>, <a href="https://github.com/jeroen">@jeroen</a>, <a href="https://github.com/jkylearmstrong">@jkylearmstrong</a>, <a href="https://github.com/JSchoenbachler">@JSchoenbachler</a>, <a href="https://github.com/matthewgson">@matthewgson</a>, <a href="https://github.com/mgirlich">@mgirlich</a>, <a href="https://github.com/mmuurr">@mmuurr</a>, <a href="https://github.com/mskyttner">@mskyttner</a>, <a href="https://github.com/phedinkus">@phedinkus</a>, <a href="https://github.com/ppssphysics">@ppssphysics</a>, <a href="https://github.com/RakeshG1">@RakeshG1</a>, <a href="https://github.com/rickbpdq">@rickbpdq</a>, <a href="https://github.com/samiaab1990">@samiaab1990</a>, <a href="https://github.com/sawnaanwas">@sawnaanwas</a>, <a href="https://github.com/tomasjanikds">@tomasjanikds</a>, <a href="https://github.com/vspinu">@vspinu</a>, <a href="https://github.com/waynelapierre">@waynelapierre</a>, <a href="https://github.com/zmbc">@zmbc</a>, and <a href="https://github.com/zozlak">@zozlak</a>;</li>
+<li>RMariaDB: <a href="https://github.com/bakiunal">@bakiunal</a>, <a href="https://github.com/dirkschumacher">@dirkschumacher</a>, <a href="https://github.com/hadley">@hadley</a>, <a href="https://github.com/jeroen">@jeroen</a>, <a href="https://github.com/Mosk915">@Mosk915</a>, <a href="https://github.com/noamross">@noamross</a>, <a href="https://github.com/paulmaunders">@paulmaunders</a>, <a href="https://github.com/retowyss">@retowyss</a>, <a href="https://github.com/rorynolan">@rorynolan</a>, <a href="https://github.com/twentytitus">@twentytitus</a>, <a href="https://github.com/verajosemanuel">@verajosemanuel</a>, <a href="https://github.com/wiligl">@wiligl</a>, <a href="https://github.com/Woosah">@Woosah</a>, and <a href="https://github.com/zoushucai">@zoushucai</a>.</li>
+<li>DBItest: <a href="https://github.com/adamsma">@adamsma</a>, and <a href="https://github.com/michaelquinn32">@michaelquinn32</a>;</li>
+</ul>
+<p>Thanks also to Nicolas Bennett for reviewing and editing this blog post.</p>
+
+
+</section>
+
+</main> <!-- /main -->
+<script id="quarto-html-after-body" type="application/javascript">
+window.document.addEventListener("DOMContentLoaded", function (event) {
+  const toggleBodyColorMode = (bsSheetEl) => {
+    const mode = bsSheetEl.getAttribute("data-mode");
+    const bodyEl = window.document.querySelector("body");
+    if (mode === "dark") {
+      bodyEl.classList.add("quarto-dark");
+      bodyEl.classList.remove("quarto-light");
+    } else {
+      bodyEl.classList.add("quarto-light");
+      bodyEl.classList.remove("quarto-dark");
+    }
+  }
+  const toggleBodyColorPrimary = () => {
+    const bsSheetEl = window.document.querySelector("link#quarto-bootstrap");
+    if (bsSheetEl) {
+      toggleBodyColorMode(bsSheetEl);
+    }
+  }
+  toggleBodyColorPrimary();  
+  const icon = "";
+  const anchorJS = new window.AnchorJS();
+  anchorJS.options = {
+    placement: 'right',
+    icon: icon
+  };
+  anchorJS.add('.anchored');
+  const isCodeAnnotation = (el) => {
+    for (const clz of el.classList) {
+      if (clz.startsWith('code-annotation-')) {                     
+        return true;
+      }
+    }
+    return false;
+  }
+  const clipboard = new window.ClipboardJS('.code-copy-button', {
+    text: function(trigger) {
+      const codeEl = trigger.previousElementSibling.cloneNode(true);
+      for (const childEl of codeEl.children) {
+        if (isCodeAnnotation(childEl)) {
+          childEl.remove();
+        }
+      }
+      return codeEl.innerText;
+    }
+  });
+  clipboard.on('success', function(e) {
+    // button target
+    const button = e.trigger;
+    // don't keep focus
+    button.blur();
+    // flash "checked"
+    button.classList.add('code-copy-button-checked');
+    var currentTitle = button.getAttribute("title");
+    button.setAttribute("title", "Copied!");
+    let tooltip;
+    if (window.bootstrap) {
+      button.setAttribute("data-bs-toggle", "tooltip");
+      button.setAttribute("data-bs-placement", "left");
+      button.setAttribute("data-bs-title", "Copied!");
+      tooltip = new bootstrap.Tooltip(button, 
+        { trigger: "manual", 
+          customClass: "code-copy-button-tooltip",
+          offset: [0, -8]});
+      tooltip.show();    
+    }
+    setTimeout(function() {
+      if (tooltip) {
+        tooltip.hide();
+        button.removeAttribute("data-bs-title");
+        button.removeAttribute("data-bs-toggle");
+        button.removeAttribute("data-bs-placement");
+      }
+      button.setAttribute("title", currentTitle);
+      button.classList.remove('code-copy-button-checked');
+    }, 1000);
+    // clear code selection
+    e.clearSelection();
+  });
+  function tippyHover(el, contentFn) {
+    const config = {
+      allowHTML: true,
+      content: contentFn,
+      maxWidth: 500,
+      delay: 100,
+      arrow: false,
+      appendTo: function(el) {
+          return el.parentElement;
+      },
+      interactive: true,
+      interactiveBorder: 10,
+      theme: 'quarto',
+      placement: 'bottom-start'
+    };
+    window.tippy(el, config); 
+  }
+  const noterefs = window.document.querySelectorAll('a[role="doc-noteref"]');
+  for (var i=0; i<noterefs.length; i++) {
+    const ref = noterefs[i];
+    tippyHover(ref, function() {
+      // use id or data attribute instead here
+      let href = ref.getAttribute('data-footnote-href') || ref.getAttribute('href');
+      try { href = new URL(href).hash; } catch {}
+      const id = href.replace(/^#\/?/, "");
+      const note = window.document.getElementById(id);
+      return note.innerHTML;
+    });
+  }
+      let selectedAnnoteEl;
+      const selectorForAnnotation = ( cell, annotation) => {
+        let cellAttr = 'data-code-cell="' + cell + '"';
+        let lineAttr = 'data-code-annotation="' +  annotation + '"';
+        const selector = 'span[' + cellAttr + '][' + lineAttr + ']';
+        return selector;
+      }
+      const selectCodeLines = (annoteEl) => {
+        const doc = window.document;
+        const targetCell = annoteEl.getAttribute("data-target-cell");
+        const targetAnnotation = annoteEl.getAttribute("data-target-annotation");
+        const annoteSpan = window.document.querySelector(selectorForAnnotation(targetCell, targetAnnotation));
+        const lines = annoteSpan.getAttribute("data-code-lines").split(",");
+        const lineIds = lines.map((line) => {
+          return targetCell + "-" + line;
+        })
+        let top = null;
+        let height = null;
+        let parent = null;
+        if (lineIds.length > 0) {
+            //compute the position of the single el (top and bottom and make a div)
+            const el = window.document.getElementById(lineIds[0]);
+            top = el.offsetTop;
+            height = el.offsetHeight;
+            parent = el.parentElement.parentElement;
+          if (lineIds.length > 1) {
+            const lastEl = window.document.getElementById(lineIds[lineIds.length - 1]);
+            const bottom = lastEl.offsetTop + lastEl.offsetHeight;
+            height = bottom - top;
+          }
+          if (top !== null && height !== null && parent !== null) {
+            // cook up a div (if necessary) and position it 
+            let div = window.document.getElementById("code-annotation-line-highlight");
+            if (div === null) {
+              div = window.document.createElement("div");
+              div.setAttribute("id", "code-annotation-line-highlight");
+              div.style.position = 'absolute';
+              parent.appendChild(div);
+            }
+            div.style.top = top - 2 + "px";
+            div.style.height = height + 4 + "px";
+            let gutterDiv = window.document.getElementById("code-annotation-line-highlight-gutter");
+            if (gutterDiv === null) {
+              gutterDiv = window.document.createElement("div");
+              gutterDiv.setAttribute("id", "code-annotation-line-highlight-gutter");
+              gutterDiv.style.position = 'absolute';
+              const codeCell = window.document.getElementById(targetCell);
+              const gutter = codeCell.querySelector('.code-annotation-gutter');
+              gutter.appendChild(gutterDiv);
+            }
+            gutterDiv.style.top = top - 2 + "px";
+            gutterDiv.style.height = height + 4 + "px";
+          }
+          selectedAnnoteEl = annoteEl;
+        }
+      };
+      const unselectCodeLines = () => {
+        const elementsIds = ["code-annotation-line-highlight", "code-annotation-line-highlight-gutter"];
+        elementsIds.forEach((elId) => {
+          const div = window.document.getElementById(elId);
+          if (div) {
+            div.remove();
+          }
+        });
+        selectedAnnoteEl = undefined;
+      };
+      // Attach click handler to the DT
+      const annoteDls = window.document.querySelectorAll('dt[data-target-cell]');
+      for (const annoteDlNode of annoteDls) {
+        annoteDlNode.addEventListener('click', (event) => {
+          const clickedEl = event.target;
+          if (clickedEl !== selectedAnnoteEl) {
+            unselectCodeLines();
+            const activeEl = window.document.querySelector('dt[data-target-cell].code-annotation-active');
+            if (activeEl) {
+              activeEl.classList.remove('code-annotation-active');
+            }
+            selectCodeLines(clickedEl);
+            clickedEl.classList.add('code-annotation-active');
+          } else {
+            // Unselect the line
+            unselectCodeLines();
+            clickedEl.classList.remove('code-annotation-active');
+          }
+        });
+      }
+  const findCites = (el) => {
+    const parentEl = el.parentElement;
+    if (parentEl) {
+      const cites = parentEl.dataset.cites;
+      if (cites) {
+        return {
+          el,
+          cites: cites.split(' ')
+        };
+      } else {
+        return findCites(el.parentElement)
+      }
+    } else {
+      return undefined;
+    }
+  };
+  var bibliorefs = window.document.querySelectorAll('a[role="doc-biblioref"]');
+  for (var i=0; i<bibliorefs.length; i++) {
+    const ref = bibliorefs[i];
+    const citeInfo = findCites(ref);
+    if (citeInfo) {
+      tippyHover(citeInfo.el, function() {
+        var popup = window.document.createElement('div');
+        citeInfo.cites.forEach(function(cite) {
+          var citeDiv = window.document.createElement('div');
+          citeDiv.classList.add('hanging-indent');
+          citeDiv.classList.add('csl-entry');
+          var biblioDiv = window.document.getElementById('ref-' + cite);
+          if (biblioDiv) {
+            citeDiv.innerHTML = biblioDiv.innerHTML;
+          }
+          popup.appendChild(citeDiv);
+        });
+        return popup.innerHTML;
+      });
+    }
+  }
+});
+</script>
+</div> <!-- /content -->
+<footer class="footer">
+  <div class="nav-footer">
+    <div class="nav-footer-left">
+      <ul class="footer-items list-unstyled">
+    <li class="nav-item">
+ © Licence MIT.
+  </li>  
+</ul>
+    </div>   
+    <div class="nav-footer-center">
+      &nbsp;
+    </div>
+    <div class="nav-footer-right">
+      <ul class="footer-items list-unstyled">
+    <li class="nav-item">
+    <a class="nav-link" href="https://www.r-consortium.org/">Sponsored by the R Consortium.</a>
+  </li>  
+</ul>
+    </div>
+  </div>
+</footer>
+
+
+
+</body></html>

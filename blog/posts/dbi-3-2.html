@@ -1,0 +1,633 @@
+<!DOCTYPE html>
+<html xmlns="http://www.w3.org/1999/xhtml" lang="en" xml:lang="en"><head>
+
+<meta charset="utf-8">
+<meta name="generator" content="quarto-1.3.433">
+
+<meta name="viewport" content="width=device-width, initial-scale=1.0, user-scalable=yes">
+
+<meta name="author" content="Kirill Müller">
+<meta name="dcterms.date" content="2019-12-19">
+<meta name="description" content="Summarizing the progress of 2019">
+
+<title>R-DBI - Maintaining DBI, 2/4</title>
+<style>
+code{white-space: pre-wrap;}
+span.smallcaps{font-variant: small-caps;}
+div.columns{display: flex; gap: min(4vw, 1.5em);}
+div.column{flex: auto; overflow-x: auto;}
+div.hanging-indent{margin-left: 1.5em; text-indent: -1.5em;}
+ul.task-list{list-style: none;}
+ul.task-list li input[type="checkbox"] {
+  width: 0.8em;
+  margin: 0 0.8em 0.2em -1em; /* quarto-specific, see https://github.com/quarto-dev/quarto-cli/issues/4556 */ 
+  vertical-align: middle;
+}
+</style>
+
+
+<script src="../../site_libs/quarto-nav/quarto-nav.js"></script>
+<script src="../../site_libs/quarto-nav/headroom.min.js"></script>
+<script src="../../site_libs/clipboard/clipboard.min.js"></script>
+<script src="../../site_libs/quarto-search/autocomplete.umd.js"></script>
+<script src="../../site_libs/quarto-search/fuse.min.js"></script>
+<script src="../../site_libs/quarto-search/quarto-search.js"></script>
+<meta name="quarto:offset" content="../../">
+<script src="../../site_libs/quarto-html/quarto.js"></script>
+<script src="../../site_libs/quarto-html/popper.min.js"></script>
+<script src="../../site_libs/quarto-html/tippy.umd.min.js"></script>
+<script src="../../site_libs/quarto-html/anchor.min.js"></script>
+<link href="../../site_libs/quarto-html/tippy.css" rel="stylesheet">
+<link href="../../site_libs/quarto-html/quarto-syntax-highlighting.css" rel="stylesheet" id="quarto-text-highlighting-styles">
+<script src="../../site_libs/bootstrap/bootstrap.min.js"></script>
+<link href="../../site_libs/bootstrap/bootstrap-icons.css" rel="stylesheet">
+<link href="../../site_libs/bootstrap/bootstrap.min.css" rel="stylesheet" id="quarto-bootstrap" data-mode="light">
+<script id="quarto-search-options" type="application/json">{
+  "location": "navbar",
+  "copy-button": false,
+  "collapse-after": 3,
+  "panel-placement": "end",
+  "type": "overlay",
+  "limit": 20,
+  "language": {
+    "search-no-results-text": "No results",
+    "search-matching-documents-text": "matching documents",
+    "search-copy-link-title": "Copy link to search",
+    "search-hide-matches-text": "Hide additional matches",
+    "search-more-match-text": "more match in this document",
+    "search-more-matches-text": "more matches in this document",
+    "search-clear-button-title": "Clear",
+    "search-detached-cancel-button-title": "Cancel",
+    "search-submit-button-title": "Submit",
+    "search-label": "Search"
+  }
+}</script>
+
+
+<link rel="stylesheet" href="../../styles.css">
+</head>
+
+<body class="nav-fixed">
+
+<div id="quarto-search-results"></div>
+  <header id="quarto-header" class="headroom fixed-top">
+    <nav class="navbar navbar-expand-lg navbar-dark ">
+      <div class="navbar-container container-fluid">
+      <div class="navbar-brand-container">
+    <a class="navbar-brand" href="../../index.html">
+    <span class="navbar-title">R-DBI</span>
+    </a>
+  </div>
+            <div id="quarto-search" class="" title="Search"></div>
+          <button class="navbar-toggler" type="button" data-bs-toggle="collapse" data-bs-target="#navbarCollapse" aria-controls="navbarCollapse" aria-expanded="false" aria-label="Toggle navigation" onclick="if (window.quartoToggleHeadroom) { window.quartoToggleHeadroom(); }">
+  <span class="navbar-toggler-icon"></span>
+</button>
+          <div class="collapse navbar-collapse" id="navbarCollapse">
+            <ul class="navbar-nav navbar-nav-scroll me-auto">
+  <li class="nav-item">
+    <a class="nav-link" href="../../index.html" rel="" target="">
+ <span class="menu-text">Home</span></a>
+  </li>  
+  <li class="nav-item">
+    <a class="nav-link" href="../../blog/index.html" rel="" target="">
+ <span class="menu-text">Blog</span></a>
+  </li>  
+  <li class="nav-item">
+    <a class="nav-link" href="../../backends/index.html" rel="" target="">
+ <span class="menu-text">Backends</span></a>
+  </li>  
+</ul>
+            <div class="quarto-navbar-tools ms-auto">
+</div>
+          </div> <!-- /navcollapse -->
+      </div> <!-- /container-fluid -->
+    </nav>
+</header>
+<!-- content -->
+<div id="quarto-content" class="quarto-container page-columns page-rows-contents page-layout-article page-navbar">
+<!-- sidebar -->
+<!-- margin-sidebar -->
+    <div id="quarto-margin-sidebar" class="sidebar margin-sidebar">
+        <nav id="TOC" role="doc-toc" class="toc-active">
+    <h2 id="toc-title">On this page</h2>
+   
+  <ul>
+  <li><a href="#what-is-dbi" id="toc-what-is-dbi" class="nav-link active" data-scroll-target="#what-is-dbi">What is DBI?</a></li>
+  <li><a href="#specification-of-immediate-argument-to-dbsendquery-and-friends" id="toc-specification-of-immediate-argument-to-dbsendquery-and-friends" class="nav-link" data-scroll-target="#specification-of-immediate-argument-to-dbsendquery-and-friends">Specification of <code>immediate</code> argument to <code>dbSendQuery()</code> and friends</a>
+  <ul class="collapse">
+  <li><a href="#examples-using-immediate" id="toc-examples-using-immediate" class="nav-link" data-scroll-target="#examples-using-immediate">Examples using <code>immediate</code></a></li>
+  </ul></li>
+  <li><a href="#connector-objects" id="toc-connector-objects" class="nav-link" data-scroll-target="#connector-objects">Connector objects</a>
+  <ul class="collapse">
+  <li><a href="#example" id="toc-example" class="nav-link" data-scroll-target="#example">Example</a></li>
+  </ul></li>
+  <li><a href="#logging-with-the-dblog-package" id="toc-logging-with-the-dblog-package" class="nav-link" data-scroll-target="#logging-with-the-dblog-package">Logging with the {dblog} package</a>
+  <ul class="collapse">
+  <li><a href="#using-dblog-to-connect-to-sqlite" id="toc-using-dblog-to-connect-to-sqlite" class="nav-link" data-scroll-target="#using-dblog-to-connect-to-sqlite">Using <code>dblog()</code> to connect to SQLite</a></li>
+  <li><a href="#all-calls-to-dbi-methods-are-logged-by-default-to-the-console" id="toc-all-calls-to-dbi-methods-are-logged-by-default-to-the-console" class="nav-link" data-scroll-target="#all-calls-to-dbi-methods-are-logged-by-default-to-the-console">All calls to DBI methods are logged, by default to the console</a></li>
+  </ul></li>
+  <li><a href="#testing-your-infrastructure-for-dbi-compatibility" id="toc-testing-your-infrastructure-for-dbi-compatibility" class="nav-link" data-scroll-target="#testing-your-infrastructure-for-dbi-compatibility">Testing your infrastructure for DBI compatibility</a></li>
+  <li><a href="#a-list-of-dbi-backends" id="toc-a-list-of-dbi-backends" class="nav-link" data-scroll-target="#a-list-of-dbi-backends">A list of DBI backends</a></li>
+  <li><a href="#better-handling-of-time-zones" id="toc-better-handling-of-time-zones" class="nav-link" data-scroll-target="#better-handling-of-time-zones">Better handling of time zones</a></li>
+  <li><a href="#window-function-support-in-rsqlite" id="toc-window-function-support-in-rsqlite" class="nav-link" data-scroll-target="#window-function-support-in-rsqlite">Window function support in {RSQLite}</a></li>
+  <li><a href="#cii-best-practices-badges-for-all-repos" id="toc-cii-best-practices-badges-for-all-repos" class="nav-link" data-scroll-target="#cii-best-practices-badges-for-all-repos">CII “best practices” badges for all repos</a></li>
+  <li><a href="#package-updates" id="toc-package-updates" class="nav-link" data-scroll-target="#package-updates">Package updates</a></li>
+  <li><a href="#future-work" id="toc-future-work" class="nav-link" data-scroll-target="#future-work">Future work</a>
+  <ul class="collapse">
+  <li><a href="#dbi-tutorials" id="toc-dbi-tutorials" class="nav-link" data-scroll-target="#dbi-tutorials">DBI tutorials</a></li>
+  <li><a href="#terraforming-databases" id="toc-terraforming-databases" class="nav-link" data-scroll-target="#terraforming-databases">Terraforming databases</a></li>
+  <li><a href="#query-cancellation" id="toc-query-cancellation" class="nav-link" data-scroll-target="#query-cancellation">Query cancellation</a></li>
+  </ul></li>
+  <li><a href="#acknowledgments" id="toc-acknowledgments" class="nav-link" data-scroll-target="#acknowledgments">Acknowledgments</a></li>
+  </ul>
+</nav>
+    </div>
+<!-- main -->
+<main class="content" id="quarto-document-content">
+
+<header id="title-block-header" class="quarto-title-block default">
+<div class="quarto-title">
+<h1 class="title">Maintaining DBI, 2/4</h1>
+</div>
+
+<div>
+  <div class="description">
+    Summarizing the progress of 2019
+  </div>
+</div>
+
+
+<div class="quarto-title-meta">
+
+    <div>
+    <div class="quarto-title-meta-heading">Author</div>
+    <div class="quarto-title-meta-contents">
+             <p>Kirill Müller </p>
+          </div>
+  </div>
+    
+    <div>
+    <div class="quarto-title-meta-heading">Published</div>
+    <div class="quarto-title-meta-contents">
+      <p class="date">December 19, 2019</p>
+    </div>
+  </div>
+  
+    
+  </div>
+  
+
+</header>
+
+<section id="what-is-dbi" class="level2">
+<h2 class="anchored" data-anchor-id="what-is-dbi">What is DBI?</h2>
+<p>DBI stands for <strong>d</strong>ata<strong>b</strong>ase <strong>i</strong>nterface, and DBI is a package for connecting to database management systems (DBMS). The goal of DBI is to provide a common interface for accessing a database, regardless of the specific underlying DBMS.</p>
+<p>DBI works with a variety of DBMS, such as Postgres, MariaDB, and SQLite, allowing users to focus on the specifics of their project instead of setting up the infrastructure for data import and export.</p>
+<p>The DBI package is perfect for anyone looking to connect to a database, read/write entire tables, and/or execute SQL queries. DBI offers more control to the user than packages such as <a href="https://dbplyr.tidyverse.org/">{dbplyr}</a>.</p>
+<p>The current version of DBI is 1.1.0. This blog post summarizes recent developments in DBI and related packages.</p>
+</section>
+<section id="specification-of-immediate-argument-to-dbsendquery-and-friends" class="level2">
+<h2 class="anchored" data-anchor-id="specification-of-immediate-argument-to-dbsendquery-and-friends">Specification of <code>immediate</code> argument to <code>dbSendQuery()</code> and friends</h2>
+<p>Tom Nolan raised an <a href="https://github.com/r-dbi/DBI/issues/268">issue on GitHub</a>, requesting to specify details of the behavior of query execution. It became apparent that the DBI specification did not account for database drivers where the execution path is substantially different for queries with or without parameters. Recent version of DBI mandated the use of a prepared statement or query for everything.</p>
+<p>Similar problems have been noted in MariaDB, Postgres and SQL Server (when accessed through {odbc}): some statements cannot be executed as prepared statements, or <a href="https://github.com/r-dbi/RPostgres/issues/185">prepared statements are disabled</a>. Over the course of several months, the details of the required extension of this API were fleshed out.</p>
+<p>The <code>dbSendQuery()</code>, <code>dbGetQuery()</code>, <code>dbSendStatement()</code> and <code>dbExecute()</code> methods gain a new <code>immediate</code> argument. By setting this argument to <code>TRUE</code>, a direct query is created, allowing to execute queries that could not be run previously. Arguably, this is one of those obscure features that are not noted until they are missed.</p>
+<p>It is up to the individual backends to add support for this argument. The default value should be made backward-compatible with the previous version of DBI 1.0.0. It has already been implemented in the {odbc} package. Plans to implement this feature in both {RMariaDB} and {RPostgres} are underway.</p>
+<section id="examples-using-immediate" class="level3">
+<h3 class="anchored" data-anchor-id="examples-using-immediate">Examples using <code>immediate</code></h3>
+<pre><code>library(DBI)
+con &lt;- dbConnect(odbc::odbc(), dsn = "SQLServerConnection")
+
+# Create local temporary tables:
+# Did not work before, temporary table was removed immediately.
+dbExecute(con, "CREATE TABLE #temp (a integer)", immediate = TRUE)
+dbExecute(con, "INSERT INTO #temp VALUES (1)", immediate = TRUE)
+
+# Show execution plan:
+# Did not work before, execution plan was never shown
+dbExecute(con, "SET SHOWPLAN_TEXT ON", immediate = TRUE)
+dbGetQuery(con, "SELECT * FROM #temp WHERE a &gt; 0")
+dbExecute(con, "SET SHOWPLAN_TEXT OFF", immediate = TRUE)</code></pre>
+</section>
+</section>
+<section id="connector-objects" class="level2">
+<h2 class="anchored" data-anchor-id="connector-objects">Connector objects</h2>
+<p>The existing method in DBI has been to create the driver object and then call <code>dbConnect()</code> with the connection arguments. However there are times when a user may need to do the following:</p>
+<ul>
+<li>Separate connection arguments from establishing a connection</li>
+<li>Serialize the connector to file in order to establish the same connection later</li>
+<li>Maintain multiple connectors in a list for testing different DBMS</li>
+</ul>
+<p>In order to address these use cases, users now have the ability to create a “connector object” that combines the driver and connection arguments, allowing the user to call <code>dbConnect()</code> without additional arguments. This feature is implemented in {DBI}, and works out of the box for all DBI backends.</p>
+<section id="example" class="level3">
+<h3 class="anchored" data-anchor-id="example">Example</h3>
+<pre><code>library(DBI)
+
+# Old way:
+drv &lt;- RSQLite::SQLite()
+con &lt;- dbConnect(drv, dbname = ":memory:")
+dbDisconnect(con)
+
+# New connector object:
+cnr &lt;- new("DBIConnector",
+  .drv = RSQLite::SQLite(),
+  .conn_args = list(dbname = ":memory:")
+)
+cnr
+
+## &lt;DBIConnector&gt;&lt;SQLiteDriver&gt;
+## Arguments:
+## $dbname
+## [1] ":memory:"
+
+con &lt;- dbConnect(cnr)
+dbDisconnect(con)</code></pre>
+<p>In addition, arguments can be functions, a useful feature for passwords and other sensitive connection data.</p>
+</section>
+</section>
+<section id="logging-with-the-dblog-package" class="level2">
+<h2 class="anchored" data-anchor-id="logging-with-the-dblog-package">Logging with the {dblog} package</h2>
+<p>When using applications in production, keeping logs is an invaluable part of a sound infrastructure. The new <a href="https://github.com/r-dbi/dblog">{dblog}</a> package is designed to be as simple as possible. It can be used as a standalone package or in conjunction with packages like {dbplyr}.</p>
+<p>{dblog} helps both with troubleshooting as well as auditing the queries that that are used to access a database. Similar to Perl’s DBI::log, the goal of {dblog} is to implement logging for arbitrary DBI backends.</p>
+<p>{dblog} is straightforward in its use. Start by initializing a logging driver using <code>dblog()</code> prior to connecting to a database management system. All calls to DBI methods are logged and by default printed to the console (or redirected to a file). The entirety of the logging output is runnable R code, so users can copy, paste, and execute the logging code for debugging.</p>
+<section id="using-dblog-to-connect-to-sqlite" class="level3">
+<h3 class="anchored" data-anchor-id="using-dblog-to-connect-to-sqlite">Using <code>dblog()</code> to connect to SQLite</h3>
+<pre><code>library(dblog)
+
+drv &lt;- dblog(RSQLite::SQLite())
+#&gt; drv1 &lt;- RSQLite::SQLite()</code></pre>
+</section>
+<section id="all-calls-to-dbi-methods-are-logged-by-default-to-the-console" class="level3">
+<h3 class="anchored" data-anchor-id="all-calls-to-dbi-methods-are-logged-by-default-to-the-console">All calls to DBI methods are logged, by default to the console</h3>
+<pre><code>conn &lt;- dbConnect(drv, file = ":memory:")
+#&gt; conn1 &lt;- dbConnect(drv1, file = ":memory:")
+
+dbWriteTable(conn, "iris", iris[1:3, ])
+#&gt; dbWriteTable(conn1, name = "iris", value = structure(list(Sepal.Length = c(5.1, 4.9, 
+#&gt; 4.7), Sepal.Width = c(3.5, 3, 3.2), Petal.Length = c(1.4, 1.4, 1.3), Petal.Width = c(0.2, 
+#&gt; 0.2, 0.2), Species = structure(c(1L, 1L, 1L), .Label = c("setosa", "versicolor", 
+#&gt; "virginica"), class = "factor")), row.names = c(NA, 3L), class = "data.frame"), overwrite = FALSE, 
+#&gt;     append = FALSE)
+
+data &lt;- dbGetQuery(conn, "SELECT * FROM iris")
+#&gt; dbGetQuery(conn1, "SELECT * FROM iris")
+#&gt; ##   Sepal.Length Sepal.Width Petal.Length Petal.Width Species
+#&gt; ## 1          5.1         3.5          1.4         0.2  setosa
+#&gt; ## 2          4.9         3.0          1.4         0.2  setosa
+#&gt; ## 3          4.7         3.2          1.3         0.2  setosa
+
+dbDisconnect(conn)
+#&gt; dbDisconnect(conn1)
+
+data
+#&gt;   Sepal.Length Sepal.Width Petal.Length Petal.Width Species
+#&gt; 1          5.1         3.5          1.4         0.2  setosa
+#&gt; 2          4.9         3.0          1.4         0.2  setosa
+#&gt; 3          4.7         3.2          1.3         0.2  setosa</code></pre>
+<p>This also works in scenarios where DBI is used under the hood by other packages like <a href="https://dbplyr.tidyverse.org/">dbplyr</a> or <a href="https://tidymodels.github.io/tidypredict/">tidypredict</a>. The log will represent the DBI operations issued, which allows for a better understanding of the internals.</p>
+</section>
+</section>
+<section id="testing-your-infrastructure-for-dbi-compatibility" class="level2">
+<h2 class="anchored" data-anchor-id="testing-your-infrastructure-for-dbi-compatibility">Testing your infrastructure for DBI compatibility</h2>
+<p>DBItest (on CRAN in version 1.7.0) is currently geared towards usage as part of a package’s test suite. With some effort it is possible to test a database backend against a custom database. This can help verify that your database installation gives expected results when accessed with DBI with specific connection arguments. The <a href="https://dbitest.r-dbi.org/articles/dbitest#external-testing">DBItest article</a> contains a new section that describes how to achieve this, including a primer on using {dblog} to understand the cause of test failures.</p>
+</section>
+<section id="a-list-of-dbi-backends" class="level2">
+<h2 class="anchored" data-anchor-id="a-list-of-dbi-backends">A list of DBI backends</h2>
+<p>The new <a href="https://github.com/r-dbi/backends">backends</a> repository lists all known DBI backends, as retrieved via a code search on GitHub. The list is available in the README, and as a static web API for programmatic processing.</p>
+</section>
+<section id="better-handling-of-time-zones" class="level2">
+<h2 class="anchored" data-anchor-id="better-handling-of-time-zones">Better handling of time zones</h2>
+<p>Time zones are used to convert between <em>absolute</em> time and <em>civil</em> time, where absolute time exists independent of human-created measures such as calendars, days, and dates, whereas civil time is comprised of years, months, days, hours, minutes, and seconds. For a more in-depth reading on absolute time, civil time, and time zones, please read this excerpt from the <a href="https://github.com/r-dbi/odbc/blob/7b35549f9df935e1d132f6221860f87a6eb64ef6/src/cctz/README.md">ODBC README</a>.</p>
+<p>For programming and data analysis, accurate handling time zones is crucial. {odbc} has set an example for how to handle time zones through the inclusion of <code>timezone</code> and <code>timezone_out</code> arguments to <code>dbConnect()</code>. The <code>timezone</code> argument controls the server time zone, which may be different from UTC. The <code>timezone_out</code> argument specifies the time zone to use for displaying times.</p>
+<p>This strategy gives the user control over datetime information passed on to and retrieved from the database. Both arguments in combination should be able to support a broad variety of use cases and server setups. {RMariaDB} and {RPostgres} will incorporate this strategy with their next CRAN release. {RPostgres} already has gained a <code>timezone</code> argument in its <code>dbConnect()</code> method.</p>
+</section>
+<section id="window-function-support-in-rsqlite" class="level2">
+<h2 class="anchored" data-anchor-id="window-function-support-in-rsqlite">Window function support in {RSQLite}</h2>
+<p>RSQLite 2.1.4 and later includes sqlite &gt;= 3.29.0, which introduces support for window functions.</p>
+<pre><code>library(tidyverse)
+library(dbplyr)
+
+tbl &lt;- memdb_frame(a = rep(1:2, 5), b = 1:10)
+
+tbl %&gt;% 
+  group_by(a) %&gt;%
+  window_order(b) %&gt;% 
+  mutate(c = cumsum(b)) %&gt;% 
+  ungroup()
+
+## # Source:     lazy query [?? x 3]
+## # Database:   sqlite 3.30.1 [:memory:]
+## # Ordered by: b
+##        a     b     c
+##    &lt;int&gt; &lt;int&gt; &lt;int&gt;
+##  1     1     1     1
+##  2     1     3     4
+##  3     1     5     9
+##  4     1     7    16
+##  5     1     9    25
+##  6     2     2     2
+##  7     2     4     6
+##  8     2     6    12
+##  9     2     8    20
+## 10     2    10    30</code></pre>
+</section>
+<section id="cii-best-practices-badges-for-all-repos" class="level2">
+<h2 class="anchored" data-anchor-id="cii-best-practices-badges-for-all-repos">CII “best practices” badges for all repos</h2>
+<p>CII “best practices” have been implemented for {DBItest}, {RMariaDB}, {RPostgres} and {RSQLite}. The {DBItest} repository has a brand-new badge, the badges for the other repositories will follow suit.</p>
+</section>
+<section id="package-updates" class="level2">
+<h2 class="anchored" data-anchor-id="package-updates">Package updates</h2>
+<p>The following package versions were sent to CRAN in conjunction with this blog post:</p>
+<ul>
+<li>DBI 1.1.0 (<a href="https://dbi.r-dbi.org/news/">NEWS</a>)</li>
+<li>DBItest 1.7.0 (<a href="https://dbitest.r-dbi.org/news/">NEWS</a>)</li>
+<li>RMariaDB 1.0.8 (<a href="https://rmariadb.r-dbi.org/news/">NEWS</a>)</li>
+<li>RPostgres 1.2.0 (<a href="https://rpostgres.r-dbi.org/news/">NEWS</a>)</li>
+<li>RSQLite 2.1.5 (<a href="https://rsqlite.r-dbi.org/news/">NEWS</a>)</li>
+</ul>
+<p>Before that, minor updates of the database backend packages were necessary to comply with stricter CRAN checks and toolchain updates.</p>
+</section>
+<section id="future-work" class="level2">
+<h2 class="anchored" data-anchor-id="future-work">Future work</h2>
+<p>The remainder of the blog post discusses future directions for DBI and the backend packages.</p>
+<section id="dbi-tutorials" class="level3">
+<h3 class="anchored" data-anchor-id="dbi-tutorials">DBI tutorials</h3>
+<p>Improving documentation is a priority. DBI is still lacking an up-to-date tutorial with a low entry bar that helps users connect to their database and execute queries. The updated <a href="https://dbi.r-dbi.org/">README</a> is a little step forward, but a slightly more comprehensive versions with link to more detailed information would be helpful.</p>
+</section>
+<section id="terraforming-databases" class="level3">
+<h3 class="anchored" data-anchor-id="terraforming-databases">Terraforming databases</h3>
+<p>Now that using DBItest to test backends against custom infrastructure is understood, it becomes easier to enhance tests so that not only pristine setups are tested, but also databases with nonstandard settings for time zone, character encoding or collation. <a href="https://www.terraform.io/">Terraform</a> helps automating the setup of databases of different flavors on cloud providers such as Azure or Google Cloud. The desired state of computing infrastructure is specified in a declarative way. This allows testing a much broader variety of databases and configurations, without maintaining expensive infrastructure: databases can be spun up when needed and torn down when done.</p>
+<p>It would be helpful to have a selection of open-source and commercial databases in different configuration settings ready for testing.</p>
+</section>
+<section id="query-cancellation" class="level3">
+<h3 class="anchored" data-anchor-id="query-cancellation">Query cancellation</h3>
+<p>Currently, {odbc} and many other backends freeze while a query is executed. It is easy to underestimate the runtime of a query, or to accidentally execute a query that is running too long. This severely hampers interactive workflows: a frozen R session means forcibly restarting R, or worse, the development environment.</p>
+<p>Mateusz Żółtak has contributed a <a href="https://github.com/r-dbi/RPostgres/pull/193">pull request</a> that implements support for graceful query cancellation in {RPostgres}. <a href="https://github.com/r-dbi/odbc/issues/312">Initial research</a> suggests that for {odbc} it may be possible to implement this in a similar fashion. It remains to be seen if an implementation is viable, and if the database libraries used by {RMariaDB} and {RSQLite} support this mode of operation.</p>
+</section>
+</section>
+<section id="acknowledgments" class="level2">
+<h2 class="anchored" data-anchor-id="acknowledgments">Acknowledgments</h2>
+<p>I’d like to thank Katharina Brunner and Jesse Mostipak for help with composing this blog post.</p>
+
+
+</section>
+
+</main> <!-- /main -->
+<script id="quarto-html-after-body" type="application/javascript">
+window.document.addEventListener("DOMContentLoaded", function (event) {
+  const toggleBodyColorMode = (bsSheetEl) => {
+    const mode = bsSheetEl.getAttribute("data-mode");
+    const bodyEl = window.document.querySelector("body");
+    if (mode === "dark") {
+      bodyEl.classList.add("quarto-dark");
+      bodyEl.classList.remove("quarto-light");
+    } else {
+      bodyEl.classList.add("quarto-light");
+      bodyEl.classList.remove("quarto-dark");
+    }
+  }
+  const toggleBodyColorPrimary = () => {
+    const bsSheetEl = window.document.querySelector("link#quarto-bootstrap");
+    if (bsSheetEl) {
+      toggleBodyColorMode(bsSheetEl);
+    }
+  }
+  toggleBodyColorPrimary();  
+  const icon = "";
+  const anchorJS = new window.AnchorJS();
+  anchorJS.options = {
+    placement: 'right',
+    icon: icon
+  };
+  anchorJS.add('.anchored');
+  const isCodeAnnotation = (el) => {
+    for (const clz of el.classList) {
+      if (clz.startsWith('code-annotation-')) {                     
+        return true;
+      }
+    }
+    return false;
+  }
+  const clipboard = new window.ClipboardJS('.code-copy-button', {
+    text: function(trigger) {
+      const codeEl = trigger.previousElementSibling.cloneNode(true);
+      for (const childEl of codeEl.children) {
+        if (isCodeAnnotation(childEl)) {
+          childEl.remove();
+        }
+      }
+      return codeEl.innerText;
+    }
+  });
+  clipboard.on('success', function(e) {
+    // button target
+    const button = e.trigger;
+    // don't keep focus
+    button.blur();
+    // flash "checked"
+    button.classList.add('code-copy-button-checked');
+    var currentTitle = button.getAttribute("title");
+    button.setAttribute("title", "Copied!");
+    let tooltip;
+    if (window.bootstrap) {
+      button.setAttribute("data-bs-toggle", "tooltip");
+      button.setAttribute("data-bs-placement", "left");
+      button.setAttribute("data-bs-title", "Copied!");
+      tooltip = new bootstrap.Tooltip(button, 
+        { trigger: "manual", 
+          customClass: "code-copy-button-tooltip",
+          offset: [0, -8]});
+      tooltip.show();    
+    }
+    setTimeout(function() {
+      if (tooltip) {
+        tooltip.hide();
+        button.removeAttribute("data-bs-title");
+        button.removeAttribute("data-bs-toggle");
+        button.removeAttribute("data-bs-placement");
+      }
+      button.setAttribute("title", currentTitle);
+      button.classList.remove('code-copy-button-checked');
+    }, 1000);
+    // clear code selection
+    e.clearSelection();
+  });
+  function tippyHover(el, contentFn) {
+    const config = {
+      allowHTML: true,
+      content: contentFn,
+      maxWidth: 500,
+      delay: 100,
+      arrow: false,
+      appendTo: function(el) {
+          return el.parentElement;
+      },
+      interactive: true,
+      interactiveBorder: 10,
+      theme: 'quarto',
+      placement: 'bottom-start'
+    };
+    window.tippy(el, config); 
+  }
+  const noterefs = window.document.querySelectorAll('a[role="doc-noteref"]');
+  for (var i=0; i<noterefs.length; i++) {
+    const ref = noterefs[i];
+    tippyHover(ref, function() {
+      // use id or data attribute instead here
+      let href = ref.getAttribute('data-footnote-href') || ref.getAttribute('href');
+      try { href = new URL(href).hash; } catch {}
+      const id = href.replace(/^#\/?/, "");
+      const note = window.document.getElementById(id);
+      return note.innerHTML;
+    });
+  }
+      let selectedAnnoteEl;
+      const selectorForAnnotation = ( cell, annotation) => {
+        let cellAttr = 'data-code-cell="' + cell + '"';
+        let lineAttr = 'data-code-annotation="' +  annotation + '"';
+        const selector = 'span[' + cellAttr + '][' + lineAttr + ']';
+        return selector;
+      }
+      const selectCodeLines = (annoteEl) => {
+        const doc = window.document;
+        const targetCell = annoteEl.getAttribute("data-target-cell");
+        const targetAnnotation = annoteEl.getAttribute("data-target-annotation");
+        const annoteSpan = window.document.querySelector(selectorForAnnotation(targetCell, targetAnnotation));
+        const lines = annoteSpan.getAttribute("data-code-lines").split(",");
+        const lineIds = lines.map((line) => {
+          return targetCell + "-" + line;
+        })
+        let top = null;
+        let height = null;
+        let parent = null;
+        if (lineIds.length > 0) {
+            //compute the position of the single el (top and bottom and make a div)
+            const el = window.document.getElementById(lineIds[0]);
+            top = el.offsetTop;
+            height = el.offsetHeight;
+            parent = el.parentElement.parentElement;
+          if (lineIds.length > 1) {
+            const lastEl = window.document.getElementById(lineIds[lineIds.length - 1]);
+            const bottom = lastEl.offsetTop + lastEl.offsetHeight;
+            height = bottom - top;
+          }
+          if (top !== null && height !== null && parent !== null) {
+            // cook up a div (if necessary) and position it 
+            let div = window.document.getElementById("code-annotation-line-highlight");
+            if (div === null) {
+              div = window.document.createElement("div");
+              div.setAttribute("id", "code-annotation-line-highlight");
+              div.style.position = 'absolute';
+              parent.appendChild(div);
+            }
+            div.style.top = top - 2 + "px";
+            div.style.height = height + 4 + "px";
+            let gutterDiv = window.document.getElementById("code-annotation-line-highlight-gutter");
+            if (gutterDiv === null) {
+              gutterDiv = window.document.createElement("div");
+              gutterDiv.setAttribute("id", "code-annotation-line-highlight-gutter");
+              gutterDiv.style.position = 'absolute';
+              const codeCell = window.document.getElementById(targetCell);
+              const gutter = codeCell.querySelector('.code-annotation-gutter');
+              gutter.appendChild(gutterDiv);
+            }
+            gutterDiv.style.top = top - 2 + "px";
+            gutterDiv.style.height = height + 4 + "px";
+          }
+          selectedAnnoteEl = annoteEl;
+        }
+      };
+      const unselectCodeLines = () => {
+        const elementsIds = ["code-annotation-line-highlight", "code-annotation-line-highlight-gutter"];
+        elementsIds.forEach((elId) => {
+          const div = window.document.getElementById(elId);
+          if (div) {
+            div.remove();
+          }
+        });
+        selectedAnnoteEl = undefined;
+      };
+      // Attach click handler to the DT
+      const annoteDls = window.document.querySelectorAll('dt[data-target-cell]');
+      for (const annoteDlNode of annoteDls) {
+        annoteDlNode.addEventListener('click', (event) => {
+          const clickedEl = event.target;
+          if (clickedEl !== selectedAnnoteEl) {
+            unselectCodeLines();
+            const activeEl = window.document.querySelector('dt[data-target-cell].code-annotation-active');
+            if (activeEl) {
+              activeEl.classList.remove('code-annotation-active');
+            }
+            selectCodeLines(clickedEl);
+            clickedEl.classList.add('code-annotation-active');
+          } else {
+            // Unselect the line
+            unselectCodeLines();
+            clickedEl.classList.remove('code-annotation-active');
+          }
+        });
+      }
+  const findCites = (el) => {
+    const parentEl = el.parentElement;
+    if (parentEl) {
+      const cites = parentEl.dataset.cites;
+      if (cites) {
+        return {
+          el,
+          cites: cites.split(' ')
+        };
+      } else {
+        return findCites(el.parentElement)
+      }
+    } else {
+      return undefined;
+    }
+  };
+  var bibliorefs = window.document.querySelectorAll('a[role="doc-biblioref"]');
+  for (var i=0; i<bibliorefs.length; i++) {
+    const ref = bibliorefs[i];
+    const citeInfo = findCites(ref);
+    if (citeInfo) {
+      tippyHover(citeInfo.el, function() {
+        var popup = window.document.createElement('div');
+        citeInfo.cites.forEach(function(cite) {
+          var citeDiv = window.document.createElement('div');
+          citeDiv.classList.add('hanging-indent');
+          citeDiv.classList.add('csl-entry');
+          var biblioDiv = window.document.getElementById('ref-' + cite);
+          if (biblioDiv) {
+            citeDiv.innerHTML = biblioDiv.innerHTML;
+          }
+          popup.appendChild(citeDiv);
+        });
+        return popup.innerHTML;
+      });
+    }
+  }
+});
+</script>
+</div> <!-- /content -->
+<footer class="footer">
+  <div class="nav-footer">
+    <div class="nav-footer-left">
+      <ul class="footer-items list-unstyled">
+    <li class="nav-item">
+ © Licence MIT.
+  </li>  
+</ul>
+    </div>   
+    <div class="nav-footer-center">
+      &nbsp;
+    </div>
+    <div class="nav-footer-right">
+      <ul class="footer-items list-unstyled">
+    <li class="nav-item">
+    <a class="nav-link" href="https://www.r-consortium.org/">Sponsored by the R Consortium.</a>
+  </li>  
+</ul>
+    </div>
+  </div>
+</footer>
+
+
+
+</body></html>

@@ -1,0 +1,446 @@
+<!DOCTYPE html>
+<html xmlns="http://www.w3.org/1999/xhtml" lang="en" xml:lang="en"><head>
+
+<meta charset="utf-8">
+<meta name="generator" content="quarto-1.3.433">
+
+<meta name="viewport" content="width=device-width, initial-scale=1.0, user-scalable=yes">
+
+<meta name="author" content="Kirill Müller">
+<meta name="dcterms.date" content="2017-05-15">
+<meta name="description" content="Summary of the “Improving DBI” project">
+
+<title>R-DBI – dbi-1-final</title>
+<style>
+code{white-space: pre-wrap;}
+span.smallcaps{font-variant: small-caps;}
+div.columns{display: flex; gap: min(4vw, 1.5em);}
+div.column{flex: auto; overflow-x: auto;}
+div.hanging-indent{margin-left: 1.5em; text-indent: -1.5em;}
+ul.task-list{list-style: none;}
+ul.task-list li input[type="checkbox"] {
+  width: 0.8em;
+  margin: 0 0.8em 0.2em -1em; /* quarto-specific, see https://github.com/quarto-dev/quarto-cli/issues/4556 */ 
+  vertical-align: middle;
+}
+</style>
+
+
+<script src="../../site_libs/quarto-nav/quarto-nav.js"></script>
+<script src="../../site_libs/quarto-nav/headroom.min.js"></script>
+<script src="../../site_libs/clipboard/clipboard.min.js"></script>
+<script src="../../site_libs/quarto-search/autocomplete.umd.js"></script>
+<script src="../../site_libs/quarto-search/fuse.min.js"></script>
+<script src="../../site_libs/quarto-search/quarto-search.js"></script>
+<meta name="quarto:offset" content="../../">
+<script src="../../site_libs/quarto-html/quarto.js"></script>
+<script src="../../site_libs/quarto-html/popper.min.js"></script>
+<script src="../../site_libs/quarto-html/tippy.umd.min.js"></script>
+<script src="../../site_libs/quarto-html/anchor.min.js"></script>
+<link href="../../site_libs/quarto-html/tippy.css" rel="stylesheet">
+<link href="../../site_libs/quarto-html/quarto-syntax-highlighting.css" rel="stylesheet" id="quarto-text-highlighting-styles">
+<script src="../../site_libs/bootstrap/bootstrap.min.js"></script>
+<link href="../../site_libs/bootstrap/bootstrap-icons.css" rel="stylesheet">
+<link href="../../site_libs/bootstrap/bootstrap.min.css" rel="stylesheet" id="quarto-bootstrap" data-mode="light">
+<script id="quarto-search-options" type="application/json">{
+  "location": "navbar",
+  "copy-button": false,
+  "collapse-after": 3,
+  "panel-placement": "end",
+  "type": "overlay",
+  "limit": 20,
+  "language": {
+    "search-no-results-text": "No results",
+    "search-matching-documents-text": "matching documents",
+    "search-copy-link-title": "Copy link to search",
+    "search-hide-matches-text": "Hide additional matches",
+    "search-more-match-text": "more match in this document",
+    "search-more-matches-text": "more matches in this document",
+    "search-clear-button-title": "Clear",
+    "search-detached-cancel-button-title": "Cancel",
+    "search-submit-button-title": "Submit",
+    "search-label": "Search"
+  }
+}</script>
+
+
+<link rel="stylesheet" href="../../styles.css">
+</head>
+
+<body class="nav-fixed">
+
+<div id="quarto-search-results"></div>
+  <header id="quarto-header" class="headroom fixed-top">
+    <nav class="navbar navbar-expand-lg navbar-dark ">
+      <div class="navbar-container container-fluid">
+      <div class="navbar-brand-container">
+    <a class="navbar-brand" href="../../index.html">
+    <span class="navbar-title">R-DBI</span>
+    </a>
+  </div>
+            <div id="quarto-search" class="" title="Search"></div>
+          <button class="navbar-toggler" type="button" data-bs-toggle="collapse" data-bs-target="#navbarCollapse" aria-controls="navbarCollapse" aria-expanded="false" aria-label="Toggle navigation" onclick="if (window.quartoToggleHeadroom) { window.quartoToggleHeadroom(); }">
+  <span class="navbar-toggler-icon"></span>
+</button>
+          <div class="collapse navbar-collapse" id="navbarCollapse">
+            <ul class="navbar-nav navbar-nav-scroll me-auto">
+  <li class="nav-item">
+    <a class="nav-link" href="../../index.html" rel="" target="">
+ <span class="menu-text">Home</span></a>
+  </li>  
+  <li class="nav-item">
+    <a class="nav-link" href="../../blog/index.html" rel="" target="">
+ <span class="menu-text">Blog</span></a>
+  </li>  
+  <li class="nav-item">
+    <a class="nav-link" href="../../backends/index.html" rel="" target="">
+ <span class="menu-text">Backends</span></a>
+  </li>  
+</ul>
+            <div class="quarto-navbar-tools ms-auto">
+</div>
+          </div> <!-- /navcollapse -->
+      </div> <!-- /container-fluid -->
+    </nav>
+</header>
+<!-- content -->
+<div id="quarto-content" class="quarto-container page-columns page-rows-contents page-layout-article page-navbar">
+<!-- sidebar -->
+<!-- margin-sidebar -->
+    <div id="quarto-margin-sidebar" class="sidebar margin-sidebar">
+        <nav id="TOC" role="doc-toc" class="toc-active">
+    <h2 id="toc-title">On this page</h2>
+   
+  <ul>
+  <li><a href="#dbitest-specification" id="toc-dbitest-specification" class="nav-link active" data-scroll-target="#dbitest-specification"><code>DBItest</code>: Specification</a></li>
+  <li><a href="#dbi-definition" id="toc-dbi-definition" class="nav-link" data-scroll-target="#dbi-definition"><code>DBI</code>: Definition</a></li>
+  <li><a href="#rsqlite-implementation" id="toc-rsqlite-implementation" class="nav-link" data-scroll-target="#rsqlite-implementation"><code>RSQLite</code>: Implementation</a></li>
+  <li><a href="#other-bits-and-pieces" id="toc-other-bits-and-pieces" class="nav-link" data-scroll-target="#other-bits-and-pieces">Other bits and pieces</a></li>
+  <li><a href="#next-steps" id="toc-next-steps" class="nav-link" data-scroll-target="#next-steps">Next steps</a></li>
+  <li><a href="#acknowledgments" id="toc-acknowledgments" class="nav-link" data-scroll-target="#acknowledgments">Acknowledgments</a></li>
+  </ul>
+</nav>
+    </div>
+<!-- main -->
+<main class="content" id="quarto-document-content">
+
+
+
+<p>The “Improving DBI” project, funded by the R consortium, started about a year ago. It includes</p>
+<ol type="1">
+<li>the definition and implementation of a testable specification for DBI,</li>
+<li>making <code>RSQLite</code> fully compliant to the new specification.</li>
+</ol>
+<p>Besides the established <code>DBI</code> and <code>RSQLite</code> packages, I have spent a lot of time on the new <code>DBItest</code> package. Final updates to these packages will be pushed to CRAN end of May this year, to give downstream maintainers some time to accommodate.</p>
+<p>The follow-up project “Establishing DBI” will focus on fully DBI-compliant backends for MySQL/MariaDB and PostgreSQL, and on minor updates to the specs where appropriate.</p>
+<section id="dbitest-specification" class="level2">
+<h2 class="anchored" data-anchor-id="dbitest-specification"><code>DBItest</code>: Specification</h2>
+<p>A comprehensive backend-agnostic test suite for DBI backends is provided by the new <code>DBItest</code> package. When the project started, it was merely a collection of test cases. I have considerably expanded the test cases and provided a human-readable description for each, using literate programming techniques powered by <code>roxygen2</code>. The <code>DBI</code> package weaves these chunks of text to a single document that describes all test cases covered by the test suite, the textual <em>DBI specification</em>. This approach ensures that further updates to the specification are reflected in both the automatic tests and the text.</p>
+<p>This package is aimed at backend implementers, who now can programmatically check with very little effort if their DBI backend conforms to the DBI specification. The verification can be integrated in the automated tests which are run as part of R’s package check mechanism in <code>R CMD check</code>. The <code>odbc</code> package, a new DBI-compliant interface to the ODBC interface, has been using <code>DBItest</code> from day one to enable test-driven development. The <code>bigrquery</code> package is another user of <code>DBItest</code>.</p>
+<p>Because not all DBMS support all aspects of DBI, the <code>DBItest</code> package allows to restrict which parts of the specification are tested, or “tweak” certain aspects of the tests, e.g., the format of placeholders in parametrized queries. Adapting to other DBMS may require more work due to subtle differences in the implementation of SQL between various DBMS.</p>
+</section>
+<section id="dbi-definition" class="level2">
+<h2 class="anchored" data-anchor-id="dbi-definition"><code>DBI</code>: Definition</h2>
+<p>This package has been around since 2001, it defines the actual <em>DataBase Interface</em> in R. I have taken over maintenance, and released versions 0.4-1, 0.5-1, and 0.6-1, with release of version 0.7 pending.</p>
+<p>The most prominent change in this package is, of course, the textual <a href="https://cran.r-project.org/web/packages/DBI/vignettes/spec.html">DBI specification</a>, which is included as an HTML vignette in the package. The documentation for the various methods defined by <code>DBI</code> is obtained directly from the specification. These help topics are combined in a sensible order to a single, self-contained document. This format is useful for both DBI users and implementers: users can look up the behavior of a method directly from its help page, and implementers can browse a comprehensive document that describes all aspects of the interface. I have also revised the description and the examples for all help topics.</p>
+<p>Other changes include:</p>
+<ul>
+<li>the definition of new generics <code>dbSendStatement()</code> and <code>dbExecute()</code>, for backends that distinguish between queries that return a table and statements that manipulate data,</li>
+<li>the new <code>dbWithTransaction()</code> generic and the <code>dbBreak()</code> helper function, thanks Barbara Borges Ribero,</li>
+<li>improved or new default implementations for methods like <code>dbGetQuery()</code>, <code>dbReadTable()</code>, <code>dbQuoteString()</code>, <code>dbQuoteIdentifier()</code>,</li>
+<li>internal changes that allow methods that don’t have a meaningful return value to return silently,</li>
+<li>translation of a helper function from C++ to R, to remove the dependency on <code>Rcpp</code> (thanks Hannes Mühleisen).</li>
+</ul>
+<p>Fortunately, none of the changes seemed to have introduced any major regressions with downstream packages. The <a href="https://github.com/rstats-db/DBI/blob/master/NEWS.md">news</a> contain a comprehensive list of changes.</p>
+</section>
+<section id="rsqlite-implementation" class="level2">
+<h2 class="anchored" data-anchor-id="rsqlite-implementation"><code>RSQLite</code>: Implementation</h2>
+<p><code>RSQLite</code> 1.1-2 is a complete rewrite of the original C implementation. Before focusing on compliance to the new DBI specification, it was important to assert compatibility to more than 100 packages on CRAN and Bioconductor that use <code>RSQLite</code>. These packages revealed many usage patterns that were difficult to foresee. Most of these usage patterns are supported in version 1.1-2, the more esoteric ones (such as supplying an <code>integer</code> where a <code>logical</code> is required) trigger a warning.</p>
+<p>Several rounds of “revdep checking” were necessary before most packages showed no difference in their check output compared to the original implementation. The downstream maintainers and the Bioconductor team were very supportive, and helped spotting functional and performance regressions during the release process. Two point releases were necessary to finally achieve a stable state.</p>
+<p>Supporting 64-bit integers also was trickier than anticipated. There is no built-in way to represent 64-bit integers in R. The <code>bit64</code> package works around this limitation by using a <code>numeric</code> vector as storage, which also happens to use 8 bytes per element, and providing coercion functions. But when an integer column is fetched, it cannot be foreseen if a 64-bit value will occur in the result, and smaller integers must use R’s built-in <code>integer</code> type. For this purpose, an efficient data structure for collecting vectors, which is capable of changing the data type on the fly, has been implemented in C++. This data structure will be useful for many other DBI backends that need support for a 64-bit integer data type, and will be ported to the <code>RKazam</code> package in the follow-up project.</p>
+<p>Once the DBI specification was completed, the process of making <code>RSQLite</code> compliant was easy: enable one of the disabled tests, fix the code, make sure all tests pass, rinse, and repeat. If you haven’t tried it, I seriosly recommend test-driven development, especially when the tests are already implemented.</p>
+<p>The upcoming release of <code>RSQLite</code> 2.0 will require stronger adherence to the DBI specification also from callers. Where possible I tried to maintain backward compatibility, but in some cases breaks were inevitable because otherwise I’d have had to introduce far too many exceptions and corner cases in the DBI spec. For instance, row names are no longer included by default when writing or reading tables. The original behavior can be reenabled by calling <code>pkgconfig::set_config()</code>, so that packages or scripts that rely on row names continue to work as before. (The setting is active for the duration of the session, but only for the caller that has called <code>pkgconfig::set_config()</code>.) I’m happy to include compatibility switches for other breaking changes if necessary and desired, to achieve both adherence to the specs and compatibility with existing behavior.</p>
+<p>A comprehensive list of changes can be found in the <a href="https://github.com/rstats-db/RSQLite/blob/master/NEWS.md">news</a>.</p>
+</section>
+<section id="other-bits-and-pieces" class="level2">
+<h2 class="anchored" data-anchor-id="other-bits-and-pieces">Other bits and pieces</h2>
+<p>The <code>RKazam</code> package is a ready-to-use boilerplate for a DBI backend, named after the hypothetical DBMS used as example in a DBI vignette. It already “passes” all tests of the <code>DBItest</code> package, mostly by calling a function that skips the current test. Starting a DBI backend from scratch requires only copying and renaming the package’s code.</p>
+<p>R has limited support for time-of-day data. The <code>hms</code> package aims at filling this gap. It will be useful especially in the follow-up project, because SQLite doesn’t have an intrinsic type for time-of-day data, unlike many other DBMS.</p>
+</section>
+<section id="next-steps" class="level2">
+<h2 class="anchored" data-anchor-id="next-steps">Next steps</h2>
+<p>The ensemble CRAN release of the three packages <code>DBI</code>, <code>DBItest</code> and <code>RSQLite</code> will occur in parallel to the startup phase for the “Establishing DBI” follow-up project. This project consists of:</p>
+<ul>
+<li>Fully DBI compatible backends for MySQL/MariaDB and Postgres</li>
+<li>A backend-agnostic C++ data structure to collect column data in the <code>RKazam</code> package</li>
+<li>Support for spatial data</li>
+</ul>
+<p>In addition, it will contain an update to the DBI specification, mostly concerning support for schemas and for querying the structure of the table returned for a query. Targeting three DBMS instead of one will help properly specify these two particularly tricky parts of DBI. I’m happy to take further feedback from users and backend implementers towards further improvement of the DBI specification.</p>
+</section>
+<section id="acknowledgments" class="level2">
+<h2 class="anchored" data-anchor-id="acknowledgments">Acknowledgments</h2>
+<p>Many thanks to the R Consortium, who has sponsored this project, and to the many contributors who have spotted problems, suggested improvements, submitted pull requests, or otherwise helped make this project a great success. In particular, I’d like to thank Hadley Wickham, who suggested the idea, supported initial development of the <code>DBItest</code> package, and provided helpful feedback; and Christoph Hösler, Hannes Mühleisen, Imanuel Costigan, Jim Hester, Marcel Boldt, and <span class="citation" data-cites="thrasibule">@thrasibule</span> for using it and contributing to it. I enjoyed working on this project, looking forward to “Establishing DBI”!</p>
+
+
+</section>
+
+</main> <!-- /main -->
+<script id="quarto-html-after-body" type="application/javascript">
+window.document.addEventListener("DOMContentLoaded", function (event) {
+  const toggleBodyColorMode = (bsSheetEl) => {
+    const mode = bsSheetEl.getAttribute("data-mode");
+    const bodyEl = window.document.querySelector("body");
+    if (mode === "dark") {
+      bodyEl.classList.add("quarto-dark");
+      bodyEl.classList.remove("quarto-light");
+    } else {
+      bodyEl.classList.add("quarto-light");
+      bodyEl.classList.remove("quarto-dark");
+    }
+  }
+  const toggleBodyColorPrimary = () => {
+    const bsSheetEl = window.document.querySelector("link#quarto-bootstrap");
+    if (bsSheetEl) {
+      toggleBodyColorMode(bsSheetEl);
+    }
+  }
+  toggleBodyColorPrimary();  
+  const icon = "";
+  const anchorJS = new window.AnchorJS();
+  anchorJS.options = {
+    placement: 'right',
+    icon: icon
+  };
+  anchorJS.add('.anchored');
+  const isCodeAnnotation = (el) => {
+    for (const clz of el.classList) {
+      if (clz.startsWith('code-annotation-')) {                     
+        return true;
+      }
+    }
+    return false;
+  }
+  const clipboard = new window.ClipboardJS('.code-copy-button', {
+    text: function(trigger) {
+      const codeEl = trigger.previousElementSibling.cloneNode(true);
+      for (const childEl of codeEl.children) {
+        if (isCodeAnnotation(childEl)) {
+          childEl.remove();
+        }
+      }
+      return codeEl.innerText;
+    }
+  });
+  clipboard.on('success', function(e) {
+    // button target
+    const button = e.trigger;
+    // don't keep focus
+    button.blur();
+    // flash "checked"
+    button.classList.add('code-copy-button-checked');
+    var currentTitle = button.getAttribute("title");
+    button.setAttribute("title", "Copied!");
+    let tooltip;
+    if (window.bootstrap) {
+      button.setAttribute("data-bs-toggle", "tooltip");
+      button.setAttribute("data-bs-placement", "left");
+      button.setAttribute("data-bs-title", "Copied!");
+      tooltip = new bootstrap.Tooltip(button, 
+        { trigger: "manual", 
+          customClass: "code-copy-button-tooltip",
+          offset: [0, -8]});
+      tooltip.show();    
+    }
+    setTimeout(function() {
+      if (tooltip) {
+        tooltip.hide();
+        button.removeAttribute("data-bs-title");
+        button.removeAttribute("data-bs-toggle");
+        button.removeAttribute("data-bs-placement");
+      }
+      button.setAttribute("title", currentTitle);
+      button.classList.remove('code-copy-button-checked');
+    }, 1000);
+    // clear code selection
+    e.clearSelection();
+  });
+  function tippyHover(el, contentFn) {
+    const config = {
+      allowHTML: true,
+      content: contentFn,
+      maxWidth: 500,
+      delay: 100,
+      arrow: false,
+      appendTo: function(el) {
+          return el.parentElement;
+      },
+      interactive: true,
+      interactiveBorder: 10,
+      theme: 'quarto',
+      placement: 'bottom-start'
+    };
+    window.tippy(el, config); 
+  }
+  const noterefs = window.document.querySelectorAll('a[role="doc-noteref"]');
+  for (var i=0; i<noterefs.length; i++) {
+    const ref = noterefs[i];
+    tippyHover(ref, function() {
+      // use id or data attribute instead here
+      let href = ref.getAttribute('data-footnote-href') || ref.getAttribute('href');
+      try { href = new URL(href).hash; } catch {}
+      const id = href.replace(/^#\/?/, "");
+      const note = window.document.getElementById(id);
+      return note.innerHTML;
+    });
+  }
+      let selectedAnnoteEl;
+      const selectorForAnnotation = ( cell, annotation) => {
+        let cellAttr = 'data-code-cell="' + cell + '"';
+        let lineAttr = 'data-code-annotation="' +  annotation + '"';
+        const selector = 'span[' + cellAttr + '][' + lineAttr + ']';
+        return selector;
+      }
+      const selectCodeLines = (annoteEl) => {
+        const doc = window.document;
+        const targetCell = annoteEl.getAttribute("data-target-cell");
+        const targetAnnotation = annoteEl.getAttribute("data-target-annotation");
+        const annoteSpan = window.document.querySelector(selectorForAnnotation(targetCell, targetAnnotation));
+        const lines = annoteSpan.getAttribute("data-code-lines").split(",");
+        const lineIds = lines.map((line) => {
+          return targetCell + "-" + line;
+        })
+        let top = null;
+        let height = null;
+        let parent = null;
+        if (lineIds.length > 0) {
+            //compute the position of the single el (top and bottom and make a div)
+            const el = window.document.getElementById(lineIds[0]);
+            top = el.offsetTop;
+            height = el.offsetHeight;
+            parent = el.parentElement.parentElement;
+          if (lineIds.length > 1) {
+            const lastEl = window.document.getElementById(lineIds[lineIds.length - 1]);
+            const bottom = lastEl.offsetTop + lastEl.offsetHeight;
+            height = bottom - top;
+          }
+          if (top !== null && height !== null && parent !== null) {
+            // cook up a div (if necessary) and position it 
+            let div = window.document.getElementById("code-annotation-line-highlight");
+            if (div === null) {
+              div = window.document.createElement("div");
+              div.setAttribute("id", "code-annotation-line-highlight");
+              div.style.position = 'absolute';
+              parent.appendChild(div);
+            }
+            div.style.top = top - 2 + "px";
+            div.style.height = height + 4 + "px";
+            let gutterDiv = window.document.getElementById("code-annotation-line-highlight-gutter");
+            if (gutterDiv === null) {
+              gutterDiv = window.document.createElement("div");
+              gutterDiv.setAttribute("id", "code-annotation-line-highlight-gutter");
+              gutterDiv.style.position = 'absolute';
+              const codeCell = window.document.getElementById(targetCell);
+              const gutter = codeCell.querySelector('.code-annotation-gutter');
+              gutter.appendChild(gutterDiv);
+            }
+            gutterDiv.style.top = top - 2 + "px";
+            gutterDiv.style.height = height + 4 + "px";
+          }
+          selectedAnnoteEl = annoteEl;
+        }
+      };
+      const unselectCodeLines = () => {
+        const elementsIds = ["code-annotation-line-highlight", "code-annotation-line-highlight-gutter"];
+        elementsIds.forEach((elId) => {
+          const div = window.document.getElementById(elId);
+          if (div) {
+            div.remove();
+          }
+        });
+        selectedAnnoteEl = undefined;
+      };
+      // Attach click handler to the DT
+      const annoteDls = window.document.querySelectorAll('dt[data-target-cell]');
+      for (const annoteDlNode of annoteDls) {
+        annoteDlNode.addEventListener('click', (event) => {
+          const clickedEl = event.target;
+          if (clickedEl !== selectedAnnoteEl) {
+            unselectCodeLines();
+            const activeEl = window.document.querySelector('dt[data-target-cell].code-annotation-active');
+            if (activeEl) {
+              activeEl.classList.remove('code-annotation-active');
+            }
+            selectCodeLines(clickedEl);
+            clickedEl.classList.add('code-annotation-active');
+          } else {
+            // Unselect the line
+            unselectCodeLines();
+            clickedEl.classList.remove('code-annotation-active');
+          }
+        });
+      }
+  const findCites = (el) => {
+    const parentEl = el.parentElement;
+    if (parentEl) {
+      const cites = parentEl.dataset.cites;
+      if (cites) {
+        return {
+          el,
+          cites: cites.split(' ')
+        };
+      } else {
+        return findCites(el.parentElement)
+      }
+    } else {
+      return undefined;
+    }
+  };
+  var bibliorefs = window.document.querySelectorAll('a[role="doc-biblioref"]');
+  for (var i=0; i<bibliorefs.length; i++) {
+    const ref = bibliorefs[i];
+    const citeInfo = findCites(ref);
+    if (citeInfo) {
+      tippyHover(citeInfo.el, function() {
+        var popup = window.document.createElement('div');
+        citeInfo.cites.forEach(function(cite) {
+          var citeDiv = window.document.createElement('div');
+          citeDiv.classList.add('hanging-indent');
+          citeDiv.classList.add('csl-entry');
+          var biblioDiv = window.document.getElementById('ref-' + cite);
+          if (biblioDiv) {
+            citeDiv.innerHTML = biblioDiv.innerHTML;
+          }
+          popup.appendChild(citeDiv);
+        });
+        return popup.innerHTML;
+      });
+    }
+  }
+});
+</script>
+</div> <!-- /content -->
+<footer class="footer">
+  <div class="nav-footer">
+    <div class="nav-footer-left">
+      <ul class="footer-items list-unstyled">
+    <li class="nav-item">
+ © Licence MIT.
+  </li>  
+</ul>
+    </div>   
+    <div class="nav-footer-center">
+      &nbsp;
+    </div>
+    <div class="nav-footer-right">
+      <ul class="footer-items list-unstyled">
+    <li class="nav-item">
+    <a class="nav-link" href="https://www.r-consortium.org/">Sponsored by the R Consortium.</a>
+  </li>  
+</ul>
+    </div>
+  </div>
+</footer>
+
+
+
+</body></html>

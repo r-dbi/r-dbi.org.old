@@ -1,0 +1,638 @@
+<!DOCTYPE html>
+<html xmlns="http://www.w3.org/1999/xhtml" lang="en" xml:lang="en"><head>
+
+<meta charset="utf-8">
+<meta name="generator" content="quarto-1.3.433">
+
+<meta name="viewport" content="width=device-width, initial-scale=1.0, user-scalable=yes">
+
+
+<title>R-DBI - Backends for R-DBI</title>
+<style>
+code{white-space: pre-wrap;}
+span.smallcaps{font-variant: small-caps;}
+div.columns{display: flex; gap: min(4vw, 1.5em);}
+div.column{flex: auto; overflow-x: auto;}
+div.hanging-indent{margin-left: 1.5em; text-indent: -1.5em;}
+ul.task-list{list-style: none;}
+ul.task-list li input[type="checkbox"] {
+  width: 0.8em;
+  margin: 0 0.8em 0.2em -1em; /* quarto-specific, see https://github.com/quarto-dev/quarto-cli/issues/4556 */ 
+  vertical-align: middle;
+}
+</style>
+
+
+<script src="../site_libs/quarto-nav/quarto-nav.js"></script>
+<script src="../site_libs/quarto-nav/headroom.min.js"></script>
+<script src="../site_libs/clipboard/clipboard.min.js"></script>
+<script src="../site_libs/quarto-search/autocomplete.umd.js"></script>
+<script src="../site_libs/quarto-search/fuse.min.js"></script>
+<script src="../site_libs/quarto-search/quarto-search.js"></script>
+<meta name="quarto:offset" content="../">
+<script src="../site_libs/quarto-html/quarto.js"></script>
+<script src="../site_libs/quarto-html/popper.min.js"></script>
+<script src="../site_libs/quarto-html/tippy.umd.min.js"></script>
+<script src="../site_libs/quarto-html/anchor.min.js"></script>
+<link href="../site_libs/quarto-html/tippy.css" rel="stylesheet">
+<link href="../site_libs/quarto-html/quarto-syntax-highlighting.css" rel="stylesheet" id="quarto-text-highlighting-styles">
+<script src="../site_libs/bootstrap/bootstrap.min.js"></script>
+<link href="../site_libs/bootstrap/bootstrap-icons.css" rel="stylesheet">
+<link href="../site_libs/bootstrap/bootstrap.min.css" rel="stylesheet" id="quarto-bootstrap" data-mode="light">
+<script id="quarto-search-options" type="application/json">{
+  "location": "navbar",
+  "copy-button": false,
+  "collapse-after": 3,
+  "panel-placement": "end",
+  "type": "overlay",
+  "limit": 20,
+  "language": {
+    "search-no-results-text": "No results",
+    "search-matching-documents-text": "matching documents",
+    "search-copy-link-title": "Copy link to search",
+    "search-hide-matches-text": "Hide additional matches",
+    "search-more-match-text": "more match in this document",
+    "search-more-matches-text": "more matches in this document",
+    "search-clear-button-title": "Clear",
+    "search-detached-cancel-button-title": "Cancel",
+    "search-submit-button-title": "Submit",
+    "search-label": "Search"
+  }
+}</script>
+
+
+<link rel="stylesheet" href="../styles.css">
+<meta property="og:title" content="R-DBI - Backends for R-DBI">
+<meta property="og:description" content="Backends for R-DBI.">
+<meta property="og:site-name" content="R-DBI">
+<meta name="twitter:title" content="R-DBI - Backends for R-DBI">
+<meta name="twitter:description" content="Backends for R-DBI.">
+<meta name="twitter:card" content="summary">
+</head>
+
+<body class="nav-fixed">
+
+<div id="quarto-search-results"></div>
+  <header id="quarto-header" class="headroom fixed-top">
+    <nav class="navbar navbar-expand-lg navbar-dark ">
+      <div class="navbar-container container-fluid">
+      <div class="navbar-brand-container">
+    <a class="navbar-brand" href="../index.html">
+    <span class="navbar-title">R-DBI</span>
+    </a>
+  </div>
+            <div id="quarto-search" class="" title="Search"></div>
+          <button class="navbar-toggler" type="button" data-bs-toggle="collapse" data-bs-target="#navbarCollapse" aria-controls="navbarCollapse" aria-expanded="false" aria-label="Toggle navigation" onclick="if (window.quartoToggleHeadroom) { window.quartoToggleHeadroom(); }">
+  <span class="navbar-toggler-icon"></span>
+</button>
+          <div class="collapse navbar-collapse" id="navbarCollapse">
+            <ul class="navbar-nav navbar-nav-scroll me-auto">
+  <li class="nav-item">
+    <a class="nav-link" href="../index.html" rel="" target="">
+ <span class="menu-text">Home</span></a>
+  </li>  
+  <li class="nav-item">
+    <a class="nav-link" href="../blog/index.html" rel="" target="">
+ <span class="menu-text">Blog</span></a>
+  </li>  
+  <li class="nav-item">
+    <a class="nav-link active" href="../backends/index.html" rel="" target="" aria-current="page">
+ <span class="menu-text">Backends</span></a>
+  </li>  
+</ul>
+            <div class="quarto-navbar-tools ms-auto">
+</div>
+          </div> <!-- /navcollapse -->
+      </div> <!-- /container-fluid -->
+    </nav>
+</header>
+<!-- content -->
+<div id="quarto-content" class="quarto-container page-columns page-rows-contents page-layout-full page-navbar">
+<!-- sidebar -->
+<!-- margin-sidebar -->
+    <div id="quarto-margin-sidebar" class="sidebar margin-sidebar"><div class="quarto-margin-header"><div class="margin-header-item">
+<p>MIT License</p>
+</div></div>
+        <nav id="TOC" role="doc-toc" class="toc-active">
+    <h2 id="toc-title">On this page</h2>
+   
+  <ul>
+  <li><a href="#azurekusto-1.1.2-2023-03-17" id="toc-azurekusto-1.1.2-2023-03-17" class="nav-link active" data-scroll-target="#azurekusto-1.1.2-2023-03-17">AzureKusto 1.1.2 (2023-03-17) <span class="emoji" data-emoji="link">🔗</span> <span class="emoji" data-emoji="bug">🐛</span></a></li>
+  <li><a href="#bigrquery-1.4.2-2023-04-20" id="toc-bigrquery-1.4.2-2023-04-20" class="nav-link" data-scroll-target="#bigrquery-1.4.2-2023-04-20">bigrquery 1.4.2 (2023-04-20) <span class="emoji" data-emoji="link">🔗</span> <span class="emoji" data-emoji="bug">🐛</span></a></li>
+  <li><a href="#ckanr-0.7.0-2023-03-17" id="toc-ckanr-0.7.0-2023-03-17" class="nav-link" data-scroll-target="#ckanr-0.7.0-2023-03-17">ckanr 0.7.0 (2023-03-17) <span class="emoji" data-emoji="link">🔗</span> <span class="emoji" data-emoji="bug">🐛</span></a></li>
+  <li><a href="#clickhousehttp-0.3.2-2023-07-04" id="toc-clickhousehttp-0.3.2-2023-07-04" class="nav-link" data-scroll-target="#clickhousehttp-0.3.2-2023-07-04">ClickHouseHTTP 0.3.2 (2023-07-04) <span class="emoji" data-emoji="bug">🐛</span></a></li>
+  <li><a href="#connections-0.1.1-2020-02-07" id="toc-connections-0.1.1-2020-02-07" class="nav-link" data-scroll-target="#connections-0.1.1-2020-02-07">connections 0.1.1 (2020-02-07) <span class="emoji" data-emoji="bug">🐛</span></a></li>
+  <li><a href="#databaseconnector-6.2.3-2023-06-29" id="toc-databaseconnector-6.2.3-2023-06-29" class="nav-link" data-scroll-target="#databaseconnector-6.2.3-2023-06-29">DatabaseConnector 6.2.3 (2023-06-29) <span class="emoji" data-emoji="link">🔗</span> <span class="emoji" data-emoji="bug">🐛</span></a></li>
+  <li><a href="#dbi.rodbc-0.1-2" id="toc-dbi.rodbc-0.1-2" class="nav-link" data-scroll-target="#dbi.rodbc-0.1-2">DBI.RODBC 0.1-2</a></li>
+  <li><a href="#dbi.rpgsql-0.1-2" id="toc-dbi.rpgsql-0.1-2" class="nav-link" data-scroll-target="#dbi.rpgsql-0.1-2">DBI.RPgSQL 0.1-2</a></li>
+  <li><a href="#dittodb-0.1.6-2023-04-17" id="toc-dittodb-0.1.6-2023-04-17" class="nav-link" data-scroll-target="#dittodb-0.1.6-2023-04-17">dittodb 0.1.6 (2023-04-17) <span class="emoji" data-emoji="link">🔗</span> <span class="emoji" data-emoji="bug">🐛</span></a></li>
+  <li><a href="#duckdb-0.8.1-2023-06-16" id="toc-duckdb-0.8.1-2023-06-16" class="nav-link" data-scroll-target="#duckdb-0.8.1-2023-06-16">duckdb 0.8.1 (2023-06-16) <span class="emoji" data-emoji="link">🔗</span> <span class="emoji" data-emoji="bug">🐛</span></a></li>
+  <li><a href="#implyr-0.4.0-2021-03-29" id="toc-implyr-0.4.0-2021-03-29" class="nav-link" data-scroll-target="#implyr-0.4.0-2021-03-29">implyr 0.4.0 (2021-03-29) <span class="emoji" data-emoji="bug">🐛</span></a></li>
+  <li><a href="#lazysf-0.1.0-2020-11-14" id="toc-lazysf-0.1.0-2020-11-14" class="nav-link" data-scroll-target="#lazysf-0.1.0-2020-11-14">lazysf 0.1.0 (2020-11-14) <span class="emoji" data-emoji="bug">🐛</span></a></li>
+  <li><a href="#monetdb.r-2.0.0-2020-08-14" id="toc-monetdb.r-2.0.0-2020-08-14" class="nav-link" data-scroll-target="#monetdb.r-2.0.0-2020-08-14">MonetDB.R 2.0.0 (2020-08-14)</a></li>
+  <li><a href="#monetdblite-0.6.0-2018-07-27" id="toc-monetdblite-0.6.0-2018-07-27" class="nav-link" data-scroll-target="#monetdblite-0.6.0-2018-07-27">MonetDBLite 0.6.0 (2018-07-27) <span class="emoji" data-emoji="bug">🐛</span></a></li>
+  <li><a href="#noctua-2.6.1-2022-12-20" id="toc-noctua-2.6.1-2022-12-20" class="nav-link" data-scroll-target="#noctua-2.6.1-2022-12-20">noctua 2.6.1 (2022-12-20) <span class="emoji" data-emoji="bug">🐛</span></a></li>
+  <li><a href="#odbc-1.3.5-2023-06-29" id="toc-odbc-1.3.5-2023-06-29" class="nav-link" data-scroll-target="#odbc-1.3.5-2023-06-29">odbc 1.3.5 (2023-06-29) <span class="emoji" data-emoji="link">🔗</span> <span class="emoji" data-emoji="link">🔗</span> <span class="emoji" data-emoji="bug">🐛</span></a></li>
+  <li><a href="#pool-1.0.1-2023-02-21" id="toc-pool-1.0.1-2023-02-21" class="nav-link" data-scroll-target="#pool-1.0.1-2023-02-21">pool 1.0.1 (2023-02-21) <span class="emoji" data-emoji="link">🔗</span> <span class="emoji" data-emoji="bug">🐛</span></a></li>
+  <li><a href="#rathena-2.6.1-2022-12-20" id="toc-rathena-2.6.1-2022-12-20" class="nav-link" data-scroll-target="#rathena-2.6.1-2022-12-20">RAthena 2.6.1 (2022-12-20) <span class="emoji" data-emoji="bug">🐛</span></a></li>
+  <li><a href="#rclickhouse-0.6.7-2023-04-02" id="toc-rclickhouse-0.6.7-2023-04-02" class="nav-link" data-scroll-target="#rclickhouse-0.6.7-2023-04-02">RClickhouse 0.6.7 (2023-04-02) <span class="emoji" data-emoji="bug">🐛</span></a></li>
+  <li><a href="#rh2-0.2.4-2018-03-14" id="toc-rh2-0.2.4-2018-03-14" class="nav-link" data-scroll-target="#rh2-0.2.4-2018-03-14">RH2 0.2.4 (2018-03-14)</a></li>
+  <li><a href="#rjdbc-0.2-10-2022-03-24" id="toc-rjdbc-0.2-10-2022-03-24" class="nav-link" data-scroll-target="#rjdbc-0.2-10-2022-03-24">RJDBC 0.2-10 (2022-03-24)</a></li>
+  <li><a href="#rmariadb-1.2.2-2022-06-19" id="toc-rmariadb-1.2.2-2022-06-19" class="nav-link" data-scroll-target="#rmariadb-1.2.2-2022-06-19">RMariaDB 1.2.2 (2022-06-19) <span class="emoji" data-emoji="link">🔗</span> <span class="emoji" data-emoji="link">🔗</span> <span class="emoji" data-emoji="bug">🐛</span></a></li>
+  <li><a href="#rmysql-0.10.25-2022-12-06" id="toc-rmysql-0.10.25-2022-12-06" class="nav-link" data-scroll-target="#rmysql-0.10.25-2022-12-06">RMySQL 0.10.25 (2022-12-06) <span class="emoji" data-emoji="bug">🐛</span></a></li>
+  <li><a href="#rodbcdbi-0.1.1-2016-03-14" id="toc-rodbcdbi-0.1.1-2016-03-14" class="nav-link" data-scroll-target="#rodbcdbi-0.1.1-2016-03-14">RODBCDBI 0.1.1 (2016-03-14)</a></li>
+  <li><a href="#roracle-1.3-1.1-2021-11-10" id="toc-roracle-1.3-1.1-2021-11-10" class="nav-link" data-scroll-target="#roracle-1.3-1.1-2021-11-10">ROracle 1.3-1.1 (2021-11-10)</a></li>
+  <li><a href="#rpostgres-1.4.5-2023-01-20" id="toc-rpostgres-1.4.5-2023-01-20" class="nav-link" data-scroll-target="#rpostgres-1.4.5-2023-01-20">RPostgres 1.4.5 (2023-01-20) <span class="emoji" data-emoji="link">🔗</span> <span class="emoji" data-emoji="bug">🐛</span></a></li>
+  <li><a href="#rpostgresql-0.7-5-2023-02-10" id="toc-rpostgresql-0.7-5-2023-02-10" class="nav-link" data-scroll-target="#rpostgresql-0.7-5-2023-02-10">RPostgreSQL 0.7-5 (2023-02-10) <span class="emoji" data-emoji="link">🔗</span> <span class="emoji" data-emoji="link">🔗</span></a></li>
+  <li><a href="#rpresto-1.4.5-2023-05-05" id="toc-rpresto-1.4.5-2023-05-05" class="nav-link" data-scroll-target="#rpresto-1.4.5-2023-05-05">RPresto 1.4.5 (2023-05-05) <span class="emoji" data-emoji="bug">🐛</span></a></li>
+  <li><a href="#rredshiftsql-0.1.2-2016-09-15" id="toc-rredshiftsql-0.1.2-2016-09-15" class="nav-link" data-scroll-target="#rredshiftsql-0.1.2-2016-09-15">RRedshiftSQL 0.1.2 (2016-09-15)</a></li>
+  <li><a href="#rsqlite-2.3.1-2023-04-03" id="toc-rsqlite-2.3.1-2023-04-03" class="nav-link" data-scroll-target="#rsqlite-2.3.1-2023-04-03">RSQLite 2.3.1 (2023-04-03) <span class="emoji" data-emoji="link">🔗</span> <span class="emoji" data-emoji="bug">🐛</span></a></li>
+  <li><a href="#rsqlserver-0.3.0-2017-06-17" id="toc-rsqlserver-0.3.0-2017-06-17" class="nav-link" data-scroll-target="#rsqlserver-0.3.0-2017-06-17">RSQLServer 0.3.0 (2017-06-17) <span class="emoji" data-emoji="bug">🐛</span></a></li>
+  <li><a href="#sergeant-0.9.1-2021-11-29" id="toc-sergeant-0.9.1-2021-11-29" class="nav-link" data-scroll-target="#sergeant-0.9.1-2021-11-29">sergeant 0.9.1 (2021-11-29) <span class="emoji" data-emoji="bug">🐛</span></a></li>
+  <li><a href="#sparklyr-1.8.2-2023-07-01" id="toc-sparklyr-1.8.2-2023-07-01" class="nav-link" data-scroll-target="#sparklyr-1.8.2-2023-07-01">sparklyr 1.8.2 (2023-07-01) <span class="emoji" data-emoji="bug">🐛</span></a></li>
+  </ul>
+</nav>
+    </div>
+<!-- main -->
+<main class="content column-page-left" id="quarto-document-content">
+
+<header id="title-block-header" class="quarto-title-block default">
+<div class="quarto-title">
+<h1 class="title">Backends for R-DBI</h1>
+</div>
+
+
+
+<div class="quarto-title-meta">
+
+    
+  
+    
+  </div>
+  
+
+</header>
+
+<!-- README.md is generated from README.Rmd. Please edit that file -->
+<p>Do you maintain a backend and think that yours should be on this list? Please open an issue in the <a href="https://github.com/r-dbi/backends">backends repository</a>.</p>
+<section id="azurekusto-1.1.2-2023-03-17" class="level2">
+<h2 class="anchored" data-anchor-id="azurekusto-1.1.2-2023-03-17"><a href="https://github.com/Azure/AzureKusto">AzureKusto</a> 1.1.2 (2023-03-17) <a href="https://github.com/Azure/AzureR"><span class="emoji" data-emoji="link">🔗</span></a> <a href="https://github.com/Azure/AzureKusto/issues"><span class="emoji" data-emoji="bug">🐛</span></a></h2>
+<p>Interface to ‘Kusto’/‘Azure Data Explorer’</p>
+<p>An interface to ‘Azure Data Explorer’, also known as ‘Kusto’, a fast, highly scalable data exploration service from Microsoft: <a href="https://azure.microsoft.com/en-us/products/data-explorer/" class="uri">https://azure.microsoft.com/en-us/products/data-explorer/</a>. Includes ‘DBI’ and ‘dplyr’ interfaces, with the latter modelled after the ‘dbplyr’ package, whereby queries are translated from R into the native ‘KQL’ query language and executed lazily. On the admin side, the package extends the object framework provided by ‘AzureRMR’ to support creation and deletion of databases, and management of database principals. Part of the ‘AzureR’ family of packages.</p>
+<p>Maintainer: Alex Kyllo <a href="mailto:jekyllo@microsoft.com" class="email">jekyllo@microsoft.com</a>. License: MIT + file LICENSE</p>
+</section>
+<section id="bigrquery-1.4.2-2023-04-20" class="level2">
+<h2 class="anchored" data-anchor-id="bigrquery-1.4.2-2023-04-20"><a href="https://bigrquery.r-dbi.org">bigrquery</a> 1.4.2 (2023-04-20) <a href="https://github.com/r-dbi/bigrquery"><span class="emoji" data-emoji="link">🔗</span></a> <a href="https://github.com/r-dbi/bigrquery/issues"><span class="emoji" data-emoji="bug">🐛</span></a></h2>
+<p>An Interface to Google’s ‘BigQuery’ ‘API’</p>
+<p>Easily talk to Google’s ‘BigQuery’ database from R.</p>
+<p>Maintainer: Hadley Wickham <a href="mailto:hadley@posit.co" class="email">hadley@posit.co</a>. License: GPL-3</p>
+</section>
+<section id="ckanr-0.7.0-2023-03-17" class="level2">
+<h2 class="anchored" data-anchor-id="ckanr-0.7.0-2023-03-17"><a href="https://docs.ropensci.org/ckanr/">ckanr</a> 0.7.0 (2023-03-17) <a href="https://github.com/ropensci/ckanr"><span class="emoji" data-emoji="link">🔗</span></a> <a href="https://github.com/ropensci/ckanr/issues"><span class="emoji" data-emoji="bug">🐛</span></a></h2>
+<p>Client for the Comprehensive Knowledge Archive Network (‘CKAN’) API</p>
+<p>Client for ‘CKAN’ API (<a href="https://ckan.org/" class="uri">https://ckan.org/</a>). Includes interface to ‘CKAN’ ‘APIs’ for search, list, show for packages, organizations, and resources. In addition, provides an interface to the ‘datastore’ API.</p>
+<p>Maintainer: Francisco Alves <a href="mailto:fjunior.alves.oliveira@gmail.com" class="email">fjunior.alves.oliveira@gmail.com</a>. License: MIT + file LICENSE</p>
+</section>
+<section id="clickhousehttp-0.3.2-2023-07-04" class="level2">
+<h2 class="anchored" data-anchor-id="clickhousehttp-0.3.2-2023-07-04"><a href="https://github.com/patzaw/ClickHouseHTTP">ClickHouseHTTP</a> 0.3.2 (2023-07-04) <a href="https://github.com/patzaw/ClickHouseHTTP/issues"><span class="emoji" data-emoji="bug">🐛</span></a></h2>
+<p>A Simple HTTP Database Interface to ‘ClickHouse’</p>
+<p>‘ClickHouse’ (<a href="https://clickhouse.com/" class="uri">https://clickhouse.com/</a>) is an open-source, high performance columnar OLAP (online analytical processing of queries) database management system for real-time analytics using SQL. This ‘DBI’ backend relies on the ‘ClickHouse’ HTTP interface and support HTTPS protocol.</p>
+<p>Maintainer: Patrice Godard <a href="mailto:patrice.godard@gmail.com" class="email">patrice.godard@gmail.com</a>. License: GPL-3</p>
+</section>
+<section id="connections-0.1.1-2020-02-07" class="level2">
+<h2 class="anchored" data-anchor-id="connections-0.1.1-2020-02-07"><a href="https://github.com/edgararuiz/connections">connections</a> 0.1.1 (2020-02-07) <a href="https://github.com/edgararuiz/connections/issues"><span class="emoji" data-emoji="bug">🐛</span></a></h2>
+<p>Integrates with the ‘RStudio’ Connections Pane and ‘pins’</p>
+<p>Enables ‘DBI’ compliant packages to integrate with the ‘RStudio’ connections pane, and the ‘pins’ package. It automates the display of schemata, tables, views, as well as the preview of the table’s top 1000 records.</p>
+<p>Maintainer: Javier Luraschi <a href="mailto:javier@rstudio.com" class="email">javier@rstudio.com</a>. License: GPL-3</p>
+</section>
+<section id="databaseconnector-6.2.3-2023-06-29" class="level2">
+<h2 class="anchored" data-anchor-id="databaseconnector-6.2.3-2023-06-29"><a href="https://ohdsi.github.io/DatabaseConnector/">DatabaseConnector</a> 6.2.3 (2023-06-29) <a href="https://github.com/OHDSI/DatabaseConnector"><span class="emoji" data-emoji="link">🔗</span></a> <a href="https://github.com/OHDSI/DatabaseConnector/issues"><span class="emoji" data-emoji="bug">🐛</span></a></h2>
+<p>Connecting to Various Database Platforms</p>
+<p>An R ‘DataBase Interface’ (‘DBI’) compatible interface to various database platforms (‘PostgreSQL’, ‘Oracle’, ‘Microsoft SQL Server’, ‘Amazon Redshift’, ‘Microsoft Parallel Database Warehouse’, ‘IBM Netezza’, ‘Apache Impala’, ‘Google BigQuery’, ‘Snowflake’, ‘Spark’, and ‘SQLite’). Also includes support for fetching data as ‘Andromeda’ objects. Uses either ‘Java Database Connectivity’ (‘JDBC’) or other ‘DBI’ drivers to connect to databases.</p>
+<p>Maintainer: Martijn Schuemie <a href="mailto:schuemie@ohdsi.org" class="email">schuemie@ohdsi.org</a>. License: Apache License</p>
+</section>
+<section id="dbi.rodbc-0.1-2" class="level2">
+<h2 class="anchored" data-anchor-id="dbi.rodbc-0.1-2"><a href="http://developer.r-project.org/db">DBI.RODBC</a> 0.1-2</h2>
+<p>DBI front-end to RODBC</p>
+<p>A simple DBI front-end to the RODBC package. This package uses version 4 style classes and methods to create a front-end to the existing RODBC (version 0.8-3) package.</p>
+<p>Maintainer: David A. James <a href="mailto:dj@bell-labs.com" class="email">dj@bell-labs.com</a>. License: GPL (version 2 or later)</p>
+</section>
+<section id="dbi.rpgsql-0.1-2" class="level2">
+<h2 class="anchored" data-anchor-id="dbi.rpgsql-0.1-2"><a href="http://developer.r-project.org/db">DBI.RPgSQL</a> 0.1-2</h2>
+<p>DBI front-end to RPgSQL</p>
+<p>A simple DBI front-end to the RPgSQL package. This package uses version 4 style classes and methods to create a front-end to the existing RPgSQL (version 1.0-0) package.</p>
+<p>Maintainer: David A. James <a href="mailto:dj@bell-labs.com" class="email">dj@bell-labs.com</a>. License: GPL (version 2 or later)</p>
+</section>
+<section id="dittodb-0.1.6-2023-04-17" class="level2">
+<h2 class="anchored" data-anchor-id="dittodb-0.1.6-2023-04-17"><a href="https://dittodb.jonkeane.com/">dittodb</a> 0.1.6 (2023-04-17) <a href="https://github.com/ropensci/dittodb"><span class="emoji" data-emoji="link">🔗</span></a> <a href="https://github.com/ropensci/dittodb/issues"><span class="emoji" data-emoji="bug">🐛</span></a></h2>
+<p>A Test Environment for Database Requests</p>
+<p>Testing and documenting code that communicates with remote databases can be painful. Although the interaction with R is usually relatively simple (e.g.&nbsp;data(frames) passed to and from a database), because they rely on a separate service and the data there, testing them can be difficult to set up, unsustainable in a continuous integration environment, or impossible without replicating an entire production cluster. This package addresses that by allowing you to make recordings from your database interactions and then play them back while testing (or in other contexts) all without needing to spin up or have access to the database your code would typically connect to.</p>
+<p>Maintainer: Jonathan Keane <a href="mailto:jkeane@gmail.com" class="email">jkeane@gmail.com</a>. License: Apache License (&gt;= 2.0)</p>
+</section>
+<section id="duckdb-0.8.1-2023-06-16" class="level2">
+<h2 class="anchored" data-anchor-id="duckdb-0.8.1-2023-06-16"><a href="https://duckdb.org/">duckdb</a> 0.8.1 (2023-06-16) <a href="https://github.com/duckdb/duckdb"><span class="emoji" data-emoji="link">🔗</span></a> <a href="https://github.com/duckdb/duckdb/issues"><span class="emoji" data-emoji="bug">🐛</span></a></h2>
+<p>DBI Package for the DuckDB Database Management System</p>
+<p>The DuckDB project is an embedded analytical data management system with support for the Structured Query Language (SQL). This package includes all of DuckDB and a R Database Interface (DBI) connector.</p>
+<p>Maintainer: Hannes Mühleisen <a href="mailto:hannes@cwi.nl" class="email">hannes@cwi.nl</a>. License: MIT + file LICENSE</p>
+</section>
+<section id="implyr-0.4.0-2021-03-29" class="level2">
+<h2 class="anchored" data-anchor-id="implyr-0.4.0-2021-03-29"><a href="https://github.com/ianmcook/implyr">implyr</a> 0.4.0 (2021-03-29) <a href="https://github.com/ianmcook/implyr/issues"><span class="emoji" data-emoji="bug">🐛</span></a></h2>
+<p>R Interface for Apache Impala</p>
+<p>‘SQL’ back-end to ‘dplyr’ for Apache Impala, the massively parallel processing query engine for Apache ‘Hadoop’. Impala enables low-latency ‘SQL’ queries on data stored in the ‘Hadoop’ Distributed File System ‘(HDFS)’, Apache ‘HBase’, Apache ‘Kudu’, Amazon Simple Storage Service ‘(S3)’, Microsoft Azure Data Lake Store ‘(ADLS)’, and Dell ‘EMC’ ‘Isilon’. See <a href="https://impala.apache.org" class="uri">https://impala.apache.org</a> for more information about Impala.</p>
+<p>Maintainer: Ian Cook <a href="mailto:ianmcook@gmail.com" class="email">ianmcook@gmail.com</a>. License: Apache License 2.0 | file LICENSE</p>
+</section>
+<section id="lazysf-0.1.0-2020-11-14" class="level2">
+<h2 class="anchored" data-anchor-id="lazysf-0.1.0-2020-11-14"><a href="https://github.com/mdsumner/lazysf">lazysf</a> 0.1.0 (2020-11-14) <a href="https://github.com/mdsumner/lazysf/issues"><span class="emoji" data-emoji="bug">🐛</span></a></h2>
+<p>Delayed Read for ‘GDAL’ Vector Data Sources</p>
+<p>Lazy read for drawings. A ‘dplyr’ back end for data sources supported by ‘GDAL’ vector drivers, that allows working with local or remote sources as if they are in-memory data frames. Basic features works with any drawing format (‘GDAL vector data source’) supported by the ‘sf’ package.</p>
+<p>Maintainer: Michael Sumner <a href="mailto:mdsumner@gmail.com" class="email">mdsumner@gmail.com</a>. License: GPL-3</p>
+</section>
+<section id="monetdb.r-2.0.0-2020-08-14" class="level2">
+<h2 class="anchored" data-anchor-id="monetdb.r-2.0.0-2020-08-14"><a href="http://www.monetdb.org">MonetDB.R</a> 2.0.0 (2020-08-14)</h2>
+<p>Connect MonetDB to R</p>
+<p>Allows to pull data from MonetDB into R.</p>
+<p>Maintainer: Mitchell Weggemans <a href="mailto:mitchell.weggemans@monetdbsolutions.com" class="email">mitchell.weggemans@monetdbsolutions.com</a>. License: MPL (== 2.0)</p>
+</section>
+<section id="monetdblite-0.6.0-2018-07-27" class="level2">
+<h2 class="anchored" data-anchor-id="monetdblite-0.6.0-2018-07-27"><a href="https://github.com/hannesmuehleisen/MonetDBLite-R">MonetDBLite</a> 0.6.0 (2018-07-27) <a href="https://github.com/hannesmuehleisen/MonetDBLite-R/issues"><span class="emoji" data-emoji="bug">🐛</span></a></h2>
+<p>In-Process Version of ‘MonetDB’</p>
+<p>An in-process version of ‘MonetDB’, a SQL database designed for analytical tasks. Similar to ‘SQLite’, the database runs entirely inside the ‘R’ shell.</p>
+<p>Maintainer: Hannes Mühleisen <a href="mailto:hannes@cwi.nl" class="email">hannes@cwi.nl</a>. License: MPL (== 2.0)</p>
+</section>
+<section id="noctua-2.6.1-2022-12-20" class="level2">
+<h2 class="anchored" data-anchor-id="noctua-2.6.1-2022-12-20"><a href="https://github.com/DyfanJones/noctua">noctua</a> 2.6.1 (2022-12-20) <a href="https://github.com/DyfanJones/noctua/issues"><span class="emoji" data-emoji="bug">🐛</span></a></h2>
+<p>Connect to ‘AWS Athena’ using R ‘AWS SDK’ ‘paws’ (‘DBI’ Interface)</p>
+<p>Designed to be compatible with the ‘R’ package ‘DBI’ (Database Interface) when connecting to Amazon Web Service (‘AWS’) Athena <a href="https://aws.amazon.com/athena/" class="uri">https://aws.amazon.com/athena/</a>. To do this the ‘R’ ‘AWS’ Software Development Kit (‘SDK’) ‘paws’ <a href="https://github.com/paws-r/paws" class="uri">https://github.com/paws-r/paws</a> is used as a driver.</p>
+<p>Maintainer: Dyfan Jones <a href="mailto:dyfan.r.jones@gmail.com" class="email">dyfan.r.jones@gmail.com</a>. License: MIT + file LICENSE</p>
+</section>
+<section id="odbc-1.3.5-2023-06-29" class="level2">
+<h2 class="anchored" data-anchor-id="odbc-1.3.5-2023-06-29"><a href="https://r-dbi.github.io/odbc/">odbc</a> 1.3.5 (2023-06-29) <a href="https://github.com/r-dbi/odbc"><span class="emoji" data-emoji="link">🔗</span></a> <a href="https://db.rstudio.com"><span class="emoji" data-emoji="link">🔗</span></a> <a href="https://github.com/r-dbi/odbc/issues"><span class="emoji" data-emoji="bug">🐛</span></a></h2>
+<p>Connect to ODBC Compatible Databases (using the DBI Interface)</p>
+<p>A DBI-compatible interface to ODBC databases.</p>
+<p>Maintainer: Hadley Wickham <a href="mailto:hadley@rstudio.com" class="email">hadley@rstudio.com</a>. License: MIT + file LICENSE</p>
+</section>
+<section id="pool-1.0.1-2023-02-21" class="level2">
+<h2 class="anchored" data-anchor-id="pool-1.0.1-2023-02-21"><a href="https://github.com/rstudio/pool">pool</a> 1.0.1 (2023-02-21) <a href="http://rstudio.github.io/pool/"><span class="emoji" data-emoji="link">🔗</span></a> <a href="https://github.com/rstudio/pool/issues"><span class="emoji" data-emoji="bug">🐛</span></a></h2>
+<p>Object Pooling</p>
+<p>Enables the creation of object pools, which make it less computationally expensive to fetch a new object. Currently the only supported pooled objects are ‘DBI’ connections.</p>
+<p>Maintainer: Hadley Wickham <a href="mailto:hadley@posit.co" class="email">hadley@posit.co</a>. License: MIT + file LICENSE</p>
+</section>
+<section id="rathena-2.6.1-2022-12-20" class="level2">
+<h2 class="anchored" data-anchor-id="rathena-2.6.1-2022-12-20"><a href="https://github.com/DyfanJones/RAthena">RAthena</a> 2.6.1 (2022-12-20) <a href="https://github.com/DyfanJones/RAthena/issues"><span class="emoji" data-emoji="bug">🐛</span></a></h2>
+<p>Connect to ‘AWS Athena’ using ‘Boto3’ (‘DBI’ Interface)</p>
+<p>Designed to be compatible with the R package ‘DBI’ (Database Interface) when connecting to Amazon Web Service (‘AWS’) Athena <a href="https://aws.amazon.com/athena/" class="uri">https://aws.amazon.com/athena/</a>. To do this ‘Python’ ‘Boto3’ Software Development Kit (‘SDK’) <a href="https://boto3.amazonaws.com/v1/documentation/api/latest/index.html" class="uri">https://boto3.amazonaws.com/v1/documentation/api/latest/index.html</a> is used as a driver.</p>
+<p>Maintainer: Dyfan Jones <a href="mailto:dyfan.r.jones@gmail.com" class="email">dyfan.r.jones@gmail.com</a>. License: MIT + file LICENSE</p>
+</section>
+<section id="rclickhouse-0.6.7-2023-04-02" class="level2">
+<h2 class="anchored" data-anchor-id="rclickhouse-0.6.7-2023-04-02"><a href="https://github.com/IMSMWU/RClickhouse">RClickhouse</a> 0.6.7 (2023-04-02) <a href="https://github.com/IMSMWU/RClickhouse/issues"><span class="emoji" data-emoji="bug">🐛</span></a></h2>
+<p>‘Yandex Clickhouse’ Interface for R with Basic ‘dplyr’ Support</p>
+<p>‘Yandex Clickhouse’ (<a href="https://clickhouse.com/" class="uri">https://clickhouse.com/</a>) is a high-performance relational column-store database to enable big data exploration and ‘analytics’ scaling to petabytes of data. Methods are provided that enable working with ‘Yandex Clickhouse’ databases via ‘DBI’ methods and using ‘dplyr’/‘dbplyr’ idioms.</p>
+<p>Maintainer: Christian Hotz-Behofsits <a href="mailto:christian.hotz-behofsits@wu.ac.at" class="email">christian.hotz-behofsits@wu.ac.at</a>. License: GPL-2</p>
+</section>
+<section id="rh2-0.2.4-2018-03-14" class="level2">
+<h2 class="anchored" data-anchor-id="rh2-0.2.4-2018-03-14"><a href="https://github.com/dmkaplan2000/RH2.git">RH2</a> 0.2.4 (2018-03-14)</h2>
+<p>DBI/RJDBC Interface to H2 Database</p>
+<p>DBI/RJDBC interface to h2 database. h2 version 1.3.175 is included.</p>
+<p>Maintainer: “David M. Kaplan” <a href="mailto:dmkaplan2000@gmail.com" class="email">dmkaplan2000@gmail.com</a>. License: Mozilla Public License 1.1</p>
+</section>
+<section id="rjdbc-0.2-10-2022-03-24" class="level2">
+<h2 class="anchored" data-anchor-id="rjdbc-0.2-10-2022-03-24"><a href="http://www.rforge.net/RJDBC/">RJDBC</a> 0.2-10 (2022-03-24)</h2>
+<p>Provides Access to Databases Through the JDBC Interface</p>
+<p>The RJDBC package is an implementation of R’s DBI interface using JDBC as a back-end. This allows R to connect to any DBMS that has a JDBC driver.</p>
+<p>Maintainer: Simon Urbanek <a href="mailto:Simon.Urbanek@r-project.org" class="email">Simon.Urbanek@r-project.org</a>. License: MIT + file LICENSE</p>
+</section>
+<section id="rmariadb-1.2.2-2022-06-19" class="level2">
+<h2 class="anchored" data-anchor-id="rmariadb-1.2.2-2022-06-19"><a href="https://rmariadb.r-dbi.org">RMariaDB</a> 1.2.2 (2022-06-19) <a href="https://github.com/r-dbi/RMariaDB"><span class="emoji" data-emoji="link">🔗</span></a> <a href="https://downloads.mariadb.org/connector-c/"><span class="emoji" data-emoji="link">🔗</span></a> <a href="https://github.com/r-dbi/RMariaDB/issues"><span class="emoji" data-emoji="bug">🐛</span></a></h2>
+<p>Database Interface and MariaDB Driver</p>
+<p>Implements a DBI-compliant interface to MariaDB (<a href="https://mariadb.org/" class="uri">https://mariadb.org/</a>) and MySQL (<a href="https://www.mysql.com/" class="uri">https://www.mysql.com/</a>) databases.</p>
+<p>Maintainer: Kirill Müller <a href="mailto:krlmlr+r@mailbox.org" class="email">krlmlr+r@mailbox.org</a>. License: MIT + file LICENSE</p>
+</section>
+<section id="rmysql-0.10.25-2022-12-06" class="level2">
+<h2 class="anchored" data-anchor-id="rmysql-0.10.25-2022-12-06"><a href="https://downloads.mariadb.org/connector-c/">RMySQL</a> 0.10.25 (2022-12-06) <a href="https://github.com/r-dbi/rmysql/issues"><span class="emoji" data-emoji="bug">🐛</span></a></h2>
+<p>Database Interface and ‘MySQL’ Driver for R</p>
+<p>Legacy ‘DBI’ interface to ‘MySQL’ / ‘MariaDB’ based on old code ported from S-PLUS. A modern ‘MySQL’ client based on ‘Rcpp’ is available from the ‘RMariaDB’ package.</p>
+<p>Maintainer: Jeroen Ooms <a href="mailto:jeroen@berkeley.edu" class="email">jeroen@berkeley.edu</a>. License: GPL-2</p>
+</section>
+<section id="rodbcdbi-0.1.1-2016-03-14" class="level2">
+<h2 class="anchored" data-anchor-id="rodbcdbi-0.1.1-2016-03-14">RODBCDBI 0.1.1 (2016-03-14)</h2>
+<p>Provides Access to Databases Through the ODBC Interface</p>
+<p>An implementation of R’s DBI interface using ODBC package as a back-end. This allows R to connect to any DBMS that has a ODBC driver.</p>
+<p>Maintainer: Nagi Teramo <a href="mailto:teramonagi@gmail.com" class="email">teramonagi@gmail.com</a>. License: MIT + file LICENSE</p>
+</section>
+<section id="roracle-1.3-1.1-2021-11-10" class="level2">
+<h2 class="anchored" data-anchor-id="roracle-1.3-1.1-2021-11-10"><a href="http://www.oracle.com">ROracle</a> 1.3-1.1 (2021-11-10)</h2>
+<p>OCI Based Oracle Database Interface for R</p>
+<p>Oracle Database interface (DBI) driver for R. This is a DBI-compliant Oracle driver based on the OCI.</p>
+<p>Maintainer: Rajendra S. Pingte <a href="mailto:rajendra.pingte@oracle.com" class="email">rajendra.pingte@oracle.com</a>. License: LGPL</p>
+</section>
+<section id="rpostgres-1.4.5-2023-01-20" class="level2">
+<h2 class="anchored" data-anchor-id="rpostgres-1.4.5-2023-01-20"><a href="https://rpostgres.r-dbi.org">RPostgres</a> 1.4.5 (2023-01-20) <a href="https://github.com/r-dbi/RPostgres"><span class="emoji" data-emoji="link">🔗</span></a> <a href="https://github.com/r-dbi/RPostgres/issues"><span class="emoji" data-emoji="bug">🐛</span></a></h2>
+<p>Rcpp Interface to PostgreSQL</p>
+<p>Fully DBI-compliant Rcpp-backed interface to PostgreSQL <a href="https://www.postgresql.org/" class="uri">https://www.postgresql.org/</a>, an open-source relational database.</p>
+<p>Maintainer: Kirill Müller <a href="mailto:kirill@cynkra.com" class="email">kirill@cynkra.com</a>. License: GPL-3</p>
+</section>
+<section id="rpostgresql-0.7-5-2023-02-10" class="level2">
+<h2 class="anchored" data-anchor-id="rpostgresql-0.7-5-2023-02-10"><a href="https://github.com/tomoakin/RPostgreSQL">RPostgreSQL</a> 0.7-5 (2023-02-10) <a href="https://cran.r-project.org/package=DBI"><span class="emoji" data-emoji="link">🔗</span></a> <a href="https://www.postgresql.org"><span class="emoji" data-emoji="link">🔗</span></a></h2>
+<p>R Interface to the ‘PostgreSQL’ Database System</p>
+<p>Database interface and ‘PostgreSQL’ driver for ‘R’. This package provides a Database Interface ‘DBI’ compliant driver for ‘R’ to access ‘PostgreSQL’ database systems. In order to build and install this package from source, ‘PostgreSQL’ itself must be present your system to provide ‘PostgreSQL’ functionality via its libraries and header files. These files are provided as ‘postgresql-devel’ package under some Linux distributions. On ‘macOS’ and ‘Microsoft Windows’ system the attached ‘libpq’ library source will be used.</p>
+<p>Maintainer: Tomoaki Nishiyama <a href="mailto:tomoakin@staff.kanazawa-u.ac.jp" class="email">tomoakin@staff.kanazawa-u.ac.jp</a>. License: GPL-3 | file LICENSE</p>
+</section>
+<section id="rpresto-1.4.5-2023-05-05" class="level2">
+<h2 class="anchored" data-anchor-id="rpresto-1.4.5-2023-05-05"><a href="https://github.com/prestodb/RPresto">RPresto</a> 1.4.5 (2023-05-05) <a href="https://github.com/prestodb/RPresto/issues"><span class="emoji" data-emoji="bug">🐛</span></a></h2>
+<p>DBI Connector to Presto</p>
+<p>Implements a ‘DBI’ compliant interface to Presto. Presto is an open source distributed SQL query engine for running interactive analytic queries against data sources of all sizes ranging from gigabytes to petabytes: <a href="https://prestodb.io/" class="uri">https://prestodb.io/</a>.</p>
+<p>Maintainer: Jarod G.R. Meng <a href="mailto:jarodm@fb.com" class="email">jarodm@fb.com</a>. License: BSD_3_clause + file LICENSE</p>
+</section>
+<section id="rredshiftsql-0.1.2-2016-09-15" class="level2">
+<h2 class="anchored" data-anchor-id="rredshiftsql-0.1.2-2016-09-15">RRedshiftSQL 0.1.2 (2016-09-15)</h2>
+<p>R Interface to the ‘Redshift’ Database</p>
+<p>Superclasses ‘PostgreSQL’ connection to help enable full ‘dplyr’ functionality on ‘Redshift’.</p>
+<p>Maintainer: Michael Treadwell <a href="mailto:michael.treadwell@interworks.com" class="email">michael.treadwell@interworks.com</a>. License: GPL-2</p>
+</section>
+<section id="rsqlite-2.3.1-2023-04-03" class="level2">
+<h2 class="anchored" data-anchor-id="rsqlite-2.3.1-2023-04-03"><a href="https://rsqlite.r-dbi.org">RSQLite</a> 2.3.1 (2023-04-03) <a href="https://github.com/r-dbi/RSQLite"><span class="emoji" data-emoji="link">🔗</span></a> <a href="https://github.com/r-dbi/RSQLite/issues"><span class="emoji" data-emoji="bug">🐛</span></a></h2>
+<p>SQLite Interface for R</p>
+<p>Embeds the SQLite database engine in R and provides an interface compliant with the DBI package. The source for the SQLite engine and for various extensions in a recent version is included. System libraries will never be consulted because this package relies on static linking for the plugins it includes; this also ensures a consistent experience across all installations.</p>
+<p>Maintainer: Kirill Müller <a href="mailto:kirill@cynkra.com" class="email">kirill@cynkra.com</a>. License: LGPL (&gt;= 2.1)</p>
+</section>
+<section id="rsqlserver-0.3.0-2017-06-17" class="level2">
+<h2 class="anchored" data-anchor-id="rsqlserver-0.3.0-2017-06-17"><a href="https://github.com/imanuelcostigan/RSQLServer">RSQLServer</a> 0.3.0 (2017-06-17) <a href="https://github.com/imanuelcostigan/RSQLServer/issues"><span class="emoji" data-emoji="bug">🐛</span></a></h2>
+<p>SQL Server R Database Interface (DBI) and ‘dplyr’ SQL Backend</p>
+<p>Utilises The ‘jTDS’ project’s ‘JDBC’ 3.0 ‘SQL Server’ driver to extend ‘DBI’ classes and methods. The package also implements a ‘SQL’ backend to the ‘dplyr’ package.</p>
+<p>Maintainer: Imanuel Costigan <a href="mailto:i.costigan@me.com" class="email">i.costigan@me.com</a>. License: GPL-2</p>
+</section>
+<section id="sergeant-0.9.1-2021-11-29" class="level2">
+<h2 class="anchored" data-anchor-id="sergeant-0.9.1-2021-11-29"><a href="https://gitlab.com/hrbrmstr/sergeant">sergeant</a> 0.9.1 (2021-11-29) <a href="https://gitlab.com/hrbrmstr/sergeant/-/issues"><span class="emoji" data-emoji="bug">🐛</span></a></h2>
+<p>Tools to Transform and Query Data with Apache Drill</p>
+<p>Apache Drill is a low-latency distributed query engine designed to enable data exploration and analysis on both relational and non-relational data stores, scaling to petabytes of data. Methods are provided that enable working with Apache Drill instances via the REST API, DBI methods and using ‘dplyr’/‘dbplyr’ idioms. Helper functions are included to facilitate using official Drill Docker images/containers.</p>
+<p>Maintainer: Bob Rudis <a href="mailto:bob@rud.is" class="email">bob@rud.is</a>. License: MIT + file LICENSE</p>
+</section>
+<section id="sparklyr-1.8.2-2023-07-01" class="level2">
+<h2 class="anchored" data-anchor-id="sparklyr-1.8.2-2023-07-01"><a href="https://spark.rstudio.com/">sparklyr</a> 1.8.2 (2023-07-01) <a href="https://github.com/sparklyr/sparklyr/issues"><span class="emoji" data-emoji="bug">🐛</span></a></h2>
+<p>R Interface to Apache Spark</p>
+<p>R interface to Apache Spark, a fast and general engine for big data processing, see <a href="https://spark.apache.org/" class="uri">https://spark.apache.org/</a>. This package supports connecting to local and remote Apache Spark clusters, provides a ‘dplyr’ compatible back-end, and provides an interface to Spark’s built-in machine learning algorithms.</p>
+<p>Maintainer: Edgar Ruiz <a href="mailto:edgar@rstudio.com" class="email">edgar@rstudio.com</a>. License: Apache License 2.0 | file LICENSE</p>
+
+
+</section>
+
+</main> <!-- /main -->
+<script id="quarto-html-after-body" type="application/javascript">
+window.document.addEventListener("DOMContentLoaded", function (event) {
+  const toggleBodyColorMode = (bsSheetEl) => {
+    const mode = bsSheetEl.getAttribute("data-mode");
+    const bodyEl = window.document.querySelector("body");
+    if (mode === "dark") {
+      bodyEl.classList.add("quarto-dark");
+      bodyEl.classList.remove("quarto-light");
+    } else {
+      bodyEl.classList.add("quarto-light");
+      bodyEl.classList.remove("quarto-dark");
+    }
+  }
+  const toggleBodyColorPrimary = () => {
+    const bsSheetEl = window.document.querySelector("link#quarto-bootstrap");
+    if (bsSheetEl) {
+      toggleBodyColorMode(bsSheetEl);
+    }
+  }
+  toggleBodyColorPrimary();  
+  const icon = "";
+  const anchorJS = new window.AnchorJS();
+  anchorJS.options = {
+    placement: 'right',
+    icon: icon
+  };
+  anchorJS.add('.anchored');
+  const isCodeAnnotation = (el) => {
+    for (const clz of el.classList) {
+      if (clz.startsWith('code-annotation-')) {                     
+        return true;
+      }
+    }
+    return false;
+  }
+  const clipboard = new window.ClipboardJS('.code-copy-button', {
+    text: function(trigger) {
+      const codeEl = trigger.previousElementSibling.cloneNode(true);
+      for (const childEl of codeEl.children) {
+        if (isCodeAnnotation(childEl)) {
+          childEl.remove();
+        }
+      }
+      return codeEl.innerText;
+    }
+  });
+  clipboard.on('success', function(e) {
+    // button target
+    const button = e.trigger;
+    // don't keep focus
+    button.blur();
+    // flash "checked"
+    button.classList.add('code-copy-button-checked');
+    var currentTitle = button.getAttribute("title");
+    button.setAttribute("title", "Copied!");
+    let tooltip;
+    if (window.bootstrap) {
+      button.setAttribute("data-bs-toggle", "tooltip");
+      button.setAttribute("data-bs-placement", "left");
+      button.setAttribute("data-bs-title", "Copied!");
+      tooltip = new bootstrap.Tooltip(button, 
+        { trigger: "manual", 
+          customClass: "code-copy-button-tooltip",
+          offset: [0, -8]});
+      tooltip.show();    
+    }
+    setTimeout(function() {
+      if (tooltip) {
+        tooltip.hide();
+        button.removeAttribute("data-bs-title");
+        button.removeAttribute("data-bs-toggle");
+        button.removeAttribute("data-bs-placement");
+      }
+      button.setAttribute("title", currentTitle);
+      button.classList.remove('code-copy-button-checked');
+    }, 1000);
+    // clear code selection
+    e.clearSelection();
+  });
+  function tippyHover(el, contentFn) {
+    const config = {
+      allowHTML: true,
+      content: contentFn,
+      maxWidth: 500,
+      delay: 100,
+      arrow: false,
+      appendTo: function(el) {
+          return el.parentElement;
+      },
+      interactive: true,
+      interactiveBorder: 10,
+      theme: 'quarto',
+      placement: 'bottom-start'
+    };
+    window.tippy(el, config); 
+  }
+  const noterefs = window.document.querySelectorAll('a[role="doc-noteref"]');
+  for (var i=0; i<noterefs.length; i++) {
+    const ref = noterefs[i];
+    tippyHover(ref, function() {
+      // use id or data attribute instead here
+      let href = ref.getAttribute('data-footnote-href') || ref.getAttribute('href');
+      try { href = new URL(href).hash; } catch {}
+      const id = href.replace(/^#\/?/, "");
+      const note = window.document.getElementById(id);
+      return note.innerHTML;
+    });
+  }
+      let selectedAnnoteEl;
+      const selectorForAnnotation = ( cell, annotation) => {
+        let cellAttr = 'data-code-cell="' + cell + '"';
+        let lineAttr = 'data-code-annotation="' +  annotation + '"';
+        const selector = 'span[' + cellAttr + '][' + lineAttr + ']';
+        return selector;
+      }
+      const selectCodeLines = (annoteEl) => {
+        const doc = window.document;
+        const targetCell = annoteEl.getAttribute("data-target-cell");
+        const targetAnnotation = annoteEl.getAttribute("data-target-annotation");
+        const annoteSpan = window.document.querySelector(selectorForAnnotation(targetCell, targetAnnotation));
+        const lines = annoteSpan.getAttribute("data-code-lines").split(",");
+        const lineIds = lines.map((line) => {
+          return targetCell + "-" + line;
+        })
+        let top = null;
+        let height = null;
+        let parent = null;
+        if (lineIds.length > 0) {
+            //compute the position of the single el (top and bottom and make a div)
+            const el = window.document.getElementById(lineIds[0]);
+            top = el.offsetTop;
+            height = el.offsetHeight;
+            parent = el.parentElement.parentElement;
+          if (lineIds.length > 1) {
+            const lastEl = window.document.getElementById(lineIds[lineIds.length - 1]);
+            const bottom = lastEl.offsetTop + lastEl.offsetHeight;
+            height = bottom - top;
+          }
+          if (top !== null && height !== null && parent !== null) {
+            // cook up a div (if necessary) and position it 
+            let div = window.document.getElementById("code-annotation-line-highlight");
+            if (div === null) {
+              div = window.document.createElement("div");
+              div.setAttribute("id", "code-annotation-line-highlight");
+              div.style.position = 'absolute';
+              parent.appendChild(div);
+            }
+            div.style.top = top - 2 + "px";
+            div.style.height = height + 4 + "px";
+            let gutterDiv = window.document.getElementById("code-annotation-line-highlight-gutter");
+            if (gutterDiv === null) {
+              gutterDiv = window.document.createElement("div");
+              gutterDiv.setAttribute("id", "code-annotation-line-highlight-gutter");
+              gutterDiv.style.position = 'absolute';
+              const codeCell = window.document.getElementById(targetCell);
+              const gutter = codeCell.querySelector('.code-annotation-gutter');
+              gutter.appendChild(gutterDiv);
+            }
+            gutterDiv.style.top = top - 2 + "px";
+            gutterDiv.style.height = height + 4 + "px";
+          }
+          selectedAnnoteEl = annoteEl;
+        }
+      };
+      const unselectCodeLines = () => {
+        const elementsIds = ["code-annotation-line-highlight", "code-annotation-line-highlight-gutter"];
+        elementsIds.forEach((elId) => {
+          const div = window.document.getElementById(elId);
+          if (div) {
+            div.remove();
+          }
+        });
+        selectedAnnoteEl = undefined;
+      };
+      // Attach click handler to the DT
+      const annoteDls = window.document.querySelectorAll('dt[data-target-cell]');
+      for (const annoteDlNode of annoteDls) {
+        annoteDlNode.addEventListener('click', (event) => {
+          const clickedEl = event.target;
+          if (clickedEl !== selectedAnnoteEl) {
+            unselectCodeLines();
+            const activeEl = window.document.querySelector('dt[data-target-cell].code-annotation-active');
+            if (activeEl) {
+              activeEl.classList.remove('code-annotation-active');
+            }
+            selectCodeLines(clickedEl);
+            clickedEl.classList.add('code-annotation-active');
+          } else {
+            // Unselect the line
+            unselectCodeLines();
+            clickedEl.classList.remove('code-annotation-active');
+          }
+        });
+      }
+  const findCites = (el) => {
+    const parentEl = el.parentElement;
+    if (parentEl) {
+      const cites = parentEl.dataset.cites;
+      if (cites) {
+        return {
+          el,
+          cites: cites.split(' ')
+        };
+      } else {
+        return findCites(el.parentElement)
+      }
+    } else {
+      return undefined;
+    }
+  };
+  var bibliorefs = window.document.querySelectorAll('a[role="doc-biblioref"]');
+  for (var i=0; i<bibliorefs.length; i++) {
+    const ref = bibliorefs[i];
+    const citeInfo = findCites(ref);
+    if (citeInfo) {
+      tippyHover(citeInfo.el, function() {
+        var popup = window.document.createElement('div');
+        citeInfo.cites.forEach(function(cite) {
+          var citeDiv = window.document.createElement('div');
+          citeDiv.classList.add('hanging-indent');
+          citeDiv.classList.add('csl-entry');
+          var biblioDiv = window.document.getElementById('ref-' + cite);
+          if (biblioDiv) {
+            citeDiv.innerHTML = biblioDiv.innerHTML;
+          }
+          popup.appendChild(citeDiv);
+        });
+        return popup.innerHTML;
+      });
+    }
+  }
+});
+</script>
+</div> <!-- /content -->
+<footer class="footer">
+  <div class="nav-footer">
+    <div class="nav-footer-left">
+      <ul class="footer-items list-unstyled">
+    <li class="nav-item">
+ © Licence MIT.
+  </li>  
+</ul>
+    </div>   
+    <div class="nav-footer-center">
+      &nbsp;
+    </div>
+    <div class="nav-footer-right">
+      <ul class="footer-items list-unstyled">
+    <li class="nav-item">
+    <a class="nav-link" href="https://www.r-consortium.org/">Sponsored by the R Consortium.</a>
+  </li>  
+</ul>
+    </div>
+  </div>
+</footer>
+
+
+
+</body></html>
